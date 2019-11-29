@@ -1,3 +1,4 @@
+//import libraries
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -14,7 +15,7 @@ app.use(bodyParser.json())
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 
-mongoose.Promise = global.Promise;
+var port=process.env.PORT || 8080
 
 // Connecting to the database
 mongoose.connect(dbConfig.url, {
@@ -23,20 +24,35 @@ mongoose.connect(dbConfig.url, {
 }).then(() => {
     console.log("Successfully connected to the database");
 }).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
+    console.log('Could not connect to the database. Ending the Process', err);
     process.exit();
 });
 
-// define a simple route
-app.get('/', (req, res) => {
-    console.log('basic get worked')
+// create the router object
+var router = express.Router();
+
+// middleware to use for all requests
+router.use(function(req, res, next) {
+    // do logging
+    console.log("This route was requested: "+req.baseUrl);
+    next(); // make sure we go to the next routes and don't stop here
+});
+
+// define a default route
+router.get('/', (req, res) => {
+    //console.log('default works')
     res.send({success:"true"})
 });
 
-//require('./app/routes/note.routes.js')(app);
+// all our APIs will have default name '/api' in route
+app.use('/api', router);
+
+// import other routes from 'app' folder.
+require('./app/routes/secure.route.js')(router);
 
 
 // listen for requests
-app.listen(dbConfig.port, () => {
-    console.log("Server is listening on port "+dbConfig.port);
+
+app.listen(port, () => {
+    console.log("Server is listening on port "+port);
 });
