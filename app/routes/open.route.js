@@ -4,7 +4,7 @@ module.exports = (app) => {
     // Get top 10 songs for Non-Auth users
     app.get('/open/getTen', open.getTopTenSongs);
 
-    // Create a new user
-    //app.post('/open/registerUser', open.registerUser);
+    // Search for songs
+    app.get('/open/autoFill', open.autoFill);
 
 }
