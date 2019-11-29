@@ -34,7 +34,7 @@ var router = express.Router();
 // middleware to use for all requests
 router.use(function(req, res, next) {
     // do logging
-    console.log("This route was requested: "+req.baseUrl);
+    console.log("This route was requested: "+req.url);
     next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -49,6 +49,7 @@ app.use('/api', router);
 
 // import other routes from 'app' folder.
 require('./app/routes/secure.route.js')(router);
+require('./app/routes/open.route.js')(router);
 
 
 // listen for requests

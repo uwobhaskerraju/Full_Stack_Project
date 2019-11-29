@@ -5,6 +5,6 @@ module.exports = (app) => {
     app.post('/secure/validateUser', secured.validateUser);
 
     // Create a new user
-    app.get('/secure/registerUser', secured.registerUser);
+    app.post('/secure/registerUser', secured.registerUser);
 
 }
