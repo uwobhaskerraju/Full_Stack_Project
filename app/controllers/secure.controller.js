@@ -1,6 +1,5 @@
 
 
-
 exports.validateUser = (req, res) => {
     console.log("inside validateUser user")
     res.send()
@@ -27,4 +26,9 @@ exports.registerUser = (req, res) => {
     console.log("uHash : " + uHash)
 
     res.send({ success: "true" })
+};
+
+exports.deactUser=(req,res)=>{
+    
+
 };
