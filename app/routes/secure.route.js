@@ -19,6 +19,12 @@ module.exports = (app) => {
     app.put('/secure/hideSong',secured.hideSong);
 
     //update a new song
-    app.put('/secure/updateSong',secured.updateSong)
+    app.put('/secure/updateSong',secured.updateSong);
+
+    //delete a song
+    app.delete('/secure/deleteSong',secured.delSong);
+
+    // insert a new song
+    app.post('/secure/insertSong',secured.insertSong);
 
 }

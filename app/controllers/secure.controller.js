@@ -62,7 +62,7 @@ exports.updateSong = (req, res) => {
     var reqBody = req.body
     delete reqBody.songID
     console.log(reqBody)
-    
+
     Songs.update({ _id: songId }, { $set: { Ratings: 3 } })
         .then(data => {
             //console.log(data["nModified"])
@@ -81,4 +81,31 @@ exports.updateSong = (req, res) => {
             })
         });
 
+};
+
+exports.delSong = (req, res) => {
+    var songId = req.body.songID
+
+    Songs.deleteOne({ _id: songId })
+        //.then(dbModel => res.json(dbModel))
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["deletedCount"])) {
+
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving notes."
+            })
+        });
+};
+
+exports.insertSong=(req,res)=>{
+res.send({message:"success"})
 };
