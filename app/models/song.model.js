@@ -1,16 +1,16 @@
 var mongoose     = require('mongoose');
 
 var SongsSchema   = mongoose.Schema({
-    name: String,
-    ratings:Number,
-    artists:String,
-    album:String,
-    duration:Number,
-    year:Number,
+    Name: String,
+    Ratings:Number,
+    Artist:String,
+    Album:String,
+    Duration:Number,
+    Year:Number,
     Genre:String,
-    playlistid:[String],
-    hidden:Boolean,
-    picture:String
+    PlaylistID:[String],
+    Hidden:{ type: Boolean, default: false },
+    Picture:String
 });
 
 module.exports = mongoose.model('Songs', SongsSchema,'Songs');

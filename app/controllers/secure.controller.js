@@ -1,4 +1,4 @@
-
+const Songs = require('../models/song.model.js');
 
 exports.validateUser = (req, res) => {
     console.log("inside validateUser user")
@@ -28,7 +28,57 @@ exports.registerUser = (req, res) => {
     res.send({ success: "true" })
 };
 
-exports.deactUser=(req,res)=>{
+exports.deactUser = (req, res) => {
+
+
+};
+
+exports.hideSong = (req, res) => {
+    var songId = req.body.songID
+    //console.log(songId)
+    Songs.updateOne({ _id: songId }, { $set: { "Hidden": true } })
+        //.then(dbModel => res.json(dbModel))
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["nModified"])) {
+
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving notes."
+            })
+        });
+
+};
+
+exports.updateSong = (req, res) => {
+    var songId = req.body.songID
+    var reqBody = req.body
+    delete reqBody.songID
+    console.log(reqBody)
     
+    Songs.update({ _id: songId }, { $set: { Ratings: 3 } })
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["nModified"])) {
+
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving notes."
+            })
+        });
 
 };

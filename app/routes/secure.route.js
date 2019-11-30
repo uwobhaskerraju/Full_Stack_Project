@@ -14,4 +14,11 @@ module.exports = (app) => {
     // Admin APIs
     // deactivate a user
     app.put('/secure/deactUser',secured.deactUser);
+
+    //mark a song as invisible
+    app.put('/secure/hideSong',secured.hideSong);
+
+    //update a new song
+    app.put('/secure/updateSong',secured.updateSong)
+
 }
