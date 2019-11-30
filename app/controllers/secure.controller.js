@@ -149,7 +149,7 @@ exports.reviewSong = (req, res) => {
     for (let i = 0; i < entries.length; i++) {
         inserts[entries[i]] = Object.values(req.body)[i]
     }
-
+    var songID=inserts["songId"]
     reviews.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
@@ -158,12 +158,12 @@ exports.reviewSong = (req, res) => {
             else {
                 // didnt insert 
                 // delete inserted song
-                res.status(500).send({ message: "false" })
+                res.status(500).send({ message: songID })
             }
         })
         .catch(err => {
             // didnt insert 
             // delete inserted song
-            res.status(500).send({ message: "false" })
+            res.status(500).send({ message: songID })
         });
 };
