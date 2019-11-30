@@ -106,6 +106,35 @@ exports.delSong = (req, res) => {
         });
 };
 
-exports.insertSong=(req,res)=>{
-res.send({message:"success"})
+exports.insertSong = (req, res) => {
+   //inserting songs records first and then sending the songID back to angular
+   // using songID, send another request for inserting review
+    const entries = Object.keys(req.body)
+    const inserts = {}
+    for (let i = 0; i < entries.length; i++) {
+        inserts[entries[i]] = Object.values(req.body)[i]
+    }
+    
+    // var reviews={}
+    // reviews["comment"]=inserts.comment
+    // reviews["reviewBy"]=inserts.reviewBy
+
+    // delete inserts.comment
+    // delete inserts.reviewBy
+ 
+    Songs.create(inserts)
+        .then(data => {
+            if(Boolean(data["_id"])){
+                res.status(200).send({message:data["_id"]})
+            }
+            else{
+                res.status(500).send({message:"false"})
+            }    
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving notes."
+            })
+        });
+
 };

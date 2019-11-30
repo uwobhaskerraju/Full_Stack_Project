@@ -1,16 +1,18 @@
 var mongoose     = require('mongoose');
 
 var SongsSchema   = mongoose.Schema({
-    Name: String,
-    Ratings:Number,
-    Artist:String,
-    Album:String,
-    Duration:Number,
-    Year:Number,
-    Genre:String,
-    PlaylistID:[String],
+    Name: { type: String, required: true },
+    Ratings:{ type: Number, required: true },
+    Artist:{ type: String, required: true },
+    Album:{ type: String, required: true },
+    Duration:{ type: Number, required: true },
+    Year:{ type: Number, required: true },
+    Genre:{ type: String, default: "Filmi" },
+    PlaylistID:{ type: String, default: "" },
     Hidden:{ type: Boolean, default: false },
-    Picture:String
+    Picture:{ type: String, required: true }
+}, {
+    versionKey: false // You should be aware of the outcome after set to false
 });
 
 module.exports = mongoose.model('Songs', SongsSchema,'Songs');
