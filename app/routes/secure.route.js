@@ -27,4 +27,7 @@ module.exports = (app) => {
     // insert a new song
     app.post('/secure/insertSong',secured.insertSong);
 
+    // insert a review for a song
+    app.post('/secure/reviewSong',secured.reviewSong);
+
 }

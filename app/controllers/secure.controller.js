@@ -1,4 +1,5 @@
 const Songs = require('../models/song.model.js');
+const reviews = require('../models/review.model.js');
 
 exports.validateUser = (req, res) => {
     console.log("inside validateUser user")
@@ -107,29 +108,30 @@ exports.delSong = (req, res) => {
 };
 
 exports.insertSong = (req, res) => {
-   //inserting songs records first and then sending the songID back to angular
-   // using songID, send another request for inserting review
+    //inserting songs records first and then sending the songID back to angular
+    // using songID, send another request for inserting review
     const entries = Object.keys(req.body)
     const inserts = {}
     for (let i = 0; i < entries.length; i++) {
         inserts[entries[i]] = Object.values(req.body)[i]
     }
-    
+
     // var reviews={}
     // reviews["comment"]=inserts.comment
     // reviews["reviewBy"]=inserts.reviewBy
 
     // delete inserts.comment
     // delete inserts.reviewBy
- 
+
     Songs.create(inserts)
         .then(data => {
-            if(Boolean(data["_id"])){
-                res.status(200).send({message:data["_id"]})
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: data["_id"] })
             }
-            else{
-                res.status(500).send({message:"false"})
-            }    
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
         })
         .catch(err => {
             res.status(500).send({
@@ -137,4 +139,31 @@ exports.insertSong = (req, res) => {
             })
         });
 
+};
+
+exports.reviewSong = (req, res) => {
+    // if it doesnt insert, send deleteSong API from angular
+
+    const entries = Object.keys(req.body)
+    const inserts = {}
+    for (let i = 0; i < entries.length; i++) {
+        inserts[entries[i]] = Object.values(req.body)[i]
+    }
+
+    reviews.create(inserts)
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                // delete inserted song
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            // didnt insert 
+            // delete inserted song
+            res.status(500).send({ message: "false" })
+        });
 };
