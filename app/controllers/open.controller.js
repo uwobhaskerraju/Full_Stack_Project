@@ -4,9 +4,31 @@ const Ratings = require('../models/ratings.model.js');
 const errMsg = "something went wrong! try again"
 
 exports.getTopTenSongs = (req, res) => {
-    //console.log("inside getTopTenSongs")
-    Songs.find({ Ratings: { $gte: 3 }, Hidden: false })
-        .limit(10)
+
+    Ratings.aggregate([
+        {
+            $lookup: {
+                from: "Songs",
+                localField: "songID",
+                foreignField: "_id",
+                as: "ratings_data"
+            }
+        }
+        // ,
+        // {
+        //     $project:{
+        //         songID:1,
+        //         rating:{$avg:"$ratings"}
+        //     }
+        // }
+        // ,
+        // {
+        //     $group: {
+        //         _id: "$songID",
+        //         rating: { $avg: "$ratings" }
+        //     }
+        // }
+    ])
         .then(songs => {
             res.send(songs)
         })
@@ -49,6 +71,7 @@ exports.getSong = (req, res) => {
 
     var songID = req.params.songID
     Songs.find({ _id: songID, Hidden: false })
+        .select('-_id')
         .then(songs => {
             res.send(songs)
         })
