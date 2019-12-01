@@ -39,7 +39,13 @@ module.exports = (app) => {
     // insert a rating for a song
     app.post('/secure/ratesong',secured.ratesong);
 
-    // Create a empty playlist
+    // Create a playlist
     app.post('/secure/createPList',secured.createPList);
+
+    // Delete a playlist
+    app.delete('/secure/deletePList',secured.deletePList);
+
+    // Add a song to playlist
+    app.put('/secure/addPList',secured.addPList);
 
 }

@@ -1,13 +1,13 @@
 const Songs = require('../models/song.model.js');
 const Reviews = require('../models/review.model.js');
 const Ratings = require('../models/ratings.model.js');
-const Playlist=require('../models/playlist.model.js');
+const Playlist = require('../models/playlist.model.js');
 
 const errMsg = "something went wrong! try again"
 
-function generateKeyValueFromBody(body){
+function generateKeyValueFromBody(body) {
     const entries = Object.keys(body)
-    const inserts={}
+    const inserts = {}
     for (let i = 0; i < entries.length; i++) {
         inserts[entries[i]] = Object.values(body)[i]
     }
@@ -229,25 +229,56 @@ exports.reviewSong = (req, res) => {
         });
 };
 
-exports.createPList=(req,res)=>{
-    
+exports.createPList = (req, res) => {
+
     const inserts = generateKeyValueFromBody(req.body)
-   
+
     //console.log(inserts)
     Playlist.create(inserts)
-    .then(data => {
-        if (Boolean(data["_id"])) {
-            res.status(200).send({ message: data["_id"] })
-        }
-        else {
-            // didnt insert 
-            res.status(500).send({ message: "false" })
-        }
-    })
-    .catch(err => {
-        res.status(500).send({
-            message: err.message || errMsg
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: data["_id"] })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
         })
-    });
-   // res.send(200)
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+    // res.send(200)
+};
+
+exports.deletePList = (req, res) => {
+    var playListID = req.body.playListID
+    var ownerID = req.body.ownerID
+    //console.log("s")
+    Playlist.findOne({
+        _id: playListID,
+        ownerID: ownerID
+    })
+        .remove()
+        .exec()
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["deletedCount"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.addPList=(req,res)=>{
+
 };
