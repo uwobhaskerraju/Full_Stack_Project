@@ -1,7 +1,18 @@
 const Songs = require('../models/song.model.js');
 const Reviews = require('../models/review.model.js');
 const Ratings = require('../models/ratings.model.js');
+const Playlist=require('../models/playlist.model.js');
+
 const errMsg = "something went wrong! try again"
+
+function generateKeyValueFromBody(body){
+    const entries = Object.keys(body)
+    const inserts={}
+    for (let i = 0; i < entries.length; i++) {
+        inserts[entries[i]] = Object.values(body)[i]
+    }
+    return inserts;
+}
 
 exports.validateUser = (req, res) => {
     console.log("inside validateUser user")
@@ -173,7 +184,7 @@ exports.insertSong = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving notes."
+                message: err.message || errMsg
             })
         });
 
@@ -229,4 +240,27 @@ exports.reviewSong = (req, res) => {
             // delete inserted song
             res.status(500).send({ message: songID })
         });
+};
+
+exports.createPList=(req,res)=>{
+    
+    const inserts = generateKeyValueFromBody(req.body)
+   
+    //console.log(inserts)
+    Playlist.create(inserts)
+    .then(data => {
+        if (Boolean(data["_id"])) {
+            res.status(200).send({ message: data["_id"] })
+        }
+        else {
+            // didnt insert 
+            res.status(500).send({ message: "false" })
+        }
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || errMsg
+        })
+    });
+   // res.send(200)
 };

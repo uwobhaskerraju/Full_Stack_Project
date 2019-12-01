@@ -39,4 +39,7 @@ module.exports = (app) => {
     // insert a rating for a song
     app.post('/secure/ratesong',secured.ratesong);
 
+    // Create a empty playlist
+    app.post('/secure/createPList',secured.createPList);
+
 }
