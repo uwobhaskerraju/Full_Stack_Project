@@ -179,18 +179,6 @@ exports.deletePList = (req, res) => {
         });
 };
 
-
-
-
-exports.deactUser = (req, res) => {
-
-
-};
-
-
-
-
-
 exports.addSongsPList = (req, res) => {
     var playListID = req.body.playListID
     var songid = req.body.songID
@@ -212,7 +200,6 @@ exports.addSongsPList = (req, res) => {
             })
         });
 };
-
 exports.remSongsPList = (req, res) => {
     var playListID = req.body.playListID
     var songid = req.body.songID
@@ -234,13 +221,12 @@ exports.remSongsPList = (req, res) => {
             })
         });
 };
-
 exports.hidePList = (req, res) => {
     var playListID = req.body.playListID
     var hidden = req.body.hidden
-    var ownerID = req.body.ownerID
+    
 
-    Playlist.updateOne({ _id: playListID, ownerID: ownerID }, { $set: { hidden: hidden } })
+    Playlist.updateOne({ _id: playListID}, { $set: { hidden: hidden } })
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
@@ -257,6 +243,20 @@ exports.hidePList = (req, res) => {
             })
         });
 };
+exports.deactUser = (req, res) => {
+
+
+};
+
+
+
+
+
+
+
+
+
+
 
 exports.GetAllPlayLists = (req, res) => {
     Playlist.find()

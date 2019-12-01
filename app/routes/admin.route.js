@@ -24,16 +24,16 @@ module.exports = (app) => {
     app.delete('/admin/playlist', Admin.deletePList);
 
     // Add a song to playlist
-    app.put('/admin/addSongsPList', Admin.addSongsPList);
+    app.put('/admin/playlist/song', Admin.addSongsPList);
 
     // remove a song to playlist
-    app.put('/admin/remSongsPList', Admin.remSongsPList);
+    app.delete('/admin/playlist/song', Admin.remSongsPList);
 
-    // Hide a playlist by owner
-    app.put('/admin/hidePList', Admin.hidePList);
+    // Hide a playlist
+    app.put('/admin/playlist/hide', Admin.hidePList);
 
     // Get all playlist
-    app.get('/admin/GetAllPlayLists', Admin.GetAllPlayLists);
+    app.get('/admin/playlist', Admin.GetAllPlayLists);
 
     // deactivate a user
     app.put('/admin/deactUser', Admin.deactUser);
@@ -47,8 +47,8 @@ module.exports = (app) => {
     //update song rating
     //app.put('/admin/rate', Admin.updateRating);
     //delete song's rating
-    app.delete('/admin/delsongrating', Admin.delsongrating);
+   // app.delete('/admin/delsongrating', Admin.delsongrating);
 
     //delete song's review
-    app.delete('/admin/deleteSongRev', Admin.deleteSongRev);
+    //app.delete('/admin/deleteSongRev', Admin.deleteSongRev);
 }
