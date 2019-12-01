@@ -8,11 +8,11 @@ module.exports = (app) => {
     app.get('/open/autoFill', open.autoFill);
 
     //get review of particular song
-    app.get('/open/getReview/:songID', open.getReview);
+    app.get('/open/review/:songID', open.getReview);
 
     //get data of particular song
-    app.get('/open/getSong/:songID', open.getSong);
+    app.get('/open/song/:songID', open.getSong);
 
     //get rating of particular song
-    app.get('/open/getRating/:songID', open.getRating);
+    app.get('/open/rating/:songID', open.getRating);
 }
