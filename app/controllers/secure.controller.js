@@ -38,8 +38,9 @@ exports.deactUser = (req, res) => {
 
 exports.hideSong = (req, res) => {
     var songId = req.body.songID
+    var hidden = req.body.hidden
     //console.log(songId)
-    Songs.updateOne({ _id: songId }, { $set: { Hidden: true } })
+    Songs.updateOne({ _id: songId }, { $set: { Hidden: hidden } })
         //.then(dbModel => res.json(dbModel))
         .then(data => {
             //console.log(data["nModified"])
@@ -62,7 +63,7 @@ exports.hideSong = (req, res) => {
 
 exports.updateRating = (req, res) => {
     var songId = req.body.songID
-    var rating=req.body.Ratings
+    var rating = req.body.Ratings
 
     Ratings.update({ songID: songId }, { $set: { ratings: rating } })
         .then(data => {
