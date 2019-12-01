@@ -13,54 +13,20 @@ function generateKeyValueFromBody(body) {
     }
     return inserts;
 }
-
-
-
-exports.deactUser = (req, res) => {
-
-
-};
-
-exports.hideSong = (req, res) => {
-    var songId = req.body.songID
-    var hidden = req.body.hidden
-    //console.log(songId)
-    Songs.updateOne({ _id: songId }, { $set: { Hidden: hidden } })
-        //.then(dbModel => res.json(dbModel))
+exports.insertSong = (req, res) => {
+    //inserting songs records first and then sending the songID back to angular
+    // using songID, send another request for inserting review
+    // using songID, send another request for inserting ratings
+    const inserts = generateKeyValueFromBody(req.body)
+    Songs.create(inserts)
         .then(data => {
-            //console.log(data["nModified"])
-            if (Boolean(data["nModified"])) {
-
-                res.status(200).send({ message: "success" })
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: data["_id"] })
             }
             else {
-                res.status(200).send({ message: "false" })
+                // didnt insert 
+                res.status(500).send({ message: "false" })
             }
-
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
-            })
-        });
-
-};
-
-exports.updateRating = (req, res) => {
-    var songId = req.body.songID
-    var rating = req.body.Ratings
-
-    Ratings.update({ songID: songId }, { $set: { ratings: rating } })
-        .then(data => {
-            //console.log(data["nModified"])
-            if (Boolean(data["nModified"])) {
-
-                res.status(200).send({ message: "success" })
-            }
-            else {
-                res.status(200).send({ message: "false" })
-            }
-
         })
         .catch(err => {
             res.status(500).send({
@@ -95,6 +61,56 @@ exports.delSong = (req, res) => {
             })
         });
 };
+
+exports.hideSong = (req, res) => {
+    var songId = req.body.songID
+    var hidden = req.body.hidden
+    //console.log(songId)
+    Songs.updateOne({ _id: songId }, { $set: { Hidden: hidden } })
+        //.then(dbModel => res.json(dbModel))
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["nModified"])) {
+
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+
+};
+
+exports.updateSong = (req, res) => {
+    const inserts = generateKeyValueFromBody(req.body)
+    var songid = inserts.songID
+    delete inserts.songID
+    Songs.updateOne({ _id: songid }, { $set: inserts })
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+}
+
+
+
+
 
 exports.delsongrating = (req, res) => {
     var songId = req.body.songID
@@ -136,71 +152,13 @@ exports.deleteSongRev = (req, res) => {
         });
 };
 
-exports.insertSong = (req, res) => {
-    //inserting songs records first and then sending the songID back to angular
-    // using songID, send another request for inserting review
-    // using songID, send another request for inserting ratings
-    const inserts = generateKeyValueFromBody(req.body)
-    Songs.create(inserts)
-        .then(data => {
-            if (Boolean(data["_id"])) {
-                res.status(200).send({ message: data["_id"] })
-            }
-            else {
-                // didnt insert 
-                res.status(500).send({ message: "false" })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
-            })
-        });
 
-};
 
-exports.ratesong = (req, res) => {
-    // if it doesnt insert, send deleteSong API from angular
-    const inserts = generateKeyValueFromBody(req.body)
-    var songID = inserts["songId"]
-    Ratings.create(inserts)
-        .then(data => {
-            if (Boolean(data["_id"])) {
-                res.status(200).send({ message: "true" })
-            }
-            else {
-                // didnt insert 
-                res.status(500).send({ message: songID })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: songID
-            })
-        });
-};
 
-exports.reviewSong = (req, res) => {
-    // if it doesnt insert, send deleteSong API from angular
 
-    const inserts = generateKeyValueFromBody(req.body)
-    var songID = inserts["songId"]
-    Reviews.create(inserts)
-        .then(data => {
-            if (Boolean(data["_id"])) {
-                res.status(200).send({ message: "true" })
-            }
-            else {
-                // didnt insert 
-                // delete inserted song
-                res.status(500).send({ message: songID })
-            }
-        })
-        .catch(err => {
-            // didnt insert 
-            // delete inserted song
-            res.status(500).send({ message: songID })
-        });
+exports.deactUser = (req, res) => {
+
+
 };
 
 exports.createPList = (req, res) => {
@@ -328,4 +286,72 @@ exports.GetAllPlayLists = (req, res) => {
                 message: err.message || errMsg
             })
         });
+};
+
+
+
+exports.reviewSong = (req, res) => {
+    // if it doesnt insert, send deleteSong API from angular
+
+    const inserts = generateKeyValueFromBody(req.body)
+    var songID = inserts["songId"]
+    Reviews.create(inserts)
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                // delete inserted song
+                res.status(500).send({ message: songID })
+            }
+        })
+        .catch(err => {
+            // didnt insert 
+            // delete inserted song
+            res.status(500).send({ message: songID })
+        });
+};
+exports.ratesong = (req, res) => {
+    // if it doesnt insert, send deleteSong API from angular
+    const inserts = generateKeyValueFromBody(req.body)
+    var songID = inserts["songId"]
+    Ratings.create(inserts)
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: songID })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: songID
+            })
+        });
+};
+exports.updateRating = (req, res) => {
+    var songId = req.body.songID
+    var rating = req.body.Ratings
+
+    Ratings.update({ songID: songId }, { $set: { ratings: rating } })
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["nModified"])) {
+
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+
 };
