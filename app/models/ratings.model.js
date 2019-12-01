@@ -1,7 +1,7 @@
 var mongoose     = require('mongoose');
 
 var ReviewSchema   = mongoose.Schema({
-    songID: { type: String, required: true },
+    songID: { type: mongoose.Schema.ObjectId, required: true },
     userName:{ type: String, required: true },
     ratings:{ type: Number, required: true }
 }, {
