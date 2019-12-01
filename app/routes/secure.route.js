@@ -51,4 +51,10 @@ module.exports = (app) => {
     // remove a song to playlist
     app.put('/secure/remSongsPList',secured.remSongsPList);
 
+     // Hide a playlist by owner
+     app.put('/secure/hidePList',secured.hidePList);
+
+     // Get all playlist
+     //app.put('/secure/GetAllPlayLists',secured.GetAllPlayLists);
+
 }

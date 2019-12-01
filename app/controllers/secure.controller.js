@@ -322,3 +322,26 @@ exports.remSongsPList = (req, res) => {
             })
         });
 };
+
+exports.hidePList = (req, res) => {
+    var playListID = req.body.playListID
+    var hidden = req.body.hidden
+    var ownerID = req.body.ownerID
+
+    Playlist.updateOne({ _id: playListID,ownerID:ownerID }, { $set: { hidden: hidden } })
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
