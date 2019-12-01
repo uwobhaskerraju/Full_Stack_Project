@@ -50,7 +50,7 @@ app.use('/api', router);
 // import other routes from 'app' folder.
 require('./app/routes/secure.route.js')(router);
 require('./app/routes/open.route.js')(router);
-
+require('./app/routes/admin.route.js')(router);
 
 // listen for requests
 
