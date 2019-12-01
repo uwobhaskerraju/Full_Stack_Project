@@ -279,6 +279,46 @@ exports.deletePList = (req, res) => {
         });
 };
 
-exports.addPList=(req,res)=>{
+exports.addSongsPList = (req, res) => {
+    var playListID = req.body.playListID
+    var songid = req.body.songID
 
+    Playlist.updateOne({ _id: playListID }, { "$push": { "songID": songid } })
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.remSongsPList = (req, res) => {
+    var playListID = req.body.playListID
+    var songid = req.body.songID
+
+    Playlist.updateOne({ _id: playListID }, { "$pull": { "songID": songid } })
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
 };

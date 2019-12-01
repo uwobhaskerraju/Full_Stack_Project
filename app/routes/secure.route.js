@@ -46,6 +46,9 @@ module.exports = (app) => {
     app.delete('/secure/deletePList',secured.deletePList);
 
     // Add a song to playlist
-    app.put('/secure/addPList',secured.addPList);
+    app.put('/secure/addSongsPList',secured.addSongsPList);
+
+    // remove a song to playlist
+    app.put('/secure/remSongsPList',secured.remSongsPList);
 
 }
