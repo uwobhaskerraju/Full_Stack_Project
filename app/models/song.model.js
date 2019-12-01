@@ -1,6 +1,7 @@
 var mongoose     = require('mongoose');
 
 var SongsSchema   = mongoose.Schema({
+    _id: { type: mongoose.Schema.ObjectId, auto: true },
     Name: { type: String, required: true },
     Artist:{ type: String, required: true },
     Album:{ type: String, required: true },
