@@ -5,15 +5,6 @@ module.exports = (app) => {
     // insert a new song
     app.post('/admin/song', Admin.insertSong);
 
-    // insert a review for a song
-    //app.post('/admin/review', Admin.reviewSong);
-
-    // insert a rating for a song
-    //app.post('/admin/rate', Admin.ratesong);
-
-    //update song rating
-    //app.put('/admin/rate', Admin.updateRating);
-
     //delete a song
     app.delete('/admin/song', Admin.delSong);
 
@@ -21,32 +12,16 @@ module.exports = (app) => {
     app.put('/admin/song/hide', Admin.hideSong);
 
     // update song attributes
-    app.put('/admin/song',Admin.updateSong);
+    app.put('/admin/song', Admin.updateSong);
 
     // delete a review
-    //app.delete('/admin/review',Admin.deleteReview)
+    app.delete('/admin/review', Admin.deleteReview)
 
+    // Create a playlist - pass adminID as ownerID
+    app.post('/admin/playlist', Admin.createPList);
 
-    // deactivate a user
-    app.put('/admin/deactUser', Admin.deactUser);
-
-    //delete song's rating
-    app.delete('/admin/delsongrating', Admin.delsongrating);
-
-    //delete song's review
-    app.delete('/admin/deleteSongRev', Admin.deleteSongRev);
-
-
-
-
-
-
-
-    // Create a playlist
-    app.post('/admin/createPList', Admin.createPList);
-
-    // Delete a playlist
-    app.delete('/admin/deletePList', Admin.deletePList);
+    // Delete a playlist - no ownerid needed
+    app.delete('/admin/playlist', Admin.deletePList);
 
     // Add a song to playlist
     app.put('/admin/addSongsPList', Admin.addSongsPList);
@@ -60,5 +35,20 @@ module.exports = (app) => {
     // Get all playlist
     app.get('/admin/GetAllPlayLists', Admin.GetAllPlayLists);
 
+    // deactivate a user
+    app.put('/admin/deactUser', Admin.deactUser);
 
+    // insert a review for a song
+    //app.post('/admin/review', Admin.reviewSong);
+
+    // insert a rating for a song
+    //app.post('/admin/rate', Admin.ratesong);
+
+    //update song rating
+    //app.put('/admin/rate', Admin.updateRating);
+    //delete song's rating
+    app.delete('/admin/delsongrating', Admin.delsongrating);
+
+    //delete song's review
+    app.delete('/admin/deleteSongRev', Admin.deleteSongRev);
 }

@@ -108,57 +108,26 @@ exports.updateSong = (req, res) => {
         });
 }
 
+exports.deleteReview = (req, res) => {
+    var reviewID = req.body.reviewid
 
-
-
-
-exports.delsongrating = (req, res) => {
-    var songId = req.body.songID
-    Ratings.deleteMany({ songID: songId })
-        //.then(dbModel => res.json(dbModel))
+    Reviews.deleteOne({ _id: reviewID })
         .then(data => {
             //console.log(data["nModified"])
             if (Boolean(data["deletedCount"])) {
+
                 res.status(200).send({ message: "success" })
             }
             else {
                 res.status(200).send({ message: "false" })
             }
+
         })
         .catch(err => {
             res.status(500).send({
                 message: err.message || errMsg
             })
         });
-};
-
-exports.deleteSongRev = (req, res) => {
-    var songId = req.body.songID
-    Reviews.deleteMany({ songId: songId })
-        //.then(dbModel => res.json(dbModel))
-        .then(data => {
-            //console.log(data["nModified"])
-            if (Boolean(data["deletedCount"])) {
-                res.status(200).send({ message: "success" })
-            }
-            else {
-                res.status(200).send({ message: "false" })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
-            })
-        });
-};
-
-
-
-
-
-exports.deactUser = (req, res) => {
-
-
 };
 
 exports.createPList = (req, res) => {
@@ -186,11 +155,10 @@ exports.createPList = (req, res) => {
 
 exports.deletePList = (req, res) => {
     var playListID = req.body.playListID
-    var ownerID = req.body.ownerID
+    
     //console.log("s")
     Playlist.findOne({
-        _id: playListID,
-        ownerID: ownerID
+        _id: playListID
     })
         .remove()
         .exec()
@@ -210,6 +178,18 @@ exports.deletePList = (req, res) => {
             })
         });
 };
+
+
+
+
+exports.deactUser = (req, res) => {
+
+
+};
+
+
+
+
 
 exports.addSongsPList = (req, res) => {
     var playListID = req.body.playListID
@@ -354,4 +334,45 @@ exports.updateRating = (req, res) => {
             })
         });
 
+};
+
+
+exports.delsongrating = (req, res) => {
+    var songId = req.body.songID
+    Ratings.deleteMany({ songID: songId })
+        //.then(dbModel => res.json(dbModel))
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["deletedCount"])) {
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.deleteSongRev = (req, res) => {
+    var songId = req.body.songID
+    Reviews.deleteMany({ songId: songId })
+        //.then(dbModel => res.json(dbModel))
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["deletedCount"])) {
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
 };
