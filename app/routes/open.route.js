@@ -13,4 +13,6 @@ module.exports = (app) => {
     //get data of particular song
     app.get('/open/getSong/:songID', open.getSong);
 
+    //get rating of particular song
+    app.get('/open/getRating/:songID', open.getRating);
 }
