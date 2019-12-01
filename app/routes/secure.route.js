@@ -55,6 +55,6 @@ module.exports = (app) => {
      app.put('/secure/hidePList',secured.hidePList);
 
      // Get all playlist
-     //app.put('/secure/GetAllPlayLists',secured.GetAllPlayLists);
+     app.get('/secure/GetAllPlayLists',secured.GetAllPlayLists);
 
 }

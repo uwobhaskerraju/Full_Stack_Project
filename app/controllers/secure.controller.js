@@ -328,7 +328,7 @@ exports.hidePList = (req, res) => {
     var hidden = req.body.hidden
     var ownerID = req.body.ownerID
 
-    Playlist.updateOne({ _id: playListID,ownerID:ownerID }, { $set: { hidden: hidden } })
+    Playlist.updateOne({ _id: playListID, ownerID: ownerID }, { $set: { hidden: hidden } })
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
@@ -339,6 +339,16 @@ exports.hidePList = (req, res) => {
                 res.status(500).send({ message: "false" })
             }
         })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.GetAllPlayLists = (req, res) => {
+    Playlist.find()
+        .then(data => res.send(data))
         .catch(err => {
             res.status(500).send({
                 message: err.message || errMsg
