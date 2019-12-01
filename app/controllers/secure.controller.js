@@ -14,31 +14,192 @@ function generateKeyValueFromBody(body) {
     return inserts;
 }
 
+// insert a new song
+exports.insertSong = (req, res) => {
+    //inserting songs records first and then sending the songID back to angular
+    // using songID, send another request for inserting review
+    // using songID, send another request for inserting ratings
+    const inserts = generateKeyValueFromBody(req.body)
+    Songs.create(inserts)
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: data["_id"] })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
 
-exports.validateUser = (req, res) => {
-    console.log("inside validateUser user")
-    res.send()
 };
 
-// register a user in DB
-exports.registerUser = (req, res) => {
-    // split username and password
-    var uName = req.body.name
-    var uEmail = req.body.email
-    var uPass = req.body.pass
-    var uType = 2 // type = user
-    var uDeact = false
+// insert a rating for a song
+exports.ratesong = (req, res) => {
+    // if it doesnt insert, send deleteSong API from angular
+    const inserts = generateKeyValueFromBody(req.body)
+    var songID = inserts["songId"]
+    Ratings.create(inserts)
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: songID })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: songID
+            })
+        });
+};
+// add a review for a song
+exports.reviewSong = (req, res) => {
+    // if it doesnt insert, send deleteSong API from angular
 
-    var usalt = bcrypt.genSaltSync(10);
-    var uHash = bcrypt.hashSync(uPass, usalt);
+    const inserts = generateKeyValueFromBody(req.body)
+    var songID = inserts["songId"]
+    Reviews.create(inserts)
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                // delete inserted song
+                res.status(500).send({ message: songID })
+            }
+        })
+        .catch(err => {
+            // didnt insert 
+            // delete inserted song
+            res.status(500).send({ message: songID })
+        });
+};
 
+// Create a playlist
+exports.createPList = (req, res) => {
 
-    //save to DB
-    console.log("Uname : " + uName)
-    console.log("Uemail : " + uEmail)
-    console.log("uPass : " + uPass)
-    console.log("usalt : " + usalt)
-    console.log("uHash : " + uHash)
+    const inserts = generateKeyValueFromBody(req.body)
 
-    res.send({ success: "true" })
+    //console.log(inserts)
+    Playlist.create(inserts)
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: data["_id"] })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+    // res.send(200)
+};
+
+//Edit title and description of Playlist
+exports.editPlaylist = (req, res) => {
+    const updates = generateKeyValueFromBody(req.body)
+    var playListID = updates.playListID
+    var ownerID = updates.ownerID
+
+    delete updates.playListID
+    delete updates.ownerID
+
+    Playlist.updateOne({ _id: playListID, ownerID: ownerID }, { $set: updates })
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["nModified"])) {
+
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.addSongsPList = (req, res) => {
+    var playListID = req.body.playListID
+    var songid = req.body.songID
+    var ownerID = req.body.ownerID
+
+    Playlist.updateOne({ _id: playListID, ownerID: ownerID }, { "$push": { "songID": songid } })
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.remSongsPList = (req, res) => {
+    var playListID = req.body.playListID
+    var songid = req.body.songID
+    var ownerID = req.body.ownerID
+
+    Playlist.updateOne({ _id: playListID, ownerID: ownerID }, { "$pull": { "songID": songid } })
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.hidePList = (req, res) => {
+    var playListID = req.body.playListID
+    var hidden = req.body.hidden
+    var ownerID = req.body.ownerID
+    // playlst marked as "hidden:true" will not be visible in search
+    Playlist.updateOne({ _id: playListID, ownerID: ownerID }, { $set: { hidden: hidden } })
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
 };

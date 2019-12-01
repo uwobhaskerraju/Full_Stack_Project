@@ -1,12 +1,27 @@
 module.exports = (app) => {
     const secured = require('../controllers/secure.controller.js');
 
-    // Validate Authentication - same for user and admin
-    app.post('/secure/validateUser', secured.validateUser);
+    // insert a new song
+    app.post('/secure/song', secured.insertSong);
 
-    // Create a new user 
-    app.post('/secure/registerUser', secured.registerUser);
-   
-    
-   
+    // add a review for a song
+    app.post('/secure/review', secured.reviewSong);
+
+    // insert a rating for a song
+    app.post('/secure/rate', secured.ratesong);
+
+    // Create a playlist
+    app.post('/secure/playlist', secured.createPList);
+
+    //Edit title and description of Playlist by owner
+    app.put('/secure/playlist', secured.editPlaylist);
+
+    // Add a song to playlist by owner
+    app.put('/secure/playlist/song', secured.addSongsPList);
+
+    // remove a song to playlist by owner
+    app.delete('/secure/playlist/song', secured.remSongsPList);
+
+    // Hide a playlist by owner
+    app.put('/secure/playlist/hide', secured.hidePList);
 }
