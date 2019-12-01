@@ -166,12 +166,7 @@ exports.insertSong = (req, res) => {
     //inserting songs records first and then sending the songID back to angular
     // using songID, send another request for inserting review
     // using songID, send another request for inserting ratings
-    const entries = Object.keys(req.body)
-    const inserts = {}
-    for (let i = 0; i < entries.length; i++) {
-        inserts[entries[i]] = Object.values(req.body)[i]
-    }
-
+    const inserts = generateKeyValueFromBody(req.body)
     Songs.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
@@ -192,11 +187,7 @@ exports.insertSong = (req, res) => {
 
 exports.ratesong = (req, res) => {
     // if it doesnt insert, send deleteSong API from angular
-    const entries = Object.keys(req.body)
-    const inserts = {}
-    for (let i = 0; i < entries.length; i++) {
-        inserts[entries[i]] = Object.values(req.body)[i]
-    }
+    const inserts = generateKeyValueFromBody(req.body)
     var songID = inserts["songId"]
     Ratings.create(inserts)
         .then(data => {
@@ -218,11 +209,7 @@ exports.ratesong = (req, res) => {
 exports.reviewSong = (req, res) => {
     // if it doesnt insert, send deleteSong API from angular
 
-    const entries = Object.keys(req.body)
-    const inserts = {}
-    for (let i = 0; i < entries.length; i++) {
-        inserts[entries[i]] = Object.values(req.body)[i]
-    }
+    const inserts = generateKeyValueFromBody(req.body)
     var songID = inserts["songId"]
     Reviews.create(inserts)
         .then(data => {
