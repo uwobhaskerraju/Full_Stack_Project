@@ -1,5 +1,7 @@
 const Songs = require('../models/song.model.js');
-const reviews = require('../models/review.model.js');
+const Reviews = require('../models/review.model.js');
+const Ratings = require('../models/ratings.model.js');
+const errMsg = "something went wrong! try again"
 
 exports.validateUser = (req, res) => {
     console.log("inside validateUser user")
@@ -37,7 +39,7 @@ exports.deactUser = (req, res) => {
 exports.hideSong = (req, res) => {
     var songId = req.body.songID
     //console.log(songId)
-    Songs.updateOne({ _id: songId }, { $set: { "Hidden": true } })
+    Songs.updateOne({ _id: songId }, { $set: { Hidden: true } })
         //.then(dbModel => res.json(dbModel))
         .then(data => {
             //console.log(data["nModified"])
@@ -52,19 +54,17 @@ exports.hideSong = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving notes."
+                message: err.message || errMsg
             })
         });
 
 };
 
-exports.updateSong = (req, res) => {
+exports.updateRating = (req, res) => {
     var songId = req.body.songID
-    var reqBody = req.body
-    delete reqBody.songID
-    console.log(reqBody)
+    var rating=req.body.Ratings
 
-    Songs.update({ _id: songId }, { $set: { Ratings: 3 } })
+    Ratings.update({ songID: songId }, { $set: { ratings: rating } })
         .then(data => {
             //console.log(data["nModified"])
             if (Boolean(data["nModified"])) {
@@ -78,13 +78,16 @@ exports.updateSong = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving notes."
+                message: err.message || errMsg
             })
         });
 
 };
 
 exports.delSong = (req, res) => {
+    // 1. delete song by passing songID
+    // 2. delete song ratings by passing songID
+    // 3. delete song reviews by passing songID
     var songId = req.body.songID
 
     Songs.deleteOne({ _id: songId })
@@ -102,7 +105,47 @@ exports.delSong = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: err.message || "Some error occurred while retrieving notes."
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.delsongrating = (req, res) => {
+    var songId = req.body.songID
+    Ratings.deleteMany({ songID: songId })
+        //.then(dbModel => res.json(dbModel))
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["deletedCount"])) {
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.deleteSongRev = (req, res) => {
+    var songId = req.body.songID
+    Reviews.deleteMany({ songId: songId })
+        //.then(dbModel => res.json(dbModel))
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["deletedCount"])) {
+                res.status(200).send({ message: "success" })
+            }
+            else {
+                res.status(200).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
             })
         });
 };
@@ -110,18 +153,12 @@ exports.delSong = (req, res) => {
 exports.insertSong = (req, res) => {
     //inserting songs records first and then sending the songID back to angular
     // using songID, send another request for inserting review
+    // using songID, send another request for inserting ratings
     const entries = Object.keys(req.body)
     const inserts = {}
     for (let i = 0; i < entries.length; i++) {
         inserts[entries[i]] = Object.values(req.body)[i]
     }
-
-    // var reviews={}
-    // reviews["comment"]=inserts.comment
-    // reviews["reviewBy"]=inserts.reviewBy
-
-    // delete inserts.comment
-    // delete inserts.reviewBy
 
     Songs.create(inserts)
         .then(data => {
@@ -141,6 +178,31 @@ exports.insertSong = (req, res) => {
 
 };
 
+exports.ratesong = (req, res) => {
+    // if it doesnt insert, send deleteSong API from angular
+    const entries = Object.keys(req.body)
+    const inserts = {}
+    for (let i = 0; i < entries.length; i++) {
+        inserts[entries[i]] = Object.values(req.body)[i]
+    }
+    var songID = inserts["songId"]
+    Ratings.create(inserts)
+        .then(data => {
+            if (Boolean(data["_id"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: songID })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: songID
+            })
+        });
+};
+
 exports.reviewSong = (req, res) => {
     // if it doesnt insert, send deleteSong API from angular
 
@@ -149,8 +211,8 @@ exports.reviewSong = (req, res) => {
     for (let i = 0; i < entries.length; i++) {
         inserts[entries[i]] = Object.values(req.body)[i]
     }
-    var songID=inserts["songId"]
-    reviews.create(inserts)
+    var songID = inserts["songId"]
+    Reviews.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
                 res.status(200).send({ message: "true" })
