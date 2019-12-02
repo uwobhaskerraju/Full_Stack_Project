@@ -1,19 +1,15 @@
 var mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-require('dotenv').config()
+
 const crypto = require('crypto');
 const saltRounds = 10000;
 const keylength = 512;
 const alg = 'sha512';
-
+const tokenExpiry="1h"
 const errMsg = "something went wrong! try again"
 const User = require('../models/user.model.js');
 
-const secret = process.env.JWT_KEY;
-if (typeof secret === 'undefined') {
-    console.log("Please set secret as environment variable. E.g. JWT_KEY=\"Open Sesame\" node index");
-    process.exit(1);
-}
+
 
 function generateKeyValueFromBody(body) {
     const entries = Object.keys(body)
@@ -52,10 +48,10 @@ exports.registerUser = (req, res) => {
                         var objToken = {
                             "email": userObj.email,
                             "id": data["_id"],
-                            "name":userObj.username
+                            "name": userObj.username
                         }
-                        let token = jwt.sign(objToken, secret,{ expiresIn: "1h" });
-                        res.status(200).send({ "statusCode": 200, "result": objToken, "token": token });
+                        let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
+                        res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });
                     })
                     .catch(err => {
                         res.status(500).send({
@@ -73,5 +69,27 @@ exports.registerUser = (req, res) => {
 };
 
 exports.validateLogin = (req, res) => {
+    User.findOne({ email: req.body.email })
+        .then(data => {
+            console.log(data)
+            if (!data) return res.status(400).send({ message: "Invalid Username / Password" })
 
+            const hash = crypto.pbkdf2Sync(req.body.password, data.salt, saltRounds, keylength, alg).toString('hex');
+            if (hash == data.password) {
+                // user found
+                var objToken = {
+                    "email": data.email,
+                    "id": data["_id"],
+                    "name": data.username
+                }
+                let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
+                res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });
+            }
+            else return res.status(400).send({ message: "Invalid Username / Password" })
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
 };
