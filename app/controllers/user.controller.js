@@ -71,7 +71,7 @@ exports.registerUser = (req, res) => {
 exports.validateLogin = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(data => {
-            console.log(data)
+           // console.log(data)
             if (!data) return res.status(400).send({ message: "Invalid Username / Password" })
 
             const hash = crypto.pbkdf2Sync(req.body.password, data.salt, saltRounds, keylength, alg).toString('hex');
