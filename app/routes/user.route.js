@@ -5,4 +5,6 @@ module.exports = (app) => {
     //register user
     app.post('/user/register',checkrequest,user.registerUser);
 
+    //validate user login
+    app.post('/user/login',user.validateLogin)
 }
