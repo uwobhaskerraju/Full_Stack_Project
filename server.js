@@ -27,6 +27,7 @@ mongoose.connect(dbConfig.url, {
     console.log('Could not connect to the database. Ending the Process', err);
     process.exit();
 });
+mongoose.set('useCreateIndex', true);
 
 // create the router object
 var router = express.Router();

@@ -5,7 +5,7 @@ var UserSchema = mongoose.Schema({
     username: { type: String, required: true },
     password: { type: String, required: true },
     salt: { type: String, required: true },
-    email: { type: Number, required: true, validate: [isEmail, 'invalid email'], unique: true },
+    email: { type: String, required: true, unique: true },
     emailverified: { type: Boolean, default: false },
     usertype: { type: String, default: "user" },
     signupmethod: { type: String, required: true }
