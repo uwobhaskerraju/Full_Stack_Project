@@ -36,19 +36,10 @@ module.exports = (app) => {
     app.get('/admin/playlist', Admin.GetAllPlayLists);
 
     // deactivate a user
-    app.put('/admin/deactUser', Admin.deactUser);
+    app.put('/admin/user', Admin.deactUser);
 
-    // insert a review for a song
-    //app.post('/admin/review', Admin.reviewSong);
+    // get all songs for admin to view and hide
+    app.get('/admin/songs', Admin.getAllSongs);
 
-    // insert a rating for a song
-    //app.post('/admin/rate', Admin.ratesong);
-
-    //update song rating
-    //app.put('/admin/rate', Admin.updateRating);
-    //delete song's rating
-   // app.delete('/admin/delsongrating', Admin.delsongrating);
-
-    //delete song's review
-    //app.delete('/admin/deleteSongRev', Admin.deleteSongRev);
+ 
 }

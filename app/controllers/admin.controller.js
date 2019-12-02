@@ -2,6 +2,7 @@ const Songs = require('../models/song.model.js');
 const Reviews = require('../models/review.model.js');
 const Ratings = require('../models/ratings.model.js');
 const Playlist = require('../models/playlist.model.js');
+const User = require('../models/user.model.js');
 
 const errMsg = "something went wrong! try again"
 
@@ -155,7 +156,7 @@ exports.createPList = (req, res) => {
 
 exports.deletePList = (req, res) => {
     var playListID = req.body.playListID
-    
+
     //console.log("s")
     Playlist.findOne({
         _id: playListID
@@ -224,9 +225,9 @@ exports.remSongsPList = (req, res) => {
 exports.hidePList = (req, res) => {
     var playListID = req.body.playListID
     var hidden = req.body.hidden
-    
 
-    Playlist.updateOne({ _id: playListID}, { $set: { hidden: hidden } })
+
+    Playlist.updateOne({ _id: playListID }, { $set: { hidden: hidden } })
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
@@ -245,19 +246,35 @@ exports.hidePList = (req, res) => {
 };
 exports.deactUser = (req, res) => {
 
-
+    var userID = req.body.userID
+    var isActive = req.body.isActive
+    User.updateOne({ _id: userID }, { $set: { active: isActive } })
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ message: "true" })
+            }
+            else {
+                // didnt insert 
+                res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
 };
 
-
-
-
-
-
-
-
-
-
-
+exports.getAllSongs=(req,res)=>{
+    Songs.find()
+    .then(data=>res.json(data))
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || errMsg
+        })
+    });
+}
 exports.GetAllPlayLists = (req, res) => {
     Playlist.find()
         .then(data => res.send(data))
@@ -268,111 +285,3 @@ exports.GetAllPlayLists = (req, res) => {
         });
 };
 
-
-
-exports.reviewSong = (req, res) => {
-    // if it doesnt insert, send deleteSong API from angular
-
-    const inserts = generateKeyValueFromBody(req.body)
-    var songID = inserts["songId"]
-    Reviews.create(inserts)
-        .then(data => {
-            if (Boolean(data["_id"])) {
-                res.status(200).send({ message: "true" })
-            }
-            else {
-                // didnt insert 
-                // delete inserted song
-                res.status(500).send({ message: songID })
-            }
-        })
-        .catch(err => {
-            // didnt insert 
-            // delete inserted song
-            res.status(500).send({ message: songID })
-        });
-};
-exports.ratesong = (req, res) => {
-    // if it doesnt insert, send deleteSong API from angular
-    const inserts = generateKeyValueFromBody(req.body)
-    var songID = inserts["songId"]
-    Ratings.create(inserts)
-        .then(data => {
-            if (Boolean(data["_id"])) {
-                res.status(200).send({ message: "true" })
-            }
-            else {
-                // didnt insert 
-                res.status(500).send({ message: songID })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: songID
-            })
-        });
-};
-exports.updateRating = (req, res) => {
-    var songId = req.body.songID
-    var rating = req.body.Ratings
-
-    Ratings.update({ songID: songId }, { $set: { ratings: rating } })
-        .then(data => {
-            //console.log(data["nModified"])
-            if (Boolean(data["nModified"])) {
-
-                res.status(200).send({ message: "success" })
-            }
-            else {
-                res.status(200).send({ message: "false" })
-            }
-
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
-            })
-        });
-
-};
-
-
-exports.delsongrating = (req, res) => {
-    var songId = req.body.songID
-    Ratings.deleteMany({ songID: songId })
-        //.then(dbModel => res.json(dbModel))
-        .then(data => {
-            //console.log(data["nModified"])
-            if (Boolean(data["deletedCount"])) {
-                res.status(200).send({ message: "success" })
-            }
-            else {
-                res.status(200).send({ message: "false" })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
-            })
-        });
-};
-
-exports.deleteSongRev = (req, res) => {
-    var songId = req.body.songID
-    Reviews.deleteMany({ songId: songId })
-        //.then(dbModel => res.json(dbModel))
-        .then(data => {
-            //console.log(data["nModified"])
-            if (Boolean(data["deletedCount"])) {
-                res.status(200).send({ message: "success" })
-            }
-            else {
-                res.status(200).send({ message: "false" })
-            }
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
-            })
-        });
-};
