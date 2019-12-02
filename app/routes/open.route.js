@@ -5,7 +5,7 @@ module.exports = (app) => {
     app.get('/open/songs/ten', open.getTopTenSongs);
 
     // Search for songs
-    app.get('/open/autoFill', open.autoFill);
+    app.get('/open/search', open.autoFill);
 
     //get review of particular song
     app.get('/open/review/:songID', open.getReview);
@@ -15,4 +15,5 @@ module.exports = (app) => {
 
     //get rating of particular song
     app.get('/open/rating/:songID', open.getRating);
+
 }
