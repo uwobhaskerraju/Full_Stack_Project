@@ -8,6 +8,8 @@ import { HttpClient } from '@angular/common/http';
 export class HttpService {
 
   constructor(private http: HttpClient) { }
+  
+  // after user clicks on login
   ValidateLogin(value: any) {
     console.log("inside validatelogin")
     //let URL = 'http://' + window.location.host + '/insertNewItem'
@@ -31,4 +33,10 @@ export class HttpService {
     console.log(header)
     return this.http.post(URL, JsnData, header);
   }
+
+    getTopSongs(){
+      let URL='http://localhost:8080/api/open/songs/ten'
+      return this.http.get(URL);
+    }
+
 }

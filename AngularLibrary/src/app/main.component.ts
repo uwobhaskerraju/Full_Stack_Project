@@ -9,10 +9,21 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./main.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'AngularLibrary';
+  title = 'Music Library';
+
+  songs:Object;
+  disSongsObj:Object;
 
   constructor(private _http: HttpService) { }
-  ngOnInit() { }
+  ngOnInit() { 
+    // get all ten songs
+    this._http.getTopSongs()
+    .subscribe(data=>{
+      this.songs=data;
+      this.disSongsObj=this.songs;
+      console.log(data)
+    });
+  }
 
   ValidateLogin(loginForm: NgForm) {
 
