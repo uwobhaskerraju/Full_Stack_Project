@@ -6,12 +6,14 @@ var SongsSchema   = mongoose.Schema({
     Artist:{ type: String, required: true },
     Album:{ type: String, required: true },
     Duration:{ type: Number, required: true },
-    Year:{ type: Number, required: true },
+    Year:{ type: String, required: true },
     Genre:{ type: String, default: "Filmi" },
     Hidden:{ type: Boolean, default: false },
     Picture:{ type: String, required: true }
 }, {
     versionKey: false // You should be aware of the outcome after set to false
 });
+
+SongsSchema.index( { "$**": "text" } )
 
 module.exports = mongoose.model('Songs', SongsSchema,'Songs');

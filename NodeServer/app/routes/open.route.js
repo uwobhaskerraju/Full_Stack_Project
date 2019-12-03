@@ -5,7 +5,7 @@ module.exports = (app) => {
     app.get('/open/songs/ten', open.getTopTenSongs);
 
     // Search for songs
-    app.get('/open/search', open.autoFill);
+    app.get('/open/search/:query', open.search);
 
     //get review of particular song
     app.get('/open/review/:songID', open.getReview);

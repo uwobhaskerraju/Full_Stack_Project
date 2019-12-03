@@ -39,8 +39,26 @@ exports.getTopTenSongs = (req, res) => {
         });
 
 };
-exports.autoFill = (req, res) => {
-
+exports.search = (req, res) => {
+    var q=req.params.query
+    console.log(q)
+    //Songs.find( { Name: { $regex: q } } )
+    Songs.find({$or:[
+        {Name:{'$regex':q,'$options': 'i'}},
+        {Album:{'$regex':q,'$options': 'i'}},
+        {Artist:{'$regex':q,'$options': 'i'}},
+        {Year:{'$regex':q,'$options': 'i'}},
+        {Genre:{'$regex':q,'$options': 'i'}}
+    ]
+})
+    .then(data=>{
+        res.json(data)
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || errMsg
+        })
+    });
 };
 
 exports.getRating = (req, res) => {
