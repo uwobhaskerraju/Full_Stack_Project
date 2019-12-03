@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-import { HttpService } from '../app/http.service'
+import { HttpService } from './http.service'
 import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'login-root',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'main-root',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.css']
 })
 export class AppComponent implements OnInit {
   title = 'AngularLibrary';
