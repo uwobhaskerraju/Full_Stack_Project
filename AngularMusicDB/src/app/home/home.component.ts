@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor(private _http: HttpService) { }
 
   ngOnInit() {
-    console.log("inside")
+    
     this._http.getTopTenSongs()
     .subscribe(data=>{
       console.log(data)
