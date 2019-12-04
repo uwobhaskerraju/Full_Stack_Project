@@ -5,30 +5,32 @@ const errMsg = "something went wrong! try again"
 
 exports.getTopTenSongs = (req, res) => {
 
-    Ratings.aggregate([
-        {
-            $lookup: {
-                from: "Songs",
-                localField: "songID",
-                foreignField: "_id",
-                as: "ratings_data"
-            }
-        }
-        // ,
-        // {
-        //     $project:{
-        //         songID:1,
-        //         rating:{$avg:"$ratings"}
-        //     }
-        // }
-        // ,
-        // {
-        //     $group: {
-        //         _id: "$songID",
-        //         rating: { $avg: "$ratings" }
-        //     }
-        // }
-    ])
+    // Ratings.aggregate([
+    //     {
+    //         $lookup: {
+    //             from: "Songs",
+    //             localField: "songID",
+    //             foreignField: "_id",
+    //             as: "ratings_data"
+    //         }
+    //     }
+    //     // ,
+    //     // {
+    //     //     $project:{
+    //     //         songID:1,
+    //     //         rating:{$avg:"$ratings"}
+    //     //     }
+    //     // }
+    //     // ,
+    //     // {
+    //     //     $group: {
+    //     //         _id: "$songID",
+    //     //         rating: { $avg: "$ratings" }
+    //     //     }
+    //     // }
+    // ])
+    Songs.find()
+        .limit(10)
         .then(songs => {
             res.send(songs)
         })
@@ -40,25 +42,26 @@ exports.getTopTenSongs = (req, res) => {
 
 };
 exports.search = (req, res) => {
-    var q=req.params.query
+    var q = req.params.query
     console.log(q)
     //Songs.find( { Name: { $regex: q } } )
-    Songs.find({$or:[
-        {Name:{'$regex':q,'$options': 'i'}},
-        {Album:{'$regex':q,'$options': 'i'}},
-        {Artist:{'$regex':q,'$options': 'i'}},
-        {Year:{'$regex':q,'$options': 'i'}},
-        {Genre:{'$regex':q,'$options': 'i'}}
-    ]
-})
-    .then(data=>{
-        res.json(data)
+    Songs.find({
+        $or: [
+            { Name: { '$regex': q, '$options': 'i' } },
+            { Album: { '$regex': q, '$options': 'i' } },
+            { Artist: { '$regex': q, '$options': 'i' } },
+            { Year: { '$regex': q, '$options': 'i' } },
+            { Genre: { '$regex': q, '$options': 'i' } }
+        ]
     })
-    .catch(err => {
-        res.status(500).send({
-            message: err.message || errMsg
+        .then(data => {
+            res.json(data)
         })
-    });
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
 };
 
 exports.getRating = (req, res) => {

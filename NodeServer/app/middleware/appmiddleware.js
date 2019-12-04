@@ -43,6 +43,7 @@ function checkToken(req, res, next){
 
 function userLoginCheck(req, res, next){
     var exports = generateKeyValueFromBody(req.body)
+   // console.log(exports)
     if (!exports.email) return res.send({ message: errMsg })
     if (!exports.password) return res.send({ message: errMsg })
 
