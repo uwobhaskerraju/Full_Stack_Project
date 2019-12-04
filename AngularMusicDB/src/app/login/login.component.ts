@@ -3,7 +3,7 @@ declare var M: any;
 
 import { NgForm } from '@angular/forms';
 import { HttpService } from '../http.service'
-import { Router } from '@angular/router';
+import { Router,NavigationExtras } from '@angular/router';
 
 
 @Component({
@@ -39,12 +39,26 @@ export class LoginComponent implements OnInit {
   }
 
   registerUser(regForm: NgForm) {
+   
     this._http.registerUser(regForm.value)
       .subscribe(data => {
         console.log(data)
+        data["statusCode"]=200;
         if (data["statusCode"] == 200) {
+          const navigationExtras: NavigationExtras = {
+            // state: {
+            //   email: data["email"],
+            //   id: data["id"],
+            //   name: data["name"]
+            // }
+            state: {
+              email: "saibhaskerraju@outlook.com",
+              id: "12",
+              name: "Sai Bhasker Raju"
+            }
+          };
           localStorage.setItem("ACCESS_TOKEN", data["WWW-Authenticate"]);
-          //this.router.navigate(['/verify'])
+          this.router.navigate(['/verify'],navigationExtras)
         }
         else {
           // throw a toast

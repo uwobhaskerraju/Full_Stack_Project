@@ -8,11 +8,13 @@ import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
+import { VerifyComponent } from './verify/verify.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    VerifyComponent
   ],
   imports: [
     BrowserModule,
