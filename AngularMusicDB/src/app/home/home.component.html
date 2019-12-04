@@ -1,24 +1,21 @@
-
-<div class="container">
-        <div class="row">
-            <blockquote>
-                <h1>Trending Songs</h1>
-            </blockquote>
-        </div>
-        <div class="row" *ngIf="orgSongs">
-                <div class="col s3" *ngFor="let song of orgSongs">
-                    <div class="card small">
-                        <div class="card-image">
-                            <img src="../assets/Images/{{song.Picture}}">
-                            <!-- <span class="card-title">{{song.Name}}</span> -->
-                        </div>
-                        <div class="card-content">
-                            <p>Name: {{song.Name}}</p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#">Details</a>
-                        </div>
-                    </div>
-                </div>
+<div class="row">
+    <blockquote>
+        <h1>Trending Songs</h1>
+    </blockquote>
+</div>
+<div class="row" *ngIf="orgSongs">
+    <div class="col s3" *ngFor="let song of orgSongs">
+        <div class="card small">
+            <div class="card-image">
+                <img src="../assets/Images/{{song.Picture}}">
+                <!-- <span class="card-title">{{song.Name}}</span> -->
             </div>
+            <div class="card-content">
+                <p>Name: {{song.Name}}</p>
+            </div>
+            <div class="card-action">
+                <a href="#">Details</a>
+            </div>
+        </div>
     </div>
+</div>
