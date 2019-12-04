@@ -5,7 +5,7 @@ const crypto = require('crypto');
 const saltRounds = 10000;
 const keylength = 512;
 const alg = 'sha512';
-const tokenExpiry="1h"
+const tokenExpiry = "1h"
 const errMsg = "something went wrong! try again"
 const User = require('../models/user.model.js');
 
@@ -29,7 +29,7 @@ exports.registerUser = (req, res) => {
                 return res.status(200).send({ message: "Username already exists. Try Logging in" })
             }
             else {
-                console.log("inside else")
+
                 //register user
                 let salt = crypto.randomBytes(16).toString('hex');
                 let hash = crypto.pbkdf2Sync(req.body.password, salt, saltRounds, keylength, alg).toString('hex');
@@ -49,8 +49,8 @@ exports.registerUser = (req, res) => {
                             "email": userObj.email,
                             "id": data["_id"],
                             "name": userObj.username,
-                            "active":data["active"],
-                            "userType":data["usertype"]
+                            "emailverified": data["emailverified"],
+                            "userType": data["usertype"]
                         }
                         let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
                         res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });
@@ -73,8 +73,9 @@ exports.registerUser = (req, res) => {
 exports.validateLogin = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(data => {
-           // console.log(data)
+            // console.log(data)
             if (!data) return res.status(400).send({ message: "Invalid Username / Password" })
+            if (!data["active"]) return res.send({ statusCode: 400, message: "Contact Admin to re-activate your account" })
 
             const hash = crypto.pbkdf2Sync(req.body.password, data.salt, saltRounds, keylength, alg).toString('hex');
             if (hash == data.password) {
@@ -83,8 +84,8 @@ exports.validateLogin = (req, res) => {
                     "email": data.email,
                     "id": data["_id"],
                     "name": data.username,
-                    "active":data["active"],
-                    "userType":data["usertype"]
+                    "emailverified": data["emailverified"],
+                    "userType": data["usertype"]
                 }
                 let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
                 res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });

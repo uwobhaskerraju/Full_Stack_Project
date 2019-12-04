@@ -207,8 +207,9 @@ exports.hidePList = (req, res) => {
 
 exports.activateUser = (req, res) => {
     var ID = req.body.userID
-    User.updateOne({ _id: ID }, { $set: { active: true } })
+    User.updateOne({ _id: ID }, { $set: { emailverified:true} })
         .then(data => {
+            //console.log(data)
             if (Boolean(data["nModified"])) {
                 res.status(200).send({ statusCode: 200, message: "true" })
             }

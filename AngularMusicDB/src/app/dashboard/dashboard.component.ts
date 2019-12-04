@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpService } from '../http.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  state:Object;
+  name:String
+
+  constructor(private _http: HttpService, private router: Router) { 
+    const navigation = this.router.getCurrentNavigation();
+    this.state = navigation.extras.state;
+  }
 
   ngOnInit() {
+    this.name=this.state["name"]
   }
 
 }

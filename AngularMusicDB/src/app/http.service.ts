@@ -72,8 +72,17 @@ export class HttpService {
   verifyAndRedirect(id:String){
   
    // console.log("inside "+this.currentMethod);
-    let URL='http://localhost:8080/api/open/songs/ten'
+    let URL='http://localhost:8080/api/secure/user/'
     console.log(URL);
-      return this.http.get(URL);
+    let header = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }}
+      var JsnData = JSON.stringify({
+        userID:id
+      })
+      return this.http.put(URL,JsnData,header);
   }
 }

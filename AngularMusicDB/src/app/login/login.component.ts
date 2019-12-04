@@ -69,24 +69,26 @@ export class LoginComponent implements OnInit {
     this._http.registerUser(regForm.value)
       .subscribe(data => {
         console.log(data)
-        data["statusCode"]=200;
+        //data["statusCode"]=200;
         if (data["statusCode"] == 200) {
           const navigationExtras: NavigationExtras = {
-            // state: {
-            //   email: data["email"],
-            //   id: data["id"],
-            //   name: data["name"]
-            // }
             state: {
-              email: "saibhaskerraju@outlook.com",
-              id: "12",
-              name: "Sai Bhasker Raju",
-              active:"false",
-              type:"user"
+              email: data["result"]["email"],
+              id: data["result"]["id"],
+              name: data["result"]["name"],
+              emailverified:data["result"]["emailverified"],
+              type:data["result"]["userType"]
             }
+            // state: {
+            //   email: "saibhaskerraju@outlook.com",
+            //   id: "12",
+            //   name: "Sai Bhasker Raju",
+            //   active:"false",
+            //   type:"user"
+            // }
           };
           localStorage.setItem("ACCESS_TOKEN", data["WWW-Authenticate"]);
-          if(!data["active"]){
+          if(!data["emailverified"]){
             this.router.navigate(['/verify'],navigationExtras)
           }
           else{
