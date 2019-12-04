@@ -24,4 +24,7 @@ module.exports = (app) => {
 
     // Hide a playlist by owner
     app.put('/secure/playlist/hide', secured.hidePList);
+
+    // activate a user
+    app.put('/secure/user/', secured.activateUser);
 }

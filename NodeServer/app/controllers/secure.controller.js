@@ -2,6 +2,7 @@ const Songs = require('../models/song.model.js');
 const Reviews = require('../models/review.model.js');
 const Ratings = require('../models/ratings.model.js');
 const Playlist = require('../models/playlist.model.js');
+const User = require('../models/user.model.js');
 
 const errMsg = "something went wrong! try again"
 
@@ -195,6 +196,25 @@ exports.hidePList = (req, res) => {
             else {
                 // didnt insert 
                 res.status(500).send({ message: "false" })
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
+
+exports.activateUser = (req, res) => {
+    var ID = req.body.userID
+    User.updateOne({ _id: ID }, { $set: { active: true } })
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.status(200).send({ statusCode: 200, message: "true" })
+            }
+            else {
+                // didnt modify 
+                res.status(500).send({ statusCode: 500, message: "false" })
             }
         })
         .catch(err => {

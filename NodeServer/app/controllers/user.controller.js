@@ -48,7 +48,9 @@ exports.registerUser = (req, res) => {
                         var objToken = {
                             "email": userObj.email,
                             "id": data["_id"],
-                            "name": userObj.username
+                            "name": userObj.username,
+                            "active":data["active"],
+                            "userType":data["usertype"]
                         }
                         let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
                         res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });
@@ -80,7 +82,9 @@ exports.validateLogin = (req, res) => {
                 var objToken = {
                     "email": data.email,
                     "id": data["_id"],
-                    "name": data.username
+                    "name": data.username,
+                    "active":data["active"],
+                    "userType":data["usertype"]
                 }
                 let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
                 res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });

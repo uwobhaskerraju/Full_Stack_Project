@@ -9,12 +9,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { VerifyComponent } from './verify/verify.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminComponent } from './admin/admin.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    VerifyComponent
+    VerifyComponent,
+    DashboardComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,

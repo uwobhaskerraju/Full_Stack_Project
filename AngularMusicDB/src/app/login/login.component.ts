@@ -26,8 +26,34 @@ export class LoginComponent implements OnInit {
       .subscribe(data => {
         console.log(data)
         if (data["statusCode"] == 200) {
+          const navigationExtras: NavigationExtras = {
+            // state: {
+            //   email: data["email"],
+            //   id: data["id"],
+            //   name: data["name"]
+            // }
+            state: {
+              email: "saibhaskerraju@outlook.com",
+              id: "12",
+              name: "Sai Bhasker Raju",
+              active:"false",
+              type:"user"
+            }
+          };
           localStorage.setItem("ACCESS_TOKEN", data["WWW-Authenticate"]);
-          //this.router.navigate(['/dashboard'])
+          if(!data["active"]){
+            this.router.navigate(['/verify'],navigationExtras)
+          }
+          else{
+            // route based on user type
+            if(data["userType"] =="admin"){
+              this.router.navigate(['/admin'],navigationExtras)
+            }
+            if(data["userType"] =="user"){
+              this.router.navigate(['/dashboard'],navigationExtras)
+            }
+            
+          }
         }
         else {
           // throw a toast
@@ -54,12 +80,19 @@ export class LoginComponent implements OnInit {
             state: {
               email: "saibhaskerraju@outlook.com",
               id: "12",
-              name: "Sai Bhasker Raju"
+              name: "Sai Bhasker Raju",
+              active:"false",
+              type:"user"
             }
           };
           localStorage.setItem("ACCESS_TOKEN", data["WWW-Authenticate"]);
-          this.router.navigate(['/verify'],navigationExtras)
-        }
+          if(!data["active"]){
+            this.router.navigate(['/verify'],navigationExtras)
+          }
+          else{
+            this.router.navigate(['/dashboard'],navigationExtras)
+          }
+       }
         else {
           // throw a toast
           M.toast({ html: 'Something went wrong. Try Again!', classes: 'rounded' })
