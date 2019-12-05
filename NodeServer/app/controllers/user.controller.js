@@ -87,7 +87,7 @@ exports.validateLogin = (req, res) => {
                     "emailverified": data["emailverified"],
                     "userType": data["usertype"]
                 }
-                let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
+                let token = jwt.sign(objToken, req.secret);
                 res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });
             }
             else return res.status(400).send({ message: "Invalid Username / Password" })

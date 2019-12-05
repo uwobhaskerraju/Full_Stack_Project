@@ -29,4 +29,9 @@ export class DashboardComponent implements OnInit,AfterViewInit  {
     // this.name=this.state["name"]
   }
 
+  logout(){
+    localStorage.clear();
+    this.router.navigate(['/']);
+  }
+
 }

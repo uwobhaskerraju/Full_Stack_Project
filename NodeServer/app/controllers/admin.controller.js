@@ -22,17 +22,15 @@ exports.insertSong = (req, res) => {
     Songs.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
-                res.status(200).send({ message: data["_id"] })
+                res.send({ statusCode: 200, result: data["_id"] })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 400, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
-            })
+            res.send({ statusCode: 500, result: err.message || errMsg })
         });
 
 };
@@ -139,16 +137,16 @@ exports.createPList = (req, res) => {
     Playlist.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
-                res.status(200).send({ message: data["_id"] })
+                res.send({ statusCode: 200, result: data["_id"] })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 400, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
     // res.send(200)
@@ -266,14 +264,19 @@ exports.deactUser = (req, res) => {
         });
 };
 
-exports.getAllSongs=(req,res)=>{
+exports.getAllSongs = (req, res) => {
     Songs.find()
-    .then(data=>res.json(data))
-    .catch(err => {
-        res.status(500).send({
-            message: err.message || errMsg
+        .then(data => {
+            res.send({
+                statusCode: 200,
+                result: data
+            })
         })
-    });
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
 }
 exports.GetAllPlayLists = (req, res) => {
     Playlist.find()
@@ -285,3 +288,18 @@ exports.GetAllPlayLists = (req, res) => {
         });
 };
 
+exports.getAllUsers = (req, res) => {
+    User.find({})
+        .select("username usertype active email ")
+        .then(data => {
+            res.send({
+                statusCode: 200,
+                result: data
+            })
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};

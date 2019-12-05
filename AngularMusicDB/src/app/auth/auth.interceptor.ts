@@ -8,7 +8,7 @@ export class AuthInterceptor implements HttpInterceptor {
     constructor(private router: Router) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): import("rxjs").Observable<HttpEvent<any>> {
-        console.log("inside inter")
+       
         if (!req.headers.has('No-Auth'))
             return next.handle(req.clone());
 

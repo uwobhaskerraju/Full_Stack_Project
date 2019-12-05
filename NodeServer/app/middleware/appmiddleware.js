@@ -29,15 +29,23 @@ function userRegistrationCheck(req, res, next) {
 }
 
 function checkToken(req, res, next){
-    var bearerHeader=req.headers["Authorization"]
-    if(typeof bearerHeader==undefined) return res.status(500).send({message:errMsg})
-    var reqToken=bearerHeader.split(' ')[1]
-    jwt.verify(reqToken,secret,(err,decoded)=>{
-        if(err) return res.status(500).send({message:errMsg})
-        req.secret=secret;
-        req.token=reqToken;
-        next();
-    });
+    //console.log(req.headers)
+    var bearerHeader=req.headers["authorization"]
+    if(bearerHeader===undefined) 
+    {
+        return res.send({statusCode:500,message:errMsg})
+    }
+    else{
+      
+        var reqToken=bearerHeader.split(' ')[1]
+        jwt.verify(reqToken,secret,(err,decoded)=>{
+            if(err) return res.status(500).send({message:errMsg})
+            req.secret=secret;
+            req.token=reqToken;
+            next();
+        });
+    }
+   
 
 }
 

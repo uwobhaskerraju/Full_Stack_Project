@@ -1,5 +1,7 @@
 module.exports = (app) => {
     const Admin = require('../controllers/admin.controller.js');
+
+    const checkrequest=require('../middleware/appmiddleware.js');
     // Admin APIs
 
     // insert a new song
@@ -41,5 +43,6 @@ module.exports = (app) => {
     // get all songs for admin to view and hide
     app.get('/admin/songs', Admin.getAllSongs);
 
- 
+    // get list of users
+    app.get('/admin/users',checkrequest.CheckToken,Admin.getAllUsers);
 }

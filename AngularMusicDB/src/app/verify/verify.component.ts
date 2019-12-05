@@ -17,10 +17,6 @@ export class VerifyComponent implements OnInit {
 
 
   constructor(private _http: HttpService, private router: Router) {
-    
-  }
-
-  ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation.extras.state as
      {
@@ -34,6 +30,10 @@ export class VerifyComponent implements OnInit {
     this.email = state.email;
     this.name = state.name;
     this.state=state;
+  }
+
+  ngOnInit() {
+  
   }
 
   verifyAndRedirect() {
