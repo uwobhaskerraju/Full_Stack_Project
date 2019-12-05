@@ -88,10 +88,14 @@ export class LoginComponent implements OnInit {
             // }
           };
           localStorage.setItem("ACCESS_TOKEN", data["WWW-Authenticate"]);
-          if(!data["emailverified"]){
+          localStorage.setItem("userRole",data["result"]["userType"]);
+          
+          if(!data["result"]["emailverified"]){
+        
             this.router.navigate(['/verify'],navigationExtras)
           }
-          else{
+          if(data["result"]["emailverified"]){
+    
             this.router.navigate(['/dashboard'],navigationExtras)
           }
        }

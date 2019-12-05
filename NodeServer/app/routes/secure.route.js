@@ -1,6 +1,8 @@
 module.exports = (app) => {
     const secured = require('../controllers/secure.controller.js');
 
+    const checkrequest=require('../middleware/appmiddleware.js');
+
     // insert a new song
     app.post('/secure/song', secured.insertSong);
 
@@ -25,6 +27,6 @@ module.exports = (app) => {
     // Hide a playlist by owner
     app.put('/secure/playlist/hide', secured.hidePList);
 
-    // activate a user
-    app.put('/secure/user/', secured.activateUser);
+    // verify user email
+    app.put('/secure/user/', checkrequest.CheckToken,secured.verifyEmail);
 }

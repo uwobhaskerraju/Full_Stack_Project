@@ -205,7 +205,7 @@ exports.hidePList = (req, res) => {
         });
 };
 
-exports.activateUser = (req, res) => {
+exports.verifyEmail = (req, res) => {
     var ID = req.body.userID
     User.updateOne({ _id: ID }, { $set: { emailverified:true} })
         .then(data => {

@@ -2,15 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 
-function annotateName(target, name, desc) {
-  var method = desc.value;
-  desc.value = function () {
-      var prevMethod = this.currentMethod;
-      this.currentMethod = name;
-      method.apply(this, arguments);
-      this.currentMethod = prevMethod;   
-  }
-}
 @Injectable({
   providedIn: 'root'
 })
@@ -68,7 +59,7 @@ export class HttpService {
     console.log(header)
     return this.http.post(URL, JsnData, header);
   }
-  //@annotateName
+
   verifyAndRedirect(id:String){
   
    // console.log("inside "+this.currentMethod);
@@ -79,6 +70,7 @@ export class HttpService {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Access-Control-Allow-Headers': 'Content-Type'
+       // 'Authorization':'Bearer '+localStorage.getItem('ACCESS_TOKEN')
       }}
       var JsnData = JSON.stringify({
         userID:id

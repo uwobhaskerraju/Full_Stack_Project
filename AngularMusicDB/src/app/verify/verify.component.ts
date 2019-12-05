@@ -17,22 +17,23 @@ export class VerifyComponent implements OnInit {
 
 
   constructor(private _http: HttpService, private router: Router) {
+    
+  }
+
+  ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
-    const state = navigation.extras.state 
-    // as {
-    //   email: string,
-    //   id: string,
-    //   name: string,
-    //   type:String
-    // };
+    const state = navigation.extras.state as
+     {
+      email: string,
+      id: string,
+      name: string,
+      type:string,
+      emailverified:string
+    };
     // check for NULL and redirect to login page
     this.email = state.email;
     this.name = state.name;
     this.state=state;
-  }
-
-  ngOnInit() {
-
   }
 
   verifyAndRedirect() {
@@ -53,7 +54,7 @@ export class VerifyComponent implements OnInit {
             //   email: "saibhaskerraju@outlook.com",
             //   id: "12",
             //   name: "Sai Bhasker Raju",
-            //   active:"false",
+            //   emailverified:"false",
             //   type:"user"
             // }
           };
