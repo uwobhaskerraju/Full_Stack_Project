@@ -13,6 +13,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,6 +22,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     VerifyComponent,
     DashboardComponent,
     AdminComponent
+    
   ],
   imports: [
     BrowserModule,

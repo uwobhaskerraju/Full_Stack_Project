@@ -164,15 +164,15 @@ exports.deletePList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["deletedCount"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode:200,message: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode:400, message: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
+            res.send({ statusCode:500,
                 message: err.message || errMsg
             })
         });
@@ -207,15 +207,15 @@ exports.remSongsPList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode:200, message: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode:400, message: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
+            res.send({ statusCode:500,
                 message: err.message || errMsg
             })
         });
@@ -280,7 +280,10 @@ exports.getAllSongs = (req, res) => {
 }
 exports.GetAllPlayLists = (req, res) => {
     Playlist.find()
-        .then(data => res.send(data))
+        .then(data => res.send({
+            statusCode: 200,
+            result: data
+        }))
         .catch(err => {
             res.status(500).send({
                 message: err.message || errMsg

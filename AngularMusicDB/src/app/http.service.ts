@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../environments/environment.prod'
 
 @Injectable({
@@ -60,8 +60,8 @@ export class HttpService {
     return this.http.post(URL, JsnData, header);
   }
 
-  getHeader(){
-    return  {
+  getHeader() {
+    return {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -121,7 +121,7 @@ export class HttpService {
   }
 
   getAllSongs() {
-    let url = environment.apiBaseURL + '/admin/songs'
+    let url = environment.apiBaseURL + 'admin/songs'
     let header = {
       headers: {
         'Content-Type': 'application/json',
@@ -133,8 +133,14 @@ export class HttpService {
     return this.http.get(url, header)
   }
 
-  addSong(user:any) {
-    let url = environment.apiBaseURL+'/admin/song'
+  getAllPlaylists() {
+    let url = environment.apiBaseURL + 'admin/playlist'
+    let header = this.getHeader();
+    return this.http.get(url, header)
+  }
+
+  addSong(user: any) {
+    let url = environment.apiBaseURL + 'admin/song'
     let header = {
       headers: {
         'Content-Type': 'application/json',
@@ -145,32 +151,69 @@ export class HttpService {
     };
     var JsnData = JSON.stringify({
       Name: user.title,
-      Artist:user.artist,
-      Album:user.album,
-      Duration:user.duration,
-      Year:user.year,
-      Genre:user.genre,
-      Hidden:user.hideSong,
-      Picture:"environment.defaultPicture"
+      Artist: user.artist,
+      Album: user.album,
+      Duration: user.duration,
+      Year: user.year,
+      Genre: user.genre,
+      Hidden: user.hideSong,
+      Picture: "environment.defaultPicture"
     })
     console.log(JsnData)
-    
-      return this.http.post(url,JsnData ,header)
 
-    
+    return this.http.post(url, JsnData, header)
+
+
   }
 
-  addPlaylist(playlist:any,id:any){
-    let url=environment.apiBaseURL+'/admin/playlist'
-    let header=this.getHeader()
+  addPlaylist(playlist: any, id: any) {
+    let url = environment.apiBaseURL + 'admin/playlist'
+    let header = this.getHeader()
     var JsnData = JSON.stringify({
       title: playlist.title,
-      description:playlist.description,
-      ownerID:id,
-      songID:[]
+      description: playlist.description,
+      ownerID: id,
+      songID: []
     })
 
-    return this.http.post(url,JsnData,header);
+    return this.http.post(url, JsnData, header);
+  }
+
+  removeSongPlaylist(songid, playlistid) {
+    let url = environment.apiBaseURL + 'admin/playlist/song'
+    let header = this.getHeader()
+    var JsnData = JSON.stringify({
+      playListID: playlistid,
+      songID: songid
+    })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      })
+      ,body:JsnData
+    }
+
+    return this.http.delete(url,httpOptions);
+  }
+
+  delPlaylist(playListID:any){
+    let url=environment.apiBaseURL+'admin/playlist'
+    var JsnData = JSON.stringify({
+      playListID: playListID
+    })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }),
+      body:JsnData
+    }
+    return this.http.delete(url,httpOptions)
   }
   // end of admin APIs
 }

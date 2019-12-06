@@ -1,6 +1,6 @@
 var mongoose     = require('mongoose');
 
-var ReviewSchema   = mongoose.Schema({
+var RatingSchema   = mongoose.Schema({
     songID: { type: mongoose.Schema.ObjectId, required: true },
     userName:{ type: String, required: true },
     ratings:{ type: Number, required: true }
@@ -8,4 +8,4 @@ var ReviewSchema   = mongoose.Schema({
     versionKey: false // You should be aware of the outcome after set to false
 });
 
-module.exports = mongoose.model('Ratings', ReviewSchema,'Ratings');
+module.exports = mongoose.model('Ratings', RatingSchema,'Ratings');

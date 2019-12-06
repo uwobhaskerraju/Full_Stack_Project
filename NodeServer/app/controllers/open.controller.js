@@ -5,31 +5,38 @@ const errMsg = "something went wrong! try again"
 
 exports.getTopTenSongs = (req, res) => {
 
-    // Ratings.aggregate([
-    //     {
-    //         $lookup: {
-    //             from: "Songs",
-    //             localField: "songID",
-    //             foreignField: "_id",
-    //             as: "ratings_data"
-    //         }
-    //     }
-    //     // ,
-    //     // {
-    //     //     $project:{
-    //     //         songID:1,
-    //     //         rating:{$avg:"$ratings"}
-    //     //     }
-    //     // }
-    //     // ,
-    //     // {
-    //     //     $group: {
-    //     //         _id: "$songID",
-    //     //         rating: { $avg: "$ratings" }
-    //     //     }
-    //     // }
-    // ])
-    Songs.find()
+    Ratings.aggregate([
+        {
+            $group:
+            {
+                _id: "$songID",
+                rating: { $avg: "$ratings" }
+            }
+        },
+        {
+            $lookup: {
+                from: "Songs",
+                localField: "_id",
+                foreignField: "_id",
+                as: "ratings_data"
+            }
+        },
+        { $unwind: "$ratings_data" },
+        {
+            $project: {
+                rating: 1,
+                _id: 1,
+                genre: "$ratings_data.Genre",
+                hidden: "$ratings_data.Hidden",
+                name:"$ratings_data.Name",
+                artist:"$ratings_data.Artist",
+                album:"$ratings_data.Album",
+                duration:"$ratings_data.Duration",
+                year:"$ratings_data.Year",
+                picture:"$ratings_data.Picture"
+            }
+        }
+    ])
         .limit(10)
         .then(songs => {
             res.send(songs)
@@ -39,6 +46,16 @@ exports.getTopTenSongs = (req, res) => {
                 message: err.message || errMsg
             })
         });
+    // Songs.find()
+    //     .limit(10)
+    //     .then(songs => {
+    //         res.send(songs)
+    //     })
+    //     .catch(err => {
+    //         res.status(500).send({
+    //             message: err.message || errMsg
+    //         })
+    //     });
 
 };
 exports.search = (req, res) => {
