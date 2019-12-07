@@ -234,4 +234,56 @@ export class HttpService {
     return this.http.delete(url,httpOptions)
   }
   // end of admin APIs
+
+
+  // start of user API
+
+  getAllsongs(){
+    let url=environment.apiBaseURL+'secure/song'
+    let header=this.getHeader()
+    return this.http.get(url,header);
+  }
+
+  submitRating(value:any,songid:any){
+    let url=environment.apiBaseURL+'secure/rate'
+    let header=this.getHeader()
+    var JsnData = JSON.stringify({
+      songID: songid,
+      userName: value.name,
+      ratings:value.rate,
+      userID:value.id
+    })
+    return this.http.post(url,JsnData,header)
+  }
+
+  submitReview(value:any,songID:any){
+    let url=environment.apiBaseURL+'secure/review'
+    let header=this.getHeader()
+    var JsnData = JSON.stringify({
+      songId: songID,
+      comment: value.review,
+      reviewBy:value.name,
+      userId:value.id
+    })
+    return this.http.post(url,JsnData,header)
+  }
+
+  deleteRating(rateid){
+    let url=environment.apiBaseURL+'secure/rate'
+    //let header=this.getHeader()
+    var JsnData = JSON.stringify({
+      rateID: rateid
+    })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }),
+      body:JsnData
+    }
+    return this.http.delete(url,httpOptions)
+  }
+  // end of user API
 }

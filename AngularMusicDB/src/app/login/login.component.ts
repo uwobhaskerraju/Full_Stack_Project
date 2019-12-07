@@ -33,23 +33,24 @@ export class LoginComponent implements OnInit {
             //   name: data["name"]
             // }
             state: {
-              email: "saibhaskerraju@outlook.com",
-              id: "12",
-              name: "Sai Bhasker Raju",
-              active:"false",
-              type:"user"
+              email: data["result"]["email"],
+              id: data["result"]["id"],
+              name: data["result"]["name"],
+              active:data["result"]["emailverified"],
+              type:data["result"]["userType"]
             }
           };
+          console.log(navigationExtras)
           localStorage.setItem("ACCESS_TOKEN", data["WWW-Authenticate"]);
-          if(!data["active"]){
+          if(!data["result"]["emailverified"]){
             this.router.navigate(['/verify'],navigationExtras)
           }
           else{
             // route based on user type
-            if(data["userType"] =="admin"){
+            if(data["result"]["userType"] =="admin"){
               this.router.navigate(['/admin'],navigationExtras)
             }
-            if(data["userType"] =="user"){
+            if(data["result"]["userType"] =="user"){
               this.router.navigate(['/dashboard'],navigationExtras)
             }
             

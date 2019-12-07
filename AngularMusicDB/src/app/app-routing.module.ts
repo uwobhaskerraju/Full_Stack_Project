@@ -7,7 +7,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './auth/auth.guard';
 import { HomesongdetailsComponent } from './home/homesongdetails/homesongdetails.component';
-import {HomesongsComponent} from './home/homesongs/homesongs.component';
+import { HomesongsComponent } from './home/homesongs/homesongs.component';
+import { DashboardhomeComponent } from './dashboard/dashboardhome/dashboardhome.component';
+import { DsongdetailsComponent } from './dashboard/dsongdetails/dsongdetails.component'
 
 const routes: Routes = [
   {
@@ -18,7 +20,12 @@ const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'verify', component: VerifyComponent, canActivate: [AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  {
+    path: 'dashboard', component: DashboardComponent, children: [
+      { path: '', component: DashboardhomeComponent},
+      { path: 'song/:id', component: DsongdetailsComponent }
+    ],canActivate: [AuthGuard] 
+  },
   { path: 'admin', component: AdminComponent }
 ];
 

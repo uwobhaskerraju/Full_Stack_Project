@@ -1,4 +1,52 @@
-<div >
+<nav>
+  <div class="nav-wrapper">
+    <a href="javascript:void(0)" class="brand-logo center">Logo</a>
+    <a href="javascript:void(0)" data-target="mobile-demo" class="sidenav-trigger"><i
+        class="material-icons">menu</i></a>
+    <ul class="right hide-on-med-and-down">
+      <li><a href="javascript:void(0)" (click)="logout()">Logout</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="row">
+  <div class="col s2">
+    <ul id="slide-out" class="sidenav sidenav-fixed">
+      <li>
+        <div class="user-view">
+          <div class="background">
+            <img src="images/wallpaper.jpg">
+          </div>
+          <a href="#user">
+            <img class="circle" src="images/bhasker.jpg">
+          </a>
+          <span class="white-text name">Sai Bhasker Raju</span>
+          <a href="#email">
+            <span class="white-text email">saibhaskerraju@outlook.com</span>
+          </a>
+        </div>
+      </li>
+      <li>
+        <a class="waves-effect pink-text" href="javascript:void(0)" (click)="naviagte(1)">
+          <i class="material-icons pink-text">home</i>Songs</a>
+      </li>
+      <li>
+        <a class="waves-effect" href="javascript:void(0)" (click)="naviagte(2)">
+          <i class="material-icons">memory</i>Playlists</a>
+      </li>
+      <li>
+        <a class="waves-effect" href="javascript:void(0)" (click)="naviagte(3)">
+          <i class="material-icons">school</i>Create Playlist</a>
+      </li>
 
+
+    </ul>
+
+  </div>
+  <div class="col s10">
+    <div class="container">
+
+      <router-outlet></router-outlet>
+    </div>
+
+  </div>
 </div>
-<button (click)="logout()">logout</button>

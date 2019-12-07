@@ -46,8 +46,9 @@ exports.ratesong = (req, res) => {
     var songID = inserts["songId"]
     Ratings.create(inserts)
         .then(data => {
+            console.log(data)
             if (Boolean(data["_id"])) {
-                res.send({ statusCode:200, result: "true" })
+                res.send({ statusCode:200, result: data["_id"] }) // passing this to support next failure
             }
             else {
                 // didnt insert 
@@ -223,4 +224,101 @@ exports.verifyEmail = (req, res) => {
                 message: err.message || errMsg
             })
         });
+};
+
+// get all songs ( no limit)
+exports.getAllSongs=(req,res)=>{
+    Ratings.aggregate([
+        {
+            $group:
+            {
+                _id: "$songID",
+                rating: { $avg: "$ratings" }
+            }
+        },
+        {
+            $lookup: {
+                from: "Songs",
+                localField: "_id",
+                foreignField: "_id",
+                as: "ratings_data"
+            }
+        },
+        { $unwind: "$ratings_data" },
+        {
+            $project: {
+                rating: 1,
+                _id: 1,
+                genre: "$ratings_data.Genre",
+                hidden: "$ratings_data.Hidden",
+                name: "$ratings_data.Name",
+                artist: "$ratings_data.Artist",
+                album: "$ratings_data.Album",
+                duration: "$ratings_data.Duration",
+                year: "$ratings_data.Year",
+                picture: "$ratings_data.Picture"
+            }
+        }
+    ])
+        //.limit(10)
+        .then(songs => {
+            if(songs!=null)
+            {
+                res.send({ statusCode: 200, result: songs })
+            }
+            else{
+                res.send({ statusCode: 300, result: songs })
+            }
+           
+        })
+        .catch(err => {
+            res.send({
+                statusCode: 500, result: err.message || errMsg
+            })
+        });
+
+};
+
+exports.deleteRating=(req,res)=>{
+    var rateId=req.body.rateID
+    Ratings.deleteOne({_id:rateId})
+    .then(data => {
+        if (Boolean(data["deletedCount"])) {
+            res.send({
+                statusCode: 200, result: "true" })
+        }
+        else {
+            // didnt insert 
+            res.send({
+                statusCode: 500, result: "false" })
+        }
+    })
+    .catch(err => {
+        res.send({
+            statusCode: 500, result: err.message || errMsg
+        })
+    });
+
+};
+
+exports.deleteSong=(req,res)=>{
+    var rateId=req.body.songID
+    Songs.deleteOne({_id:rateId})
+    .then(data => {
+        if (Boolean(data["deletedCount"])) {
+            res.send({
+                statusCode: 200, result: "true" })
+        }
+        else {
+            // didnt insert 
+            res.send({
+                statusCode: 500, result: "false" })
+        }
+    })
+    .catch(err => {
+        res.send({
+            statusCode: 500, result: err.message || errMsg
+        })
+    });
+
 };

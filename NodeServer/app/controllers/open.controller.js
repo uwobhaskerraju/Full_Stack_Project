@@ -134,7 +134,14 @@ exports.getReview = (req, res) => {
                 as: "ratings_data"
             }
         },
-        { $unwind: "$ratings_data" },
+        { $unwind: "$ratings_data" }
+        // ,
+        // {
+        //     $group:{
+        //         _id:"_id"
+        //     }
+        // }
+        ,
         {
             $project: {
                 _id: 0,

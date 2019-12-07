@@ -1,0 +1,20 @@
+<blockquote>
+   <h4> You are watching the best songs of decade</h4>
+</blockquote>
+
+<div class="row" *ngIf="orgSongs">
+        <div class="col s3" *ngFor="let song of orgSongs">
+            <div class="card small">
+                <div class="card-image">
+                    <img src="../assets/Images/{{song.picture}}">
+                    <!-- <span class="card-title">{{song.Name}}</span> -->
+                </div>
+                <div class="card-content">
+                    <p>Name: {{song.name}}</p>
+                </div>
+                <div class="card-action">
+                    <a href="javascript:void(0)" id="{{song._id}}" (click)="showDetails($event)">Details</a>
+                </div>
+            </div>
+        </div>
+    </div>

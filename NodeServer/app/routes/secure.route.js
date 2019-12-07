@@ -10,7 +10,7 @@ module.exports = (app) => {
     app.post('/secure/review', secured.reviewSong);
 
     // insert a rating for a song
-    app.post('/secure/rate', secured.ratesong);
+    app.post('/secure/rate',secured.ratesong);
 
     // Create a playlist
     app.post('/secure/playlist', secured.createPList);
@@ -29,4 +29,14 @@ module.exports = (app) => {
 
     // verify user email
     app.put('/secure/user/', checkrequest.CheckToken,secured.verifyEmail);
+
+    // get all songs ( no limit)
+    app.get('/secure/song',checkrequest.CheckToken,secured.getAllSongs);
+
+    //1. insert followed by rate followed by review
+    // delete rating of song at times of failure of inserting review
+    app.delete('/secure/rate',secured.deleteRating);
+
+    // delete song at times of failure of inserting rating
+    app.delete('/secure/song',secured.deleteSong);
 }

@@ -44,7 +44,7 @@ export class HomesongdetailsComponent implements OnInit {
       .subscribe(data => {
         if (data["statusCode"] == 200) {
           this.songReviews = data["result"]
-          //console.log(this.songReviews)
+          console.log(this.songReviews)
         }
         else {
           // toast saying false

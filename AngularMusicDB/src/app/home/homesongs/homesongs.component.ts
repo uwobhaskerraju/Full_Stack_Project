@@ -8,24 +8,39 @@ import { NavigationExtras, Router } from '@angular/router';
   styleUrls: ['./homesongs.component.css']
 })
 export class HomesongsComponent implements OnInit {
-  orgSongs:Object;
+  orgSongs: Object;
   constructor(private _http: HttpService, private router: Router) { }
 
   ngOnInit() {
     this._http.getTopTenSongs()
       .subscribe(data => {
-        //console.log(data)
-        this.orgSongs = data;
+        if (data["statusCode"] == 200) {
+          //console.log(data)
+          this.orgSongs = data["result"];
+        }
+        else {
+          //toast
+        }
+
       });
   }
 
-  showDetails(value:any){
+  showDetails(value: any) {
     let songID = value.srcElement.id.split('_')[0]
     //console.log(songID)
-
+    let songData;
+    //console.log(this.orgSongs.length)
+    for (var i = 0; i < 20; i++) {
+      if (this.orgSongs[i]["_id"] == songID) {
+        songData = this.orgSongs[i]
+        break;
+      }
+    }
+    // console.log(this.orgSongs)
+    //console.log(songData)
     const navigationExtras: NavigationExtras = {
       state: {
-        allSongs: this.orgSongs
+        allSongs: songData
       }
     };
 
@@ -33,6 +48,6 @@ export class HomesongsComponent implements OnInit {
 
   }
 
-  
+
 
 }

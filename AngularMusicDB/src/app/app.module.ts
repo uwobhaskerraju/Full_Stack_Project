@@ -15,6 +15,8 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { HomesongdetailsComponent } from './home/homesongdetails/homesongdetails.component';
 import { HomesongsComponent } from './home/homesongs/homesongs.component';
+import { DashboardhomeComponent } from './dashboard/dashboardhome/dashboardhome.component';
+import { DsongdetailsComponent } from './dashboard/dsongdetails/dsongdetails.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { HomesongsComponent } from './home/homesongs/homesongs.component';
     DashboardComponent,
     AdminComponent,
     HomesongdetailsComponent,
-    HomesongsComponent
+    HomesongsComponent,
+    DashboardhomeComponent,
+    DsongdetailsComponent
     
   ],
   imports: [
