@@ -1,7 +1,9 @@
+
+
 <a href="javascript:void(0)" (click)="goBack()"><i
     class="material-icons">arrow_back</i>Back</a>
 <div class="row" *ngIf="songDetails">
-    <div class="col s12" *ngFor="let song of songDetails.allSongs">
+    <div class="col s12" *ngFor="let song of songDetails">
         <div class="card large">
             <div class="card-image">
                 <img src="{{imagePath}}{{song.picture.split('.')[0]}}_cover.jpg">

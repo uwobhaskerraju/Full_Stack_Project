@@ -1,11 +1,12 @@
-var mongoose     = require('mongoose');
+var mongoose = require('mongoose');
 
-var ReviewSchema   = mongoose.Schema({
+var ReviewSchema = mongoose.Schema({
     songId: { type: mongoose.Schema.ObjectId, required: true },
-    comment:{ type: String, required: true },
-    reviewBy:{ type: String, required: true }
+    comment: { type: String, required: true },
+    reviewBy: { type: String, required: true },
+    userId: { type: mongoose.Schema.ObjectId, required: true }
 }, {
-    versionKey: false 
+    versionKey: false
 });
 
-module.exports = mongoose.model('Review', ReviewSchema,'Reviews');
+module.exports = mongoose.model('Review', ReviewSchema, 'Reviews');

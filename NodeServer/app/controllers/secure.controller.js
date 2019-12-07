@@ -47,16 +47,15 @@ exports.ratesong = (req, res) => {
     Ratings.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode:200, result: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: songID })
+                res.send({ statusCode:400, result: songID })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: songID
+            res.send({ statusCode:500, result: songID
             })
         });
 };
@@ -69,18 +68,19 @@ exports.reviewSong = (req, res) => {
     Reviews.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode:200, result: "true" })
             }
             else {
                 // didnt insert 
                 // delete inserted song
-                res.status(500).send({ message: songID })
+                res.send({ statusCode:400, result: songID })
             }
         })
         .catch(err => {
             // didnt insert 
             // delete inserted song
-            res.status(500).send({ message: songID })
+            res.send({ statusCode:500, result: songID
+            })
         });
 };
 

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpService } from 'src/app/http.service';
 import { Subscription } from 'rxjs';
-import {environment} from '../../../environments/environment.prod'
+import { environment } from '../../../environments/environment.prod'
 
 
 @Component({
@@ -11,10 +11,10 @@ import {environment} from '../../../environments/environment.prod'
   styleUrls: ['./homesongdetails.component.css']
 })
 export class HomesongdetailsComponent implements OnInit {
-  songDetails: Object
+  songDetails=[];
   imagePath: String;
-  songReviews:Object
-  songID:String
+  songReviews: Object
+  songID: String
   private routeSub: Subscription;
 
   constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute) {
@@ -23,38 +23,52 @@ export class HomesongdetailsComponent implements OnInit {
       {
         allSongs: Object
       };
-    this.songDetails = state;
+
+    this.songDetails.push(state.allSongs)
+    // console.log("first state")
+    console.log(this.songDetails)
   }
 
   ngOnInit() {
-    this.imagePath=environment.imagePath;
+
+    this.imagePath = environment.imagePath;
     this.routeSub = this.route.params.subscribe(params => {
       //console.log(params) //log the entire params object
-     // console.log(params['id']) //log the value of id
+      // console.log(params['id']) //log the value of id
       //console.log(this.songDetails)
-      this.songID=params['id']
+      this.songID = params['id']
     });
 
     // send API to get review of this song
     this._http.getSongReviews(this.songID)
-    .subscribe(data=>{
-      if(data["statusCode"]==200){
-          this.songReviews=data["result"]
-          console.log(this.songReviews)
-      }
-      else{
+      .subscribe(data => {
+        if (data["statusCode"] == 200) {
+          this.songReviews = data["result"]
+          //console.log(this.songReviews)
+        }
+        else {
           // toast saying false
-      }
-    });
+        }
+      });
+
+
+    // console.log("songs")
+    //console.log(this.songDetails)
   }
   ngOnDestroy() {
+    this.songDetails = null
+    this.songReviews = null
+    this.songID = null
     this.routeSub.unsubscribe();
   }
 
-    generateRandNum(){
-      return Math.floor(Math.random() * environment.iconsLen) + 1;
-    }
-  goBack(){
+  generateRandNum() {
+    return Math.floor(Math.random() * environment.iconsLen) + 1;
+  }
+  goBack() {
+    this.songDetails = null
+    this.songReviews = null
+    this.songID = null
     this.router.navigate(['/']);
   }
 }

@@ -41,11 +41,18 @@ exports.getTopTenSongs = (req, res) => {
     ])
         .limit(10)
         .then(songs => {
-            res.send(songs)
+            if(songs!=null)
+            {
+                res.send({ statusCode: 200, result: songs })
+            }
+            else{
+                res.send({ statusCode: 300, result: songs })
+            }
+           
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 
@@ -143,7 +150,7 @@ exports.getReview = (req, res) => {
     })
         .catch(err => {
             res.send({
-                statusCode: 200, result: err.message || errMsg
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
