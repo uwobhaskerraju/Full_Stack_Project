@@ -13,6 +13,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminComponent } from './admin/admin.component';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { HomesongdetailsComponent } from './home/homesongdetails/homesongdetails.component';
+import { HomesongsComponent } from './home/homesongs/homesongs.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     LoginComponent,
     VerifyComponent,
     DashboardComponent,
-    AdminComponent
+    AdminComponent,
+    HomesongdetailsComponent,
+    HomesongsComponent
     
   ],
   imports: [

@@ -9,10 +9,18 @@ export class HttpService {
   currentMethod: string;
   constructor(private http: HttpClient) { }
 
+  // open APIs
   getTopTenSongs() {
     let URL = 'http://localhost:8080/api/open/songs/ten'
     return this.http.get(URL);
   }
+
+  getSongReviews(songID:any){
+    let url=environment.apiBaseURL+'open/review/'+songID;
+    let headers=this.getBasicHeaders()
+    return this.http.get(url,headers);
+  }
+  // end of open APIs
   ValidateLogin(email: any, pass: any) {
     console.log("inside validatelogin")
     //let URL = 'http://' + window.location.host + '/insertNewItem'
@@ -60,6 +68,16 @@ export class HttpService {
     return this.http.post(URL, JsnData, header);
   }
 
+  getBasicHeaders(){
+    return {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type'
+        
+      }
+    };
+  }
   getHeader() {
     return {
       headers: {

@@ -5,7 +5,7 @@ var ReviewSchema   = mongoose.Schema({
     comment:{ type: String, required: true },
     reviewBy:{ type: String, required: true }
 }, {
-    versionKey: false // You should be aware of the outcome after set to false
+    versionKey: false 
 });
 
 module.exports = mongoose.model('Review', ReviewSchema,'Reviews');

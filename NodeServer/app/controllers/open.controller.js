@@ -2,6 +2,8 @@ const Songs = require('../models/song.model.js');
 const reviews = require('../models/review.model.js');
 const Ratings = require('../models/ratings.model.js');
 const errMsg = "something went wrong! try again"
+const mongoose = require('mongoose');
+
 
 exports.getTopTenSongs = (req, res) => {
 
@@ -28,12 +30,12 @@ exports.getTopTenSongs = (req, res) => {
                 _id: 1,
                 genre: "$ratings_data.Genre",
                 hidden: "$ratings_data.Hidden",
-                name:"$ratings_data.Name",
-                artist:"$ratings_data.Artist",
-                album:"$ratings_data.Album",
-                duration:"$ratings_data.Duration",
-                year:"$ratings_data.Year",
-                picture:"$ratings_data.Picture"
+                name: "$ratings_data.Name",
+                artist: "$ratings_data.Artist",
+                album: "$ratings_data.Album",
+                duration: "$ratings_data.Duration",
+                year: "$ratings_data.Year",
+                picture: "$ratings_data.Picture"
             }
         }
     ])
@@ -46,16 +48,7 @@ exports.getTopTenSongs = (req, res) => {
                 message: err.message || errMsg
             })
         });
-    // Songs.find()
-    //     .limit(10)
-    //     .then(songs => {
-    //         res.send(songs)
-    //     })
-    //     .catch(err => {
-    //         res.status(500).send({
-    //             message: err.message || errMsg
-    //         })
-    //     });
+
 
 };
 exports.search = (req, res) => {
@@ -121,15 +114,36 @@ exports.getSong = (req, res) => {
 };
 exports.getReview = (req, res) => {
     // assuming only not hidden songIDs come here
-    var songID = req.params.songID
-
-    reviews.find({ songId: songID })
-        .then(reviews => {
-            res.send(reviews)
-        })
+    var songID = mongoose.Types.ObjectId(req.params.songID)
+    reviews.aggregate([
+        {
+            $match: { songId: songID }
+        },
+        {
+            $lookup: {
+                from: "Ratings",
+                localField: "userId",
+                foreignField: "userID",
+                as: "ratings_data"
+            }
+        },
+        { $unwind: "$ratings_data" },
+        {
+            $project: {
+                _id: 0,
+                songId: 1,
+                comment: 1,
+                reviewBy: 1,
+                userId: 1,
+                rating: "$ratings_data.ratings"
+            }
+        }
+    ]).then(songs => {
+        res.send({ statusCode: 200, result: songs })
+    })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 200, result: err.message || errMsg
             })
         });
 };

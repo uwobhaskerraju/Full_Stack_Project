@@ -8,7 +8,7 @@ var PlaylistSchema = mongoose.Schema({
     songID: { type: [mongoose.Schema.ObjectId], required: true },
     hidden: { type: Boolean, default: false }
 }, {
-    versionKey: false // You should be aware of the outcome after set to false
+    versionKey: false
 });
 
 module.exports = mongoose.model('Playlists', PlaylistSchema, 'Playlists');
