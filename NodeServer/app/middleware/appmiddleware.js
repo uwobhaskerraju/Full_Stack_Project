@@ -3,6 +3,7 @@ var validator = require("email-validator");
 require('dotenv').config()
 
 
+
 const secret = process.env.JWT_KEY;
 if (typeof secret === 'undefined') {
     console.log("Key not found. Exiting the process");
@@ -28,40 +29,49 @@ function sanitizeInputs(req) {
     return inserts;
 }
 const errMsg = '[INVALID] Not a valid request'
-const gblErrMsg = ''
+var gblErrMsg = ''
 // ************************* validation functions ******************************
 function validateEmail(email) {
     if (validator.validate(email)) {
 
     }
     else {
-        gblErrMsg = 'Email is not in proper format||'
+        gblErrMsg = gblErrMsg.concat('Email is not in proper format||')
     }
     return true;
 }
 function validatePassword(pass) {
+
     if (Boolean(pass)) {
-        var letter = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-        if (!pass.match(letter)) {
-            gblErrMsg.concat('Password must have one upper&lower case English letter,one digit and special character and minimum 8 in length||')
+
+        if (pass.length > 7 && pass.length < 11) {
+
+            // var regex = new Regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/);
+            var letter = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+            if (!pass.match(letter)) {
+                gblErrMsg = gblErrMsg.concat('Password must have one upper&lower case English letter,one digit and special character and minimum 8 in length||')
+            }
+        }
+        else {
+            gblErrMsg = gblErrMsg.concat('Password should be between 8 and 10||')
         }
     }
     else {
-        gblErrMsg = 'Password cannot be empty||'
+        gblErrMsg = gblErrMsg.concat('Password cannot be empty||')
     }
     return true
 }
 function validateUserName(uName) {
-    if(Boolean(uName)){
+    if (Boolean(uName)) {
         //Expression can start or end only with a letter
         //Expression cannot contain consecutive spaces
-        var letter=/^([a-z]+\s)*[a-z]+$/
+        var letter = /^([a-zA-Z]+\s)*[a-zA-Z]+$/
         if (!uName.match(letter)) {
-            gblErrMsg.concat('Username can start or end only with a letter and cannot contain consecutive spaces||')
+            gblErrMsg = gblErrMsg.concat('Username can start or end only with a letter and cannot contain consecutive spaces||')
         }
     }
     else {
-        gblErrMsg = 'Username cannot be empty||'
+        gblErrMsg = gblErrMsg.concat('Username cannot be empty||')
     }
     return true
 }
@@ -71,13 +81,13 @@ function validateUserName(uName) {
 
 
 function userRegistrationCheck(req, res, next) {
-    
+    gblErrMsg = '';
     var inputs = sanitizeInputs(req);
-    if (!inputs.email) return res.send({ statusCode :500,result: errMsg })
-    if (!inputs.username) return res.send({ statusCode :500,result: errMsg })
-    if (!inputs.password) return res.send({ statusCode :500,result: errMsg })
+    if (!inputs.email) return res.send({ statusCode: 500, result: errMsg })
+    if (!inputs.username) return res.send({ statusCode: 500, result: errMsg })
+    if (!inputs.password) return res.send({ statusCode: 500, result: errMsg })
     //write validation 
-    
+    //console.log(inputs)
     if (validateEmail(inputs.email)) {
         if (validatePassword(inputs.password)) {
             if (validateUserName(inputs.username)) {
@@ -85,10 +95,11 @@ function userRegistrationCheck(req, res, next) {
             }
         }
     }
-    if(Boolean(gblErrMsg)){
-        return res.send({ statusCode :500,result: gblErrMsg })
+
+    if (Boolean(gblErrMsg)) {
+        return res.send({ statusCode: 500, result: gblErrMsg })
     }
-    else{
+    else {
         req.secret = secret
         next();
     }
@@ -104,7 +115,7 @@ function checkRole(req, res, next) {
         var reqToken = bearerHeader.split(' ')[1]
         jwt.verify(reqToken, secret, (err, decoded) => {
             if (err) return res.status(500).send({ message: errMsg })
-            console.log(decoded);
+            //console.log(decoded);
             if (role.includes(decoded["userType"])) {
                 switch (decoded["userType"]) {
                     case "user":
@@ -145,15 +156,24 @@ function checkToken(req, res, next) {
 
 
 function userLoginCheck(req, res, next) {
-    var exports = generateKeyValueFromBody(req.body)
+    gblErrMsg = '';
+    var inputs = sanitizeInputs(req);
     // console.log(exports)
-    if (!exports.email) return res.send({ message: errMsg })
-    if (!exports.password) return res.send({ message: errMsg })
+    if (!inputs.email) return res.send({ message: errMsg })
+    if (!inputs.password) return res.send({ message: errMsg })
 
     //write validations & sanitize here
+    if (validateEmail(inputs.email)) {
 
-    req.secret = secret
-    next();
+    }
+    if (Boolean(gblErrMsg)) {
+        return res.send({ statusCode: 500, result: gblErrMsg })
+    }
+    else {
+        req.secret = secret
+        next();
+    }
+
 }
 
 module.exports = {

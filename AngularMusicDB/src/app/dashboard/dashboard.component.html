@@ -1,6 +1,6 @@
-<nav>
+<nav class="light-blue">
   <div class="nav-wrapper">
-    <a href="javascript:void(0)" class="brand-logo center">Logo</a>
+    <a href="javascript:void(0)" class="brand-logo"><i class="material-icons">polymer</i>Krypton</a>
     <a href="javascript:void(0)" data-target="mobile-demo" class="sidenav-trigger"><i
         class="material-icons">menu</i></a>
     <ul class="right hide-on-med-and-down">
@@ -8,16 +8,19 @@
     </ul>
   </div>
 </nav>
+<ul class="sidenav" id="mobile-demo">
+  <li><a href="javascript:void(0)" (click)="logout()">Logout</a></li>
+</ul>
 <div class="row">
   <div class="col s2">
     <ul id="slide-out" class="sidenav sidenav-fixed">
       <li>
         <div class="user-view">
           <div class="background">
-            <img class="responsive-img" src="{{imagePath}}wallpapers/{{generateRandNum()}}.png">
+            <img class="responsive-img" src="{{imagePath}}wallpapers/1.png">
           </div>
           <a href="javascript:void(0)">
-            <img class="circle responsive-img" src="{{imagePath}}icons/{{generateRandNum()}}.png">
+            <img class="circle responsive-img" src="{{imagePath}}icons/1.png">
           </a>
           <span class="white-text name">{{name}}</span>
           <a href="javascript:void(0)">
@@ -26,8 +29,8 @@
         </div>
       </li>
       <li>
-        <a class="waves-effect pink-text" (click)="naviagte(1)">
-          <i class="material-icons pink-text">home</i>Songs</a>
+        <a class="waves-effect" (click)="naviagte(1)">
+          <i class="material-icons">home</i>Songs</a>
       </li>
       <li>
         <a class="waves-effect" (click)="naviagte(2)">

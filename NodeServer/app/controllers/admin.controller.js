@@ -53,7 +53,7 @@ exports.delSong = (req, res) => {
                     .then(da => {
                         if (Boolean(da["deletedCount"])) {
                             // delete ratings
-                            Ratings.deleteMany()
+                            Ratings.deleteMany({ songID: songId })
                                 .then(d => {
                                     if (Boolean(da["deletedCount"])) {
                                         res.send({ statusCode: 200, result: songId })

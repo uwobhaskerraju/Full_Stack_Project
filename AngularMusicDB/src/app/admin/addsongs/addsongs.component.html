@@ -6,36 +6,42 @@
     <!-- <form class="col s12"> -->
     <div class="row">
         <div class="input-field col s6">
+            <i class="material-icons prefix">library_music</i>
             <input id="title" type="text" class="validate" required [(ngModel)]="song.title">
             <label for="title">Name</label>
         </div>
         <div class="input-field col s6">
+            <i class="material-icons prefix">person_pin</i>
             <input id="artist" type="text" class="validate" required [(ngModel)]="song.artist">
             <label for="artist">Artist</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s6">
+            <i class="material-icons prefix">photo_album</i>
             <input id="album" type="text" class="validate" required [(ngModel)]="song.album">
             <label for="album">Album</label>
         </div>
         <div class="input-field col s6">
-            <input id="duration" type="text" class="validate" required [(ngModel)]="song.duration">
+            <i class="material-icons prefix">access_time</i>
+            <input id="duration" type="number" class="validate" required [(ngModel)]="song.duration">
             <label for="duration">Duration</label>
         </div>
     </div>
     <div class="row">
         <div class="input-field col s6">
-            <input id="year" type="text" class="validate" required [(ngModel)]="song.year">
+            <i class="material-icons prefix">date_range</i>
+            <input id="year" type="number" class="validate" required [(ngModel)]="song.year">
             <label for="year">Year</label>
         </div>
         <div class="input-field col s6">
+            <i class="material-icons prefix">mode_edit</i>
             <input id="genre" type="text" class="validate" required [(ngModel)]="song.genre">
             <label for="genre">Genre</label>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row center-align">
         <a (click)="addSong()" class="btn-floating btn-large waves-effect waves-light red"><i
-                class="material-icons">add</i></a>
+                class="material-icons">play_arrow</i></a>
     </div>

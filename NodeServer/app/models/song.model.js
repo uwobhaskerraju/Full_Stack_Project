@@ -9,7 +9,10 @@ var SongsSchema   = mongoose.Schema({
     Year:{ type: String, required: true },
     Genre:{ type: String, default: "Filmi" },
     Hidden:{ type: Boolean, default: false },
-    Picture:{ type: String, default: "default.jpg" }
+    Picture:{ type: String, default: "default.jpg" },
+    Comment:{type:String,default:"none"},
+    [zero-byte]:{type:Number,default:1},
+    track:{type:Number,default:1}
 }, {
     versionKey: false 
 });

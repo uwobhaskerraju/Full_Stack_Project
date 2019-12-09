@@ -24,7 +24,7 @@ export class HttpService {
   ValidateLogin(email: any, pass: any) {
     console.log("inside validatelogin")
     //let URL = 'http://' + window.location.host + '/insertNewItem'
-    let URL = 'http://localhost:8080/api/user/login'
+    let URL = environment.apiBaseURL+'user/login'
     console.log(URL)
 
     var JsnData = JSON.stringify({
@@ -44,16 +44,16 @@ export class HttpService {
     return this.http.post(URL, JsnData, header);
   }
 
-  registerUser(name,pass,email) {
-    
+  registerUser(name, pass, email) {
+
     //let URL = 'http://' + window.location.host + '/insertNewItem'
-    let URL = environment.apiBaseURL+'user/register'
+    let URL = environment.apiBaseURL + 'user/register'
     console.log(URL)
 
     var JsnData = JSON.stringify({
       username: name,
-      email: pass,
-      password: email
+      email: email,
+      password: pass
     })
     console.log(JsnData)
     let header = {
@@ -109,7 +109,7 @@ export class HttpService {
 
   //admin APIs
   actDeactUser(id: String, active: boolean) {
-    let url = environment.apiBaseURL+'admin/user'
+    let url = environment.apiBaseURL + 'admin/user'
     let header = {
       headers: {
         'Content-Type': 'application/json',
@@ -125,8 +125,8 @@ export class HttpService {
     return this.http.put(url, JsnData, header)
   }
 
-  toggleAdmin(id: String, active: boolean){
-    let url = environment.apiBaseURL+'admin/user/admin'
+  toggleAdmin(id: String, active: boolean) {
+    let url = environment.apiBaseURL + 'admin/user/admin'
     let header = {
       headers: {
         'Content-Type': 'application/json',
@@ -252,9 +252,8 @@ export class HttpService {
     return this.http.delete(url, httpOptions)
   }
 
-  deleteReview(reviewID:String)
-  {
-    let url=environment.apiBaseURL+'admin/review'
+  deleteReview(reviewID: String) {
+    let url = environment.apiBaseURL + 'admin/review'
     var JsnData = JSON.stringify({
       reviewid: reviewID
     })
@@ -287,14 +286,21 @@ export class HttpService {
     return this.http.delete(url, httpOptions)
   }
 
-  adminUpdateSong(song:any){
-    let url=environment.apiBaseURL+'admin/song'
+  adminUpdateSong(song: any,songID:any) {
+    let url = environment.apiBaseURL + 'admin/song'
     let header = this.getHeader()
     var JsnData = JSON.stringify({
-     
+      songID:song[0]._id,
+      Name:song[0].Name,
+      Artist:song[0].Artist,
+      Album:song[0].Album,
+      Duration:song[0].Duration,
+      Year:song[0].Year,
+      Genre:song[0].Genre,
+      Hidden:song[0].Hidden
     })
-
-    return this.http.post(url, JsnData, header);
+    console.log(JsnData)
+    return this.http.put(url, JsnData, header);
 
   }
 
@@ -401,7 +407,7 @@ export class HttpService {
       songID: []
     })
 
-    return this.http.post(url,JsnData,header)
+    return this.http.post(url, JsnData, header)
     // end of user API
   }
 }

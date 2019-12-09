@@ -94,7 +94,12 @@
                                     data-position="bottom" data-tooltip="Sign Up"><i
                                         class="material-icons">play_arrow</i></a>
                             </div>
-
+                            <div class="row">
+                                <ul>
+                                    <li>Username can start or end only with a letter and cannot contain consecutive spaces</li>
+                                    <li>Password must have one upper&lower case English letter,one digit and special character and between 8 & 10 in length</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,7 +121,7 @@
                                 <div class="row">
                                     <div class="input-field">
                                         <i class="material-icons prefix">email</i>
-                                        <input name="email" #emailLogin type="email" class="validate">
+                                        <input name="email" #emailLogin type="email" id="signinEmail" class="validate">
                                         <label for="email">Email</label>
                                         <span class="helper-text" data-error="Invalid Email"
                                             data-success="Perfect"></span>
@@ -125,10 +130,11 @@
                                 <div class="row">
                                     <div class="input-field">
                                         <i class="material-icons prefix">enhanced_encryption</i>
-                                        <input name="password" #passLogin type="password" class="validate"
-                                            data-length="10">
+                                        <input name="password" #passLogin id="signinPass" type="password"
+                                            class="validate" data-length="10">
                                         <label for="password">Password</label>
-                                        <span class="helper-text" data-error="" data-success=""></span>
+                                        <span class="helper-text" data-error="Invalid Email/Password"
+                                            data-success=""></span>
                                     </div>
                                 </div>
 
