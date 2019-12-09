@@ -1,0 +1,44 @@
+<a href="javascript:void(0)" (click)="goBack()"><i class="material-icons">arrow_back</i>Back</a>
+<div class="row" *ngIf="songDetails">
+    <div class="col s12" *ngFor="let song of songDetails">
+        <div class="card large">
+            <div class="card-image">
+                <img src="{{imagePath}}{{song.Picture.split('.')[0]}}_cover.jpg">
+                <span class="card-title"> {{song.Name}}</span>
+            </div>
+            <div class="card-content">
+                <p> Name : {{song.Name}}
+                    Genre : {{song.Genre}}<br>
+                    Artist : {{song.Artist}} <br>
+                    Album : {{song.Album}} <br>
+                    Duration: {{song.Duration}} <br>
+                    Year : {{song.Year}} <br>
+                    Rating : {{song.Rating}} / 5 <br>
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+            <ul class="collection" *ngIf="songReviews">
+
+                <li class="collection-item avatar" *ngFor="let review of songReviews">
+                    <img src="{{imagePath}}icons/{{generateRandNum()}}.png" alt="" class="circle">
+                    <div class="right" *ngFor="let dummy of ' '.repeat(review.rating).split(''), let x = index">
+                        <i class="material-icons">grade</i>
+                    </div>
+                    <span class="title">
+                        <h5>{{review.reviewBy}}</h5>
+                    </span>
+                    <p class="left">{{review.comment}}
+                    </p>
+                    <p class="right"></p>
+
+                </li>
+
+
+            </ul>
+        </div>
+    </div>
+</div>

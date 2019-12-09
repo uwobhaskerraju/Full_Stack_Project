@@ -1,0 +1,23 @@
+<blockquote>
+    <h4>Create a Empty playlist and add songs later</h4>
+</blockquote>
+
+
+<div class="row">
+    <div class="input-field col s6">
+        <i class="material-icons prefix">account_circle</i>
+        <input id="icon_prefix" type="text" class="validate" [(ngModel)]="playlist.title">
+        <label for="icon_prefix">Playlist Name</label>
+    </div>
+    <div class="input-field col s6">
+        <i class="material-icons prefix">phone</i>
+        <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="playlist.description">
+        <label for="icon_telephone">Description</label>
+    </div>
+</div>
+
+
+<div class="row">
+    <a (click)="addPlayListUser()" class="btn-floating btn-large waves-effect waves-light red"><i
+            class="material-icons">add</i></a>
+</div>

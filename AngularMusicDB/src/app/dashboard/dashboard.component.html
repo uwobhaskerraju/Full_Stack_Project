@@ -14,31 +14,33 @@
       <li>
         <div class="user-view">
           <div class="background">
-            <img src="images/wallpaper.jpg">
+            <img class="responsive-img" src="{{imagePath}}wallpapers/{{generateRandNum()}}.png">
           </div>
-          <a href="#user">
-            <img class="circle" src="images/bhasker.jpg">
+          <a href="javascript:void(0)">
+            <img class="circle responsive-img" src="{{imagePath}}icons/{{generateRandNum()}}.png">
           </a>
-          <span class="white-text name">Sai Bhasker Raju</span>
-          <a href="#email">
-            <span class="white-text email">saibhaskerraju@outlook.com</span>
+          <span class="white-text name">{{name}}</span>
+          <a href="javascript:void(0)">
+            <span class="white-text email">{{state.email}}</span>
           </a>
         </div>
       </li>
       <li>
-        <a class="waves-effect pink-text" href="javascript:void(0)" (click)="naviagte(1)">
+        <a class="waves-effect pink-text" (click)="naviagte(1)">
           <i class="material-icons pink-text">home</i>Songs</a>
       </li>
       <li>
-        <a class="waves-effect" href="javascript:void(0)" (click)="naviagte(2)">
-          <i class="material-icons">memory</i>Playlists</a>
+        <a class="waves-effect" (click)="naviagte(2)">
+          <i class="material-icons">memory</i>Add Song</a>
       </li>
       <li>
         <a class="waves-effect" href="javascript:void(0)" (click)="naviagte(3)">
           <i class="material-icons">school</i>Create Playlist</a>
       </li>
-
-
+      <li>
+        <a class="waves-effect" href="javascript:void(0)" (click)="naviagte(4)">
+          <i class="material-icons">school</i>View Playlist</a>
+      </li>
     </ul>
 
   </div>

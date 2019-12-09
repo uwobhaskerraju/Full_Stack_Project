@@ -15,7 +15,6 @@ export class DashboardhomeComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-
     // call get all songs API
     this._http.getAllsongs()
       .subscribe(data => {
@@ -33,7 +32,7 @@ export class DashboardhomeComponent implements OnInit, AfterViewInit {
     //console.log(songID)
     let songData;
     //console.log(this.orgSongs.length)
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 100; i++) {
       if (this.orgSongs[i]["_id"] == songID) {
         songData = this.orgSongs[i]
         break;

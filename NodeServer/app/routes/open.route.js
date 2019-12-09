@@ -16,4 +16,7 @@ module.exports = (app) => {
     //get rating of particular song
     app.get('/open/rating/:songID', open.getRating);
 
+
+   
+
 }

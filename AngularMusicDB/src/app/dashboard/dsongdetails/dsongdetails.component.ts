@@ -34,9 +34,9 @@ export class DsongdetailsComponent implements OnInit {
     this.uSong.name = localStorage.getItem('name')
     this.uSong.email = localStorage.getItem('email')
     // this.uSong.id=localStorage.getItem('id')
-    localStorage.removeItem('id')
-    localStorage.removeItem('name')
-    localStorage.removeItem('email')
+    // localStorage.removeItem('id')
+    // localStorage.removeItem('name')
+    // localStorage.removeItem('email')
 
     console.log("uSong")
     console.log(this.uSong)
@@ -56,7 +56,7 @@ export class DsongdetailsComponent implements OnInit {
       .subscribe(data => {
         if (data["statusCode"] == 200) {
           this.songReviews = data["result"]
-          console.log(this.songReviews)
+          //console.log(this.songReviews)
         }
         else {
           // toast saying false

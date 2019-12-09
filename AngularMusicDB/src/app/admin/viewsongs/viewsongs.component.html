@@ -1,0 +1,25 @@
+<div *ngIf="allSongs">
+    <div class="col s6" *ngFor="let song of allSongs">
+        <h5 class="header"> {{song.Name}} </h5>
+        <div class="card small horizontal">
+            <div class="card-image">
+                <img src="{{imagePath}}{{song.Picture}}">
+            </div>
+            <div class="card-stacked">
+                <div class="card-content">
+                    <p>
+                        Genre : {{song.Genre}}<br>
+                        Artist : {{song.Artist}} <br>
+                        Album : {{song.Album}} <br>
+                        Duration: {{song.Duration}} <br>
+                        Year : {{song.Year}} <br>
+                    </p>
+                </div>
+                <div class="card-action">
+                    <a href="javascript:void(0)" (click)="naviagte($event)" id="{{song._id}}_1" >Edit</a><br>
+                    <a href="javascript:void(0)" (click)="naviagte($event)" id="{{song._id}}_2" >View</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

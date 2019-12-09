@@ -1,0 +1,44 @@
+<blockquote>
+    <h2>Edit Users</h2>
+</blockquote>
+
+<div class="row" *ngIf="allUsers">
+    <div class="col s12 m6" *ngFor="let user of allUsers">
+        <div class="card blue-grey darken-1">
+            <div class="card-content white-text">
+                <span class="card-title">{{user.username}}</span>
+                <p>Email : {{user.email}}</p>
+            </div>
+            <div class="card-action">
+                <div class="row">
+                    <div class="col s6">
+                        <p>Admin:</p>
+                        <div class="switch">
+
+                            <label>
+                                Off
+                                <input type="checkbox" id="{{user._id}}_1" [(ngModel)]="user.admin"
+                                    (change)="checkAll($event)" ng-true-value="true" ng-false-value="false">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col s6">
+                        <p>Active:</p>
+                        <div class="switch">
+
+                            <label>
+                                Off
+                                <input type="checkbox" id="{{user._id}}_2" [(ngModel)]="user.active"
+                                    (change)="checkAll($event)" ng-true-value="true" ng-false-value="false">
+                                <span class="lever"></span>
+                                On
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

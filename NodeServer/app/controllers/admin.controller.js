@@ -47,16 +47,45 @@ exports.delSong = (req, res) => {
             //console.log(data["nModified"])
             if (Boolean(data["deletedCount"])) {
 
-                res.status(200).send({ message: "success" })
+                //res.send({ statusCode: 200, result: songId })
+                //delete reviews
+                Reviews.deleteMany({ songId: songId })
+                    .then(da => {
+                        if (Boolean(da["deletedCount"])) {
+                            // delete ratings
+                            Ratings.deleteMany()
+                                .then(d => {
+                                    if (Boolean(da["deletedCount"])) {
+                                        res.send({ statusCode: 200, result: songId })
+                                    }
+                                    else {
+                                        res.send({ statusCode: 300, result: songId })
+                                    }
+                                })
+                                .catch(err => {
+                                    res.send({
+                                        statusCode: 500, result: err.message || errMsg
+                                    })
+                                });
+                        }
+                        else {
+                            res.send({ statusCode: 300, result: songId })
+                        }
+                    })
+                    .catch(err => {
+                        res.send({
+                            statusCode: 500, result: err.message || errMsg
+                        })
+                    });
             }
             else {
-                res.status(200).send({ message: "false" })
+                res.send({ statusCode: 300, result: songId })
             }
 
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -93,16 +122,15 @@ exports.updateSong = (req, res) => {
     Songs.updateOne({ _id: songid }, { $set: inserts })
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode: 200, result: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({ statusCode: 500, result: err.message || errMsg
             })
         });
 }
@@ -115,16 +143,16 @@ exports.deleteReview = (req, res) => {
             //console.log(data["nModified"])
             if (Boolean(data["deletedCount"])) {
 
-                res.status(200).send({ message: "success" })
+                res.send({ statusCode: 200, result: "success" })
             }
             else {
-                res.status(200).send({ message: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
 
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -164,15 +192,16 @@ exports.deletePList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["deletedCount"])) {
-                res.send({ statusCode:200,message: "true" })
+                res.send({ statusCode: 200, message: "true" })
             }
             else {
                 // didnt insert 
-                res.send({ statusCode:400, message: "false" })
+                res.send({ statusCode: 400, message: "false" })
             }
         })
         .catch(err => {
-            res.send({ statusCode:500,
+            res.send({
+                statusCode: 500,
                 message: err.message || errMsg
             })
         });
@@ -207,15 +236,16 @@ exports.remSongsPList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.send({ statusCode:200, message: "true" })
+                res.send({ statusCode: 200, message: "true" })
             }
             else {
                 // didnt insert 
-                res.send({ statusCode:400, message: "false" })
+                res.send({ statusCode: 400, message: "false" })
             }
         })
         .catch(err => {
-            res.send({ statusCode:500,
+            res.send({
+                statusCode: 500,
                 message: err.message || errMsg
             })
         });
@@ -250,16 +280,16 @@ exports.deactUser = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode: 200, result: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -303,6 +333,29 @@ exports.getAllUsers = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message: err.message || errMsg
+            })
+        });
+};
+
+exports.makeUserAdmin = (req, res) => {
+    var userID = req.body.userID
+    var isAdmin = req.body.isAdmin
+    isAdmin = (isAdmin == true) ? "admin" : "user";
+    console.log(isAdmin)
+    User.updateOne({ _id: userID }, { $set: { usertype: isAdmin } })
+        //.then(data=>res.send(data))
+        .then(data => {
+            if (Boolean(data["nModified"])) {
+                res.send({ statusCode: 200, result: "true" })
+            }
+            else {
+                // didnt insert 
+                res.send({ statusCode: 300, result: "false" })
+            }
+        })
+        .catch(err => {
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };

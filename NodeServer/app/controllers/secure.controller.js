@@ -18,22 +18,23 @@ function generateKeyValueFromBody(body) {
 // insert a new song
 exports.insertSong = (req, res) => {
     //inserting songs records first and then sending the songID back to angular
-    // using songID, send another request for inserting review
     // using songID, send another request for inserting ratings
+    // using songID, send another request for inserting review
+
     const inserts = generateKeyValueFromBody(req.body)
     Songs.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
-                res.status(200).send({ message: data["_id"] })
+                res.send({ statusCode: 200, result: data["_id"] })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 
@@ -48,15 +49,16 @@ exports.ratesong = (req, res) => {
         .then(data => {
             console.log(data)
             if (Boolean(data["_id"])) {
-                res.send({ statusCode:200, result: data["_id"] }) // passing this to support next failure
+                res.send({ statusCode: 200, result: data["_id"] }) // passing this to support next failure
             }
             else {
                 // didnt insert 
-                res.send({ statusCode:400, result: songID })
+                res.send({ statusCode: 400, result: songID })
             }
         })
         .catch(err => {
-            res.send({ statusCode:500, result: songID
+            res.send({
+                statusCode: 500, result: songID
             })
         });
 };
@@ -69,22 +71,35 @@ exports.reviewSong = (req, res) => {
     Reviews.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
-                res.send({ statusCode:200, result: "true" })
+                res.send({ statusCode: 200, result: "true" })
             }
             else {
                 // didnt insert 
                 // delete inserted song
-                res.send({ statusCode:400, result: songID })
+                res.send({ statusCode: 400, result: songID })
             }
         })
         .catch(err => {
             // didnt insert 
             // delete inserted song
-            res.send({ statusCode:500, result: songID
+            res.send({
+                statusCode: 500, result: songID
             })
         });
 };
 
+exports.getAllPlaylists = (req, res) => {
+    Playlist.find({hidden:false})
+        .then(data => res.send({
+            statusCode: 200,
+            result: data
+        }))
+        .catch(err => {
+            res.status(500).send({
+                message: err.message || errMsg
+            })
+        });
+};
 // Create a playlist
 exports.createPList = (req, res) => {
 
@@ -94,16 +109,16 @@ exports.createPList = (req, res) => {
     Playlist.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
-                res.status(200).send({ message: data["_id"] })
+                res.send({ statusCode: 200, result: data["_id"] })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 200, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 200, result: err.message || errMsg
             })
         });
     // res.send(200)
@@ -208,7 +223,7 @@ exports.hidePList = (req, res) => {
 
 exports.verifyEmail = (req, res) => {
     var ID = req.body.userID
-    User.updateOne({ _id: ID }, { $set: { emailverified:true} })
+    User.updateOne({ _id: ID }, { $set: { emailverified: true } })
         .then(data => {
             //console.log(data)
             if (Boolean(data["nModified"])) {
@@ -227,7 +242,7 @@ exports.verifyEmail = (req, res) => {
 };
 
 // get all songs ( no limit)
-exports.getAllSongs=(req,res)=>{
+exports.getAllSongs = (req, res) => {
     Ratings.aggregate([
         {
             $group:
@@ -262,14 +277,13 @@ exports.getAllSongs=(req,res)=>{
     ])
         //.limit(10)
         .then(songs => {
-            if(songs!=null)
-            {
+            if (songs != null) {
                 res.send({ statusCode: 200, result: songs })
             }
-            else{
+            else {
                 res.send({ statusCode: 300, result: songs })
             }
-           
+
         })
         .catch(err => {
             res.send({
@@ -279,46 +293,55 @@ exports.getAllSongs=(req,res)=>{
 
 };
 
-exports.deleteRating=(req,res)=>{
-    var rateId=req.body.rateID
-    Ratings.deleteOne({_id:rateId})
-    .then(data => {
-        if (Boolean(data["deletedCount"])) {
-            res.send({
-                statusCode: 200, result: "true" })
-        }
-        else {
-            // didnt insert 
-            res.send({
-                statusCode: 500, result: "false" })
-        }
-    })
-    .catch(err => {
-        res.send({
-            statusCode: 500, result: err.message || errMsg
+exports.deleteRating = (req, res) => {
+    var rateId = req.body.rateID
+    Ratings.deleteOne({ _id: rateId })
+        .then(data => {
+            if (Boolean(data["deletedCount"])) {
+                res.send({
+                    statusCode: 200, result: "true"
+                })
+            }
+            else {
+                // didnt insert 
+                res.send({
+                    statusCode: 500, result: "false"
+                })
+            }
         })
-    });
+        .catch(err => {
+            res.send({
+                statusCode: 500, result: err.message || errMsg
+            })
+        });
 
 };
 
-exports.deleteSong=(req,res)=>{
-    var rateId=req.body.songID
-    Songs.deleteOne({_id:rateId})
-    .then(data => {
-        if (Boolean(data["deletedCount"])) {
-            res.send({
-                statusCode: 200, result: "true" })
-        }
-        else {
-            // didnt insert 
-            res.send({
-                statusCode: 500, result: "false" })
-        }
-    })
-    .catch(err => {
-        res.send({
-            statusCode: 500, result: err.message || errMsg
+exports.deleteSong = (req, res) => {
+    var rateId = req.body.songID
+    Songs.deleteOne({ _id: rateId })
+        .then(data => {
+            if (Boolean(data["deletedCount"])) {
+                res.send({
+                    statusCode: 200, result: "true"
+                })
+            }
+            else {
+                // didnt insert 
+                res.send({
+                    statusCode: 500, result: "false"
+                })
+            }
         })
-    });
+        .catch(err => {
+            res.send({
+                statusCode: 500, result: err.message || errMsg
+            })
+        });
 
+};
+
+exports.test=(req,res)=>{
+    console.log(req.body.email)
+    res.send("ss")
 };

@@ -4,39 +4,44 @@ module.exports = (app) => {
     const checkrequest=require('../middleware/appmiddleware.js');
 
     // insert a new song
-    app.post('/secure/song', secured.insertSong);
+    app.post('/secure/song',checkrequest.CheckRole,checkrequest.CheckToken, secured.insertSong);
 
     // add a review for a song
-    app.post('/secure/review', secured.reviewSong);
+    app.post('/secure/review',checkrequest.CheckRole,checkrequest.CheckToken, secured.reviewSong);
 
     // insert a rating for a song
-    app.post('/secure/rate',secured.ratesong);
+    app.post('/secure/rate',checkrequest.CheckRole,checkrequest.CheckToken,secured.ratesong);
+
+    // get all playlists
+    app.get('/secure/playlist',checkrequest.CheckRole,checkrequest.CheckToken,secured.getAllPlaylists);
 
     // Create a playlist
-    app.post('/secure/playlist', secured.createPList);
+    app.post('/secure/playlist',checkrequest.CheckRole,checkrequest.CheckToken, secured.createPList);
 
     //Edit title and description of Playlist by owner
-    app.put('/secure/playlist', secured.editPlaylist);
+    app.put('/secure/playlist',checkrequest.CheckRole,checkrequest.CheckToken, secured.editPlaylist);
 
     // Add a song to playlist by owner
-    app.put('/secure/playlist/song', secured.addSongsPList);
+    app.put('/secure/playlist/song',checkrequest.CheckRole,checkrequest.CheckToken, secured.addSongsPList);
 
     // remove a song to playlist by owner
-    app.delete('/secure/playlist/song', secured.remSongsPList);
+    app.delete('/secure/playlist/song',checkrequest.CheckRole, checkrequest.CheckToken,secured.remSongsPList);
 
     // Hide a playlist by owner
-    app.put('/secure/playlist/hide', secured.hidePList);
+    app.put('/secure/playlist/hide',checkrequest.CheckRole,checkrequest.CheckToken, secured.hidePList);
 
     // verify user email
-    app.put('/secure/user/', checkrequest.CheckToken,secured.verifyEmail);
+    app.put('/secure/user/',checkrequest.CheckRole, checkrequest.CheckToken,secured.verifyEmail);
 
     // get all songs ( no limit)
-    app.get('/secure/song',checkrequest.CheckToken,secured.getAllSongs);
+    app.get('/secure/song',checkrequest.CheckRole,checkrequest.CheckToken,secured.getAllSongs);
 
     //1. insert followed by rate followed by review
     // delete rating of song at times of failure of inserting review
-    app.delete('/secure/rate',secured.deleteRating);
+    app.delete('/secure/rate',checkrequest.CheckRole,checkrequest.CheckToken,secured.deleteRating);
 
     // delete song at times of failure of inserting rating
-    app.delete('/secure/song',secured.deleteSong);
+    app.delete('/secure/song',checkrequest.CheckRole,checkrequest.CheckToken,secured.deleteSong);
+
+    app.post('/secure/test',checkrequest.CheckRegistration,secured.test);
 }

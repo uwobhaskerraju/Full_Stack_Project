@@ -1,0 +1,110 @@
+<a href="javascript:void(0)" (click)="goBack()"><i class="material-icons">arrow_back</i>Back</a>
+<div class="row" *ngIf="songDetails">
+    <div class="col s12" *ngFor="let song of songDetails">
+        <div class="card medium">
+            <div class="card-image">
+                <img src="{{imagePath}}{{song.Picture.split('.')[0]}}_cover.jpg">
+                <span class="card-title"> {{songDetails[0].Name}}</span>
+            </div>
+            <div class="card-content">
+                Name : {{songDetails[0].Name}}<br>
+                Genre : {{songDetails[0].Genre}}<br>
+                Artists(s) : {{songDetails[0].Artist}}<br>
+                Album : {{songDetails[0].Album}}<br>
+                Duration : {{songDetails[0].Duration}}<br>
+              
+                Year : {{songDetails[0].Year}}<br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].Name" >
+                <label for="icon_prefix">Song Name</label>
+            </div>
+            <div class="input-field col s6">
+                <i class="material-icons prefix">phone</i>
+                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].Genre">
+                <label for="icon_telephone">Genre</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].Artist">
+                <label for="icon_prefix">Artist(s)</label>
+            </div>
+            <div class="input-field col s6">
+                <i class="material-icons prefix">phone</i>
+                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].Album">
+                <label for="icon_telephone">Album</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6">
+                <i class="material-icons prefix">account_circle</i>
+                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].Duration">
+                <label for="icon_prefix">Duration</label>
+            </div>
+            <div class="input-field col s6">
+                <i class="material-icons prefix">phone</i>
+                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].Year">
+                <label for="icon_telephone">Year</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <p>Hide Song:</p>
+                <div class="switch">
+
+                    <label>
+                        Off
+                        <input type="checkbox" id="1" [(ngModel)]="songDetails[0].Hidden" ng-true-value="true"
+                            ng-false-value="false">
+                        <span class="lever"></span>
+                        On
+                    </label>
+                </div>
+            </div>
+
+            
+        </div>
+        <div class="row">
+            <div class="col s6">
+                <a class="waves-effect waves-light btn" id="{{song._id}}" (click)="deleteSong($event)"><i class="material-icons left">delete</i>Delete Song</a>
+            </div>
+            <div class="col s6">
+                <a class="waves-effect waves-light btn" id="{{song._id}}" (click)="updateSong($event)"><i class="material-icons left">delete</i>Update Song</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="divider">
+
+</div>
+<h3> Reviews: </h3>
+<div class="row">
+    <ul class="collection" *ngIf="songReviews">
+
+        <li class="collection-item avatar" *ngFor="let review of songReviews">
+            <img src="{{imagePath}}icons/{{generateRandNum()}}.png" alt="" class="circle">
+            <div class="right" *ngFor="let dummy of ' '.repeat(review.rating).split(''), let x = index">
+                <i class="material-icons">grade</i>
+            </div>
+            <span class="title">
+                <h5>{{review.reviewBy}}</h5>
+            </span>
+            <div class="row">
+                <p class="left">{{review.comment}}
+                </p>
+                <p class="right">
+                    <a href="javascript:void(0)" id="{{review._id}}" (click)="deleteReview($event)"><i
+                            class="material-icons">delete</i></a>
+                </p>
+            </div>
+        </li>
+
+
+    </ul>
+</div>

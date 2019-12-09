@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '../../environments/environment.prod'
 
 declare var M: any;
@@ -11,15 +11,14 @@ declare var M: any;
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  allUsers: Object
-  allSongs: Object
+
   allPlaylists: Object
   state: Object
   public song: any = {};
   public playlist: any = {};
   imagePath: String;
 
-  constructor(private _http: HttpService, private router: Router) {
+  constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation.extras.state as
       {
@@ -30,69 +29,33 @@ export class AdminComponent implements OnInit {
         emailverified: string
       };
     this.state = state;
-
-
-    // instances.updateData({
-    //   "Apple": null,
-    //   "Microsoft": null,
-    //   "Google": 'https://placehold.it/250x250'
-    // });
+    console.log("in admin")
+    console.log(this.state)
   }
 
 
   ngOnInit() {
-    localStorage.setItem('ACCESS_TOKEN', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhaWJoYXNrZXJyYWp1QG91dGxvb2suY29tIiwiaWQiOiI1ZGU0YjJlNzIyYzg0NjEyYjgwMTAxMGIiLCJuYW1lIjoic2FpIiwiZW1haWx2ZXJpZmllZCI6ZmFsc2UsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE1NzU1NjYwOTV9.xhTiB3fAb4aCyPrWqtUIw4eEz2BFLL_dL5MQBTVjYHk")
+    //localStorage.setItem('ACCESS_TOKEN', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhaWJoYXNrZXJyYWp1QG91dGxvb2suY29tIiwiaWQiOiI1ZGU0YjJlNzIyYzg0NjEyYjgwMTAxMGIiLCJuYW1lIjoic2FpIiwiZW1haWx2ZXJpZmllZCI6ZmFsc2UsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE1NzU1NjYwOTV9.xhTiB3fAb4aCyPrWqtUIw4eEz2BFLL_dL5MQBTVjYHk")
     this.imagePath = environment.imagePath;
 
-    
-    const elem = document.querySelector('.tabs');
-    const options = {};
-    M.Tabs.init(elem, options);
 
-    var elems = document.querySelectorAll('.autocomplete');
-    var instances = M.Autocomplete.init(elems, options);
-   
-    
-    // get all users API
-    this._http.getallUsers().subscribe(data => {
-      if (data["statusCode"] = 200) {
-
-        this.allUsers = data["result"]
-      }
-      else {
-        //unable to fetch users
-      }
-
-    });
-    // get all songs 
-    this._http.getAllSongs().subscribe(data => {
-      if (data["statusCode"] = 200) {
-
-       
-        this.allSongs = data["result"]
-      }
-      else {
-        //unable to fetch users
-      }
-
-    });
     //get song name and album
 
-    //get all playlists
-    this._http.getAllPlaylists()
-      .subscribe(data => {
-        if (data["statusCode"] = 200) {
-          let songIds = null
-          songIds = this.getSongDetails(data["result"], this.allSongs);
+    // //get all playlists
+    // this._http.getAllPlaylists()
+    //   .subscribe(data => {
+    //     if (data["statusCode"] = 200) {
+    //       let songIds = null
+    //       songIds = this.getSongDetails(data["result"], this.allSongs);
 
-          this.allPlaylists = songIds;
-          // console.log("all playlist")
-          // console.log(this.allPlaylists)
-        }
-        else {
-          //unable to fetch playlists
-        }
-      });
+    //       this.allPlaylists = songIds;
+    //       // console.log("all playlist")
+    //       // console.log(this.allPlaylists)
+    //     }
+    //     else {
+    //       //unable to fetch playlists
+    //     }
+    //   });
   }//end of ngInit()
   addPlaylist() {
     this._http.addPlaylist(this.playlist, this.state["id"])
@@ -177,5 +140,26 @@ export class AdminComponent implements OnInit {
           console.log("false")
         }
       });
+  }
+
+  naviagte(index: any) {
+    console.log(index)
+    switch (index) {
+      case 1:
+        this.router.navigate(['admin/']);
+        break;
+      case 2:
+        this.router.navigate(['song'], { relativeTo: this.route });
+        break;
+      case 3:
+        this.router.navigate(['song/add'], { relativeTo: this.route });
+        break;
+      case 4:
+        this.router.navigate(['view'], { relativeTo: this.route });
+        break;
+      case 5:
+        this.router.navigate(['view'], { relativeTo: this.route });
+        break;
+    }
   }
 }

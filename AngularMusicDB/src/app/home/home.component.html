@@ -1,12 +1,18 @@
-<nav>
+<nav class="light-blue">
     <div class="nav-wrapper">
-        <a href="#" class="brand-logo left">Logo</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <a href="javascript:void(0)" class="brand-logo"><i class="material-icons">polymer</i>Krypton</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
             <li><a routerLink="/">Home</a></li>
             <li><a routerLink="/login">Login / Sign Up</a></li>
         </ul>
     </div>
 </nav>
+
+<ul class="sidenav" id="mobile-demo">
+    <li><a routerLink="/">Home</a></li>
+    <li><a routerLink="/login">Login / Sign Up</a></li>
+</ul>
 <div class="container">
     <router-outlet></router-outlet>
 </div>

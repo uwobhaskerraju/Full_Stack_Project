@@ -1,261 +1,54 @@
 <nav>
     <div class="nav-wrapper">
-        <a href="#" class="brand-logo">Logo</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a (click)="logout()">logout</a></li>
-        </ul>
+      <a href="javascript:void(0)" class="brand-logo center">Logo</a>
+      <a href="javascript:void(0)" data-target="mobile-demo" class="sidenav-trigger"><i
+          class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a href="javascript:void(0)" (click)="logout()">Logout</a></li>
+      </ul>
     </div>
-</nav>
-
-<div class="row">
-    <div class="col s12">
-        <ul class="tabs">
-            <li class="tab col s3"><a class="active" href="#test1">Edit Users</a></li>
-            <li class="tab col s3"><a href="#test2">Edit Songs</a></li>
-            <li class="tab col s3"><a href="#test3">create song</a></li>
-            <li class="tab col s3"><a href="#test4">playlist</a></li>
-        </ul>
-    </div>
-    <div id="test1" class="col s12">
-        <div class="container">
-            <div class="row" *ngIf="allUsers">
-                <div class="col s12 m6" *ngFor="let user of allUsers">
-                    <div class="card blue-grey darken-1">
-                        <div class="card-content white-text">
-                            <span class="card-title">{{user.username}}</span>
-                            <p>Email : {{user.email}}</p>
-                        </div>
-                        <div class="card-action">
-                            <div class="row">
-                                <div class="col s6">
-                                    <p>Admin:</p>
-                                    <div class="switch">
-
-                                        <label>
-                                            Off
-                                            <input type="checkbox" id="{{user._id}}" ng-model="check"
-                                                ng-change="checkAll(check)" ng-true-value="true" ng-false-value="false">
-                                            <span class="lever"></span>
-                                            On
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col s6">
-                                    <p>Active:</p>
-                                    <div class="switch">
-
-                                        <label>
-                                            Off
-                                            <input type="checkbox" id="{{user._id}}" ng-model="check"
-                                                ng-change="checkAll(check)" ng-true-value="true" ng-false-value="false">
-                                            <span class="lever"></span>
-                                            On
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  </nav>
+  <div class="row">
+    <div class="col s2">
+      <ul id="slide-out" class="sidenav sidenav-fixed">
+        <li>
+          <div class="user-view">
+            <div class="background">
+              <img class="responsive-img" src="{{imagePath}}wallpapers/1.png">
             </div>
-        </div>
+            <a href="javascript:void(0)">
+              <img class="circle responsive-img" src="{{imagePath}}icons/1.png">
+            </a>
+            <span class="white-text name">{{state.name}}</span>
+            <a href="javascript:void(0)">
+              <span class="white-text email">{{state.email}}</span>
+            </a>
+          </div>
+        </li>
+        <li>
+          <a class="waves-effect pink-text" (click)="naviagte(1)">
+            <i class="material-icons pink-text">home</i>Users</a>
+        </li>
+        <li>
+          <a class="waves-effect" (click)="naviagte(2)">
+            <i class="material-icons">memory</i>Songs</a>
+        </li>
+        <li>
+          <a class="waves-effect" href="javascript:void(0)" (click)="naviagte(3)">
+            <i class="material-icons">school</i>Add Song</a>
+        </li>
+        <li>
+          <a class="waves-effect" href="javascript:void(0)" (click)="naviagte(4)">
+            <i class="material-icons">school</i>Playlists</a>
+        </li>
+      </ul>
+  
     </div>
-    <div id="test2" class="col s12">
-
-        <div *ngIf="allSongs">
-            <div class="col s4" *ngFor="let song of allSongs">
-                <h4 class="header"> {{song.Name}} </h4>
-                <div class="card small horizontal">
-                    <div class="card-image">
-                        <img src="{{imagePath}}{{song.Picture}}">
-                    </div>
-                    <div class="card-stacked">
-                        <div class="card-content">
-                            <p>
-                                Genre : {{song.Genre}}<br>
-                                Artist : {{song.Artist}} <br>
-                                Album : {{song.Album}} <br>
-                                Duration: {{song.Duration}} <br>
-                                Year : {{song.Year}} <br>
-                            </p>
-                        </div>
-                        <div class="card-action">
-                            <a href="#" id="{{song._id}}">Edit</a><br>
-                            <!-- Hide:
-                            <div class="switch">
-                                <label>
-                                    Off
-                                    <input type="checkbox" id="{{song._id}}">
-                                    <span class="lever"></span>
-                                    On
-                                </label>
-                            </div> -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="col s10">
+      <div class="container">
+  
+        <router-outlet></router-outlet>
+      </div>
+  
     </div>
-    <div id="test3" class="col s12">
-        <div class="container">
-            <div class="row">
-                <!-- <form class="col s12"> -->
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="title" type="text" class="validate" required [(ngModel)]="song.title">
-                        <label for="title">Title</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="artist" type="text" class="validate" required [(ngModel)]="song.artist">
-                        <label for="artist">Artist</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="album" type="text" class="validate" required [(ngModel)]="song.album">
-                        <label for="album">Album</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="duration" type="text" class="validate" required [(ngModel)]="song.duration">
-                        <label for="duration">Duration</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="year" type="text" class="validate" required [(ngModel)]="song.year">
-                        <label for="year">Year</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <input id="genre" type="text" class="validate" required [(ngModel)]="song.genre">
-                        <label for="genre">Genre</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <!-- <div class="input-field col s6">
-                            <label>Rate</label><br>
-                            <form action="#">
-                                <p class="range-field">
-                                    <input type="range" id="rate" min="0" max="5" />
-                                </p>
-
-                            </form>
-                        </div> -->
-                    <div class="input-field col s6">
-                        <label>Hide</label><br><br>
-                        <div class="switch">
-                            <label>
-                                Off
-                                <input type="checkbox" name="hideSong" [(ngModel)]="song.hideSong">
-                                <span class="lever"></span>
-                                On
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="row">
-                        <form class="col s12">
-                            <div class="row">
-                                <div class="input-field col s12">
-                                    <textarea id="textarea1" class="materialize-textarea"></textarea>
-                                    <label for="textarea1">Review</label>
-                                </div>
-                            </div>
-                        </form>
-                    </div> -->
-                <div class="row">
-                    <a (click)="addSong()" class="btn-floating btn-large waves-effect waves-light red"><i
-                            class="material-icons">add</i></a>
-                </div>
-                <!-- </form> -->
-            </div>
-
-        </div>
-    </div>
-    <div id="test4" class="col s12">
-        <!-- create playlist-->
-        <!-- <div class="container">
-            <div class="row">
-              
-                <div class="row">
-                    <div class="input-field col s6">
-                        <input id="title" type="text" class="validate" required [(ngModel)]="playlist.title">
-                        <label for="title">Title</label>
-                    </div>
-                    <div class="input-field col s6">
-                        <textarea id="textarea1" class="materialize-textarea" required
-                            [(ngModel)]="playlist.description"></textarea>
-                        <label for="textarea1">Description</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <a (click)="addPlaylist()" class="btn-floating btn-large waves-effect waves-light red"><i
-                            class="material-icons">add</i></a>
-                </div>
-         
-            </div>
-
-        </div> -->
-        <!-- end of create playlist-->
-
-
-        <!-- edit playlist-->
-        <div class="row" *ngIf="allPlaylists">
-            <div class="col s4" *ngFor="let playlist of allPlaylists">
-                <div class="card blue-grey darken-1">
-                    <div class="card-content white-text">
-                        <span class="left card-title">{{playlist.title}}</span>
-                        <span class="card-title right">
-                            Hide:
-                            <div class="switch">
-
-                                <label>
-                                    Off
-                                    <input type="checkbox">
-                                    <span class="lever"></span>
-                                    On
-                                </label>
-                            </div>
-                        </span>
-                        <br><br>
-                        <p>{{playlist.description}}
-                        </p>
-                        <br>
-                        <div class="row">
-                            <div class="input-field col s12">
-                                <i class="material-icons prefix">library_music</i>
-                                <input type="text" id="autocomplete-input" class="autocomplete">
-                                <label for="autocomplete-input">Add a song</label>
-                            </div>
-                        </div>
-                        <div class="divider"></div>
-                        <div class="section">
-                            <h6>List of songs</h6>
-                            <ul class="collection" *ngIf="playlist.songID">
-                                <p>
-
-                                    <li class="collection-item avatar teal lighten-2 text-white"
-                                        *ngFor="let playlistS of playlist.songID">
-                                        <img src="{{imagePath}}{{playlistS.split('()')[3]}}" alt="" class="circle">
-                                        <span class="title">{{playlistS.split('()')[1]}}</span>
-                                        <p>{{playlistS.split('()')[2]}}<br></p>
-                                        <a href="javascript:void(0)" id="asd" (click)="delSongPlaylist($event)"
-                                            class="secondary-content"><i
-                                                id="{{playlistS.split('()')[0]}}_{{playlist._id}}"
-                                                class="material-icons white-text">delete</i></a>
-                                    </li>
-
-
-                                </p>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-action">
-                        <a href="javascript:void(0)" id="{{playlist._id}}" (click)="delPlaylist($event)">Delete Playlist</a>
-                        <a href="javascript:void(0)" id="asds" (click)="delPlaylist($event)">Edit Playlist</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- end of edit playlist-->
-    </div>
-</div>
+  </div>

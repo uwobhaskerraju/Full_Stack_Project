@@ -1,3 +1,4 @@
+<br>
 <nav>
     <div class="nav-wrapper">
         <form>
@@ -11,18 +12,18 @@
 </nav>
 <div class="row">
     <blockquote>
-        <h1>Trending Songs</h1>
+        <h3>Your Trending Songs Are Here</h3>
     </blockquote>
 </div>
 <div class="row" *ngIf="orgSongs">
     <div class="col s3" *ngFor="let song of orgSongs">
-        <div class="card small">
+        <div class="card small hoverable z-depth-4">
             <div class="card-image">
                 <img src="../assets/Images/{{song.picture}}">
                 <!-- <span class="card-title">{{song.Name}}</span> -->
             </div>
-            <div class="card-content">
-                <p>Name: {{song.name}}</p>
+            <div class="card-content center-align">
+                <p class="blue-text"> {{song.name}}</p>
             </div>
             <div class="card-action">
                 <a href="javascript:void(0)" id="{{song._id}}" (click)="showDetails($event)">Details</a>

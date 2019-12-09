@@ -17,6 +17,14 @@ import { HomesongdetailsComponent } from './home/homesongdetails/homesongdetails
 import { HomesongsComponent } from './home/homesongs/homesongs.component';
 import { DashboardhomeComponent } from './dashboard/dashboardhome/dashboardhome.component';
 import { DsongdetailsComponent } from './dashboard/dsongdetails/dsongdetails.component';
+import { AddsongComponent } from './dashboard/addsong/addsong.component';
+import { CreateplaylistComponent } from './dashboard/createplaylist/createplaylist.component';
+import { ViewplaylistsComponent } from './dashboard/viewplaylists/viewplaylists.component';
+import { ViewusersComponent } from './admin/viewusers/viewusers.component';
+import { ViewsongsComponent } from './admin/viewsongs/viewsongs.component';
+import { ViewsongdetailsComponent } from './admin/viewsongdetails/viewsongdetails.component';
+import { EditsongdetailsComponent } from './admin/editsongdetails/editsongdetails.component';
+import { AddsongsComponent } from './admin/addsongs/addsongs.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +37,15 @@ import { DsongdetailsComponent } from './dashboard/dsongdetails/dsongdetails.com
     HomesongdetailsComponent,
     HomesongsComponent,
     DashboardhomeComponent,
-    DsongdetailsComponent
+    DsongdetailsComponent,
+    AddsongComponent,
+    CreateplaylistComponent,
+    ViewplaylistsComponent,
+    ViewusersComponent,
+    ViewsongsComponent,
+    ViewsongdetailsComponent,
+    EditsongdetailsComponent,
+    AddsongsComponent
     
   ],
   imports: [

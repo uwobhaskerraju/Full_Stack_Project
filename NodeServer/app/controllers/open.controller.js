@@ -144,7 +144,7 @@ exports.getReview = (req, res) => {
         ,
         {
             $project: {
-                _id: 0,
+                _id: 1,
                 songId: 1,
                 comment: 1,
                 reviewBy: 1,
@@ -161,3 +161,4 @@ exports.getReview = (req, res) => {
             })
         });
 };
+

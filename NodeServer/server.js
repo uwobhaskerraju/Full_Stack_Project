@@ -2,11 +2,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 var cors = require('cors')
-
+const expressSanitizer = require('express-sanitizer');
 // create express app
 const app = express();
 
 app.use(cors())
+app.use(expressSanitizer());
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))

@@ -15,10 +15,10 @@ export class HttpService {
     return this.http.get(URL);
   }
 
-  getSongReviews(songID:any){
-    let url=environment.apiBaseURL+'open/review/'+songID;
-    let headers=this.getBasicHeaders()
-    return this.http.get(url,headers);
+  getSongReviews(songID: any) {
+    let url = environment.apiBaseURL + 'open/review/' + songID;
+    let headers = this.getBasicHeaders()
+    return this.http.get(url, headers);
   }
   // end of open APIs
   ValidateLogin(email: any, pass: any) {
@@ -44,16 +44,16 @@ export class HttpService {
     return this.http.post(URL, JsnData, header);
   }
 
-  registerUser(value: any) {
-    console.log("inside registerUser")
+  registerUser(name,pass,email) {
+    
     //let URL = 'http://' + window.location.host + '/insertNewItem'
-    let URL = 'http://localhost:8080/api/user/register'
+    let URL = environment.apiBaseURL+'user/register'
     console.log(URL)
 
     var JsnData = JSON.stringify({
-      username: value.uName,
-      email: value.email,
-      password: value.uPass
+      username: name,
+      email: pass,
+      password: email
     })
     console.log(JsnData)
     let header = {
@@ -68,13 +68,13 @@ export class HttpService {
     return this.http.post(URL, JsnData, header);
   }
 
-  getBasicHeaders(){
+  getBasicHeaders() {
     return {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
         'Access-Control-Allow-Headers': 'Content-Type'
-        
+
       }
     };
   }
@@ -109,7 +109,7 @@ export class HttpService {
 
   //admin APIs
   actDeactUser(id: String, active: boolean) {
-    let url = 'http://localhost:8080/api/admin/user'
+    let url = environment.apiBaseURL+'admin/user'
     let header = {
       headers: {
         'Content-Type': 'application/json',
@@ -122,6 +122,26 @@ export class HttpService {
       userID: id,
       isActive: active
     })
+    return this.http.put(url, JsnData, header)
+  }
+
+  toggleAdmin(id: String, active: boolean){
+    let url = environment.apiBaseURL+'admin/user/admin'
+    let header = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }
+    }
+    var JsnData = JSON.stringify({
+      userID: id,
+      isAdmin: active
+    })
+    console.log(url)
+    console.log(header)
+    console.log(JsnData)
     return this.http.put(url, JsnData, header)
   }
 
@@ -173,9 +193,7 @@ export class HttpService {
       Album: user.album,
       Duration: user.duration,
       Year: user.year,
-      Genre: user.genre,
-      Hidden: user.hideSong,
-      Picture: "environment.defaultPicture"
+      Genre: user.genre
     })
     console.log(JsnData)
 
@@ -211,14 +229,14 @@ export class HttpService {
         'Access-Control-Allow-Headers': 'Content-Type',
         'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
       })
-      ,body:JsnData
+      , body: JsnData
     }
 
-    return this.http.delete(url,httpOptions);
+    return this.http.delete(url, httpOptions);
   }
 
-  delPlaylist(playListID:any){
-    let url=environment.apiBaseURL+'admin/playlist'
+  delPlaylist(playListID: any) {
+    let url = environment.apiBaseURL + 'admin/playlist'
     var JsnData = JSON.stringify({
       playListID: playListID
     })
@@ -229,47 +247,94 @@ export class HttpService {
         'Access-Control-Allow-Headers': 'Content-Type',
         'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
       }),
-      body:JsnData
+      body: JsnData
     }
-    return this.http.delete(url,httpOptions)
+    return this.http.delete(url, httpOptions)
   }
+
+  deleteReview(reviewID:String)
+  {
+    let url=environment.apiBaseURL+'admin/review'
+    var JsnData = JSON.stringify({
+      reviewid: reviewID
+    })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }),
+      body: JsnData
+    }
+    return this.http.delete(url, httpOptions)
+  }
+  adminDeleteSong(songID) {
+    let url = environment.apiBaseURL + 'admin/song'
+    //let header=this.getHeader()
+    var JsnData = JSON.stringify({
+      songID: songID
+    })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }),
+      body: JsnData
+    }
+    return this.http.delete(url, httpOptions)
+  }
+
+  adminUpdateSong(song:any){
+    let url=environment.apiBaseURL+'admin/song'
+    let header = this.getHeader()
+    var JsnData = JSON.stringify({
+     
+    })
+
+    return this.http.post(url, JsnData, header);
+
+  }
+
   // end of admin APIs
 
 
   // start of user API
 
-  getAllsongs(){
-    let url=environment.apiBaseURL+'secure/song'
-    let header=this.getHeader()
-    return this.http.get(url,header);
+  getAllsongs() {
+    let url = environment.apiBaseURL + 'secure/song'
+    let header = this.getHeader()
+    return this.http.get(url, header);
   }
 
-  submitRating(value:any,songid:any){
-    let url=environment.apiBaseURL+'secure/rate'
-    let header=this.getHeader()
+  submitRating(value: any, songid: any) {
+    let url = environment.apiBaseURL + 'secure/rate'
+    let header = this.getHeader()
     var JsnData = JSON.stringify({
       songID: songid,
       userName: value.name,
-      ratings:value.rate,
-      userID:value.id
+      ratings: value.rate,
+      userID: value.id
     })
-    return this.http.post(url,JsnData,header)
+    return this.http.post(url, JsnData, header)
   }
 
-  submitReview(value:any,songID:any){
-    let url=environment.apiBaseURL+'secure/review'
-    let header=this.getHeader()
+  submitReview(value: any, songID: any) {
+    let url = environment.apiBaseURL + 'secure/review'
+    let header = this.getHeader()
     var JsnData = JSON.stringify({
       songId: songID,
       comment: value.review,
-      reviewBy:value.name,
-      userId:value.id
+      reviewBy: value.name,
+      userId: value.id
     })
-    return this.http.post(url,JsnData,header)
+    return this.http.post(url, JsnData, header)
   }
 
-  deleteRating(rateid){
-    let url=environment.apiBaseURL+'secure/rate'
+  deleteRating(rateid) {
+    let url = environment.apiBaseURL + 'secure/rate'
     //let header=this.getHeader()
     var JsnData = JSON.stringify({
       rateID: rateid
@@ -281,9 +346,62 @@ export class HttpService {
         'Access-Control-Allow-Headers': 'Content-Type',
         'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
       }),
-      body:JsnData
+      body: JsnData
     }
-    return this.http.delete(url,httpOptions)
+    return this.http.delete(url, httpOptions)
   }
-  // end of user API
+
+  deleteSong(songID) {
+    let url = environment.apiBaseURL + 'secure/song'
+    //let header=this.getHeader()
+    var JsnData = JSON.stringify({
+      songID: songID
+    })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }),
+      body: JsnData
+    }
+    return this.http.delete(url, httpOptions)
+  }
+  addSongToDB(value) {
+    let url = environment.apiBaseURL + 'secure/song'
+    let header = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }
+    };
+    var JsnData = JSON.stringify({
+      Name: value.title,
+      Artist: value.artist,
+      Album: value.album,
+      Duration: value.duration,
+      Year: value.year,
+      Genre: value.genre,
+      Hidden: value.hideSong
+    })
+    console.log(JsnData)
+
+    return this.http.post(url, JsnData, header)
+  }
+  addPlayListUser(playlist: any) {
+    let url = environment.apiBaseURL + 'secure/playlist'
+    let header = this.getHeader()
+    var JsnData = JSON.stringify({
+      title: playlist.title,
+      description: playlist.description,
+      ownerID: playlist.id,
+      songID: []
+    })
+
+    return this.http.post(url,JsnData,header)
+    // end of user API
+  }
 }
