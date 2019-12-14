@@ -18,7 +18,9 @@ import { ViewsongsComponent } from './admin/viewsongs/viewsongs.component'
 import { ViewsongdetailsComponent } from './admin/viewsongdetails/viewsongdetails.component'
 import { EditsongdetailsComponent } from './admin/editsongdetails/editsongdetails.component'
 import { AddsongsComponent } from './admin/addsongs/addsongs.component'
-
+import { ViewplaylistsAdminComponent } from './admin/viewplaylists/viewplaylists.component'
+import { CreateplaylistAdminComponent } from './admin/createplaylist/createplaylist.component'
+import { AddSongPlaylistComponent } from './admin/add-song-playlist/add-song-playlist.component'
 
 const routes: Routes = [
   {
@@ -44,7 +46,10 @@ const routes: Routes = [
       { path: 'song', component: ViewsongsComponent },
       { path: 'song/view/:id', component: ViewsongdetailsComponent },
       { path: 'song/edit/:id', component: EditsongdetailsComponent },
-      { path: 'song/add', component: AddsongsComponent }
+      { path: 'song/add', component: AddsongsComponent },
+      { path: 'playlist/view', component: ViewplaylistsAdminComponent },
+      { path: 'playlist/create', component: CreateplaylistAdminComponent },
+      { path: 'song/playlist/:id', component: AddSongPlaylistComponent }
     ], canActivate: [AuthGuard]
   }
 ];

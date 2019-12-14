@@ -25,6 +25,9 @@ import { ViewsongsComponent } from './admin/viewsongs/viewsongs.component';
 import { ViewsongdetailsComponent } from './admin/viewsongdetails/viewsongdetails.component';
 import { EditsongdetailsComponent } from './admin/editsongdetails/editsongdetails.component';
 import { AddsongsComponent } from './admin/addsongs/addsongs.component';
+import { ViewplaylistsAdminComponent } from './admin/viewplaylists/viewplaylists.component'
+import {CreateplaylistAdminComponent} from './admin/createplaylist/createplaylist.component';
+import { AddSongPlaylistComponent } from './admin/add-song-playlist/add-song-playlist.component'
 
 @NgModule({
   declarations: [
@@ -45,8 +48,10 @@ import { AddsongsComponent } from './admin/addsongs/addsongs.component';
     ViewsongsComponent,
     ViewsongdetailsComponent,
     EditsongdetailsComponent,
-    AddsongsComponent
-    
+    AddsongsComponent,
+    ViewplaylistsAdminComponent,
+    CreateplaylistAdminComponent,
+    AddSongPlaylistComponent
   ],
   imports: [
     BrowserModule,

@@ -24,7 +24,7 @@ export class HttpService {
   ValidateLogin(email: any, pass: any) {
     console.log("inside validatelogin")
     //let URL = 'http://' + window.location.host + '/insertNewItem'
-    let URL = environment.apiBaseURL+'user/login'
+    let URL = environment.apiBaseURL + 'user/login'
     console.log(URL)
 
     var JsnData = JSON.stringify({
@@ -108,6 +108,22 @@ export class HttpService {
   }
 
   //admin APIs
+  hidePlaylist(id: string, active: boolean) {
+    let url = environment.apiBaseURL + 'admin/playlist/hide'
+    let header = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }
+    }
+    var JsnData = JSON.stringify({
+      playListID: id,
+      hidden: active
+    })
+    return this.http.put(url, JsnData, header)
+  }
   actDeactUser(id: String, active: boolean) {
     let url = environment.apiBaseURL + 'admin/user'
     let header = {
@@ -202,17 +218,36 @@ export class HttpService {
 
   }
 
-  addPlaylist(playlist: any, id: any) {
+  addPlaylist(title, desc, adminID) {
     let url = environment.apiBaseURL + 'admin/playlist'
     let header = this.getHeader()
     var JsnData = JSON.stringify({
-      title: playlist.title,
-      description: playlist.description,
-      ownerID: id,
-      songID: []
+      title: title,
+      description: desc,
+      ownerID: adminID
     })
-
+    console.log(JsnData)
     return this.http.post(url, JsnData, header);
+  }
+
+  addSongPlaylistAdmin(songID, playlistID) {
+    let url = environment.apiBaseURL + 'admin/playlist/song'
+    let header = this.getHeader()
+    var JsnData = JSON.stringify({
+      playListID: playlistID,
+      songID: songID
+    })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      })
+      , body: JsnData
+    }
+    console.log(httpOptions)
+    return this.http.put(url,JsnData,header);
   }
 
   removeSongPlaylist(songid, playlistid) {
@@ -286,22 +321,34 @@ export class HttpService {
     return this.http.delete(url, httpOptions)
   }
 
-  adminUpdateSong(song: any,songID:any) {
+  adminUpdateSong(song: any, songID: any) {
     let url = environment.apiBaseURL + 'admin/song'
     let header = this.getHeader()
     var JsnData = JSON.stringify({
-      songID:song[0]._id,
-      Name:song[0].Name,
-      Artist:song[0].Artist,
-      Album:song[0].Album,
-      Duration:song[0].Duration,
-      Year:song[0].Year,
-      Genre:song[0].Genre,
-      Hidden:song[0].Hidden
+      songID: song[0]._id,
+      Name: song[0].Name,
+      Artist: song[0].Artist,
+      Album: song[0].Album,
+      Duration: song[0].Duration,
+      Year: song[0].Year,
+      Genre: song[0].Genre,
+      Hidden: song[0].Hidden
     })
-    console.log(JsnData)
+    //console.log(JsnData)
     return this.http.put(url, JsnData, header);
 
+  }
+
+  editPlaylistAdmin(playlistid: string, title: string, description: string) {
+    let url = environment.apiBaseURL + 'admin/playlist'
+    let header = this.getHeader()
+    var JsnData = JSON.stringify({
+      playListID: playlistid,
+      title: title,
+      description: description
+    })
+    //console.log(JsnData)
+    return this.http.put(url, JsnData, header);
   }
 
   // end of admin APIs

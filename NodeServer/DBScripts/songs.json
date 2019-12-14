@@ -1,4 +1,4 @@
-{"_id":{"$oid":"5dd86e856a5f222ab4ad5fb8"},"Name":"Entammede Jimikki Kammal","Artist":"Vineeth Sreenivasan","Album":"Velipadinte Pusthakam","Duration":{"$numberInt":"3"},"Year":{"$numberInt":"2017"},"Genre":"Filmi","Hidden":false,"Picture":"jimikki-kammal.jpg"}
+{"_id":{"$oid":"5dd86e856a5f222ab4ad5fb8"},"Name":"Entammede Jimikki","Artist":"Vineeth Sreenivasan","Album":"Velipadinte Pusthakam","Duration":{"$numberInt":"3"},"Year":"2017","Genre":"Filmi","Hidden":false,"Picture":"jimikki-kammal.jpg"}
 {"_id":{"$oid":"5dd86e8d6a5f222ab4ad5fb9"},"Name":"Maangalyam","Artist":"Vijay Yesudas, Sachin Warrier","Album":"Bangalore Days","Duration":{"$numberInt":"3"},"Year":{"$numberInt":"2014"},"Genre":"Filmi","Hidden":false,"Picture":"Bangalore-Days.jpg"}
 {"_id":{"$oid":"5dd86e8f6a5f222ab4ad5fba"},"Name":"Dheera Dheera","Artist":"Ananya Bhat , Sri Krishna","Album":"KGF Chapter-1","Duration":{"$numberInt":"3"},"Year":{"$numberInt":"2018"},"Genre":"Filmi","Hidden":false,"Picture":"kgf.jpg"}
 {"_id":{"$oid":"5dd86347444eb93620d35f08"},"Name":"Psycho Saiyaan","Artist":"Anirudh Ravichander","Album":"Saaho","Duration":{"$numberInt":"2"},"Year":"2019","Genre":"Filmi","Hidden":false,"Picture":"saaho.jpg"}
@@ -17,4 +17,5 @@
 {"_id":{"$oid":"5dd86f1d6a5f222ab4ad5fc3"},"Name":"Oorugalle","Artist":"Karthik, Karunya, Harini","Album":"Sainikudu","Duration":{"$numberInt":"5"},"Year":{"$numberInt":"2014"},"Genre":"Filmi","Hidden":false,"Picture":"Sainikudu.jpg"}
 {"_id":{"$oid":"5dd86f266a5f222ab4ad5fc6"},"Name":"Amma Ledu Nanna Ledu","Artist":"Vineeth Sreenivasan","Album":"Ek Niranjan","Duration":{"$numberInt":"5"},"Year":{"$numberInt":"2013"},"Genre":"Filmi","Hidden":false,"Picture":"Ek_Niranjan.jpg"}
 {"_id":{"$oid":"5de312c03008c71cf80b2606"},"Genre":"filmi","Hidden":true,"Name":"Chododhantunna","Artist":"Mani Sharma","Album":"Pokiri","Duration":{"$numberDouble":"3.04"},"Year":{"$numberInt":"2013"},"Picture":"Pokiri.jpg"}
-{"_id":{"$oid":"5dec40e8b3655125d04ccf88"},"Genre":"Action","Hidden":false,"Picture":"default.jpg","Name":"Sye Raa","Artist":"Manoj","Album":"Sye Raa","Duration":{"$numberInt":"3"},"Year":"2019"}
+{"_id":{"$oid":"5dedfcb81c15a207bca1f5b2"},"Genre":"asdsad","Hidden":false,"Picture":"default.jpg","Name":"Sye Raa","Artist":"asdsad","Album":"Sye Raa","Duration":{"$numberInt":"3"},"Year":"2019"}
+{"_id":{"$oid":"5dee081d1c15a207bca1f5b3"},"Genre":"asds","Hidden":false,"Picture":"default.jpg","Name":"Sye Raa","Artist":"asdsad","Album":"asdsad","Duration":{"$numberInt":"3"},"Year":"2222"}

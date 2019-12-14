@@ -24,9 +24,12 @@ exports.getTopTenSongs = (req, res) => {
             }
         },
         { $unwind: "$ratings_data" },
+        // {
+        //     rating: { $round: ["$rating", 0] }
+        // },
         {
             $project: {
-                rating: 1,
+                rating: { $round: ["$rating", 0] },
                 _id: 1,
                 genre: "$ratings_data.Genre",
                 hidden: "$ratings_data.Hidden",
@@ -37,18 +40,23 @@ exports.getTopTenSongs = (req, res) => {
                 year: "$ratings_data.Year",
                 picture: "$ratings_data.Picture"
             }
+        },
+        {
+            $sort: {
+                rating: -1,
+                name: 1
+            }
         }
     ])
         .limit(10)
         .then(songs => {
-            if(songs!=null)
-            {
+            if (songs != null) {
                 res.send({ statusCode: 200, result: songs })
             }
-            else{
+            else {
                 res.send({ statusCode: 300, result: songs })
             }
-           
+
         })
         .catch(err => {
             res.send({
@@ -125,22 +133,33 @@ exports.getReview = (req, res) => {
     reviews.aggregate([
         {
             $match: { songId: songID }
-        },
+        }
+        ,
         {
-            $lookup: {
+            $lookup:
+            {
                 from: "Ratings",
-                localField: "userId",
-                foreignField: "userID",
+                let: { review_songID: "$songId", review_userID: "$userId" },
+                pipeline: [
+                    {
+                        $match:
+                        {
+                            $expr:
+                            {
+                                $and:
+                                    [
+                                        { $eq: ["$songID", "$$review_songID"] },
+                                        { $eq: ["$$review_userID", "$userID"] }
+                                    ]
+                            }
+                        }
+                    }
+                ],
                 as: "ratings_data"
             }
-        },
+        }
+        ,
         { $unwind: "$ratings_data" }
-        // ,
-        // {
-        //     $group:{
-        //         _id:"_id"
-        //     }
-        // }
         ,
         {
             $project: {
@@ -149,7 +168,7 @@ exports.getReview = (req, res) => {
                 comment: 1,
                 reviewBy: 1,
                 userId: 1,
-                rating: "$ratings_data.ratings"
+                rating: { $round: ["$ratings_data.ratings", 0] }
             }
         }
     ]).then(songs => {

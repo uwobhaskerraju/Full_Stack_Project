@@ -130,7 +130,8 @@ exports.updateSong = (req, res) => {
             }
         })
         .catch(err => {
-            res.send({ statusCode: 500, result: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 }
@@ -215,16 +216,16 @@ exports.addSongsPList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode: 200, result: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -259,16 +260,16 @@ exports.hidePList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode: 200, result: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -352,6 +353,32 @@ exports.makeUserAdmin = (req, res) => {
                 // didnt insert 
                 res.send({ statusCode: 300, result: "false" })
             }
+        })
+        .catch(err => {
+            res.send({
+                statusCode: 500, result: err.message || errMsg
+            })
+        });
+};
+
+exports.editPlaylist = (req, res) => {
+    const updates = generateKeyValueFromBody(req.body)
+    var playListID = updates.playListID
+
+    delete updates.playListID
+
+
+    Playlist.updateOne({ _id: playListID }, { $set: updates })
+        .then(data => {
+            //console.log(data["nModified"])
+            if (Boolean(data["nModified"])) {
+
+                res.send({ statusCode: 200, result: "success" })
+            }
+            else {
+                res.send({ statusCode: 400, result: "false" })
+            }
+
         })
         .catch(err => {
             res.send({

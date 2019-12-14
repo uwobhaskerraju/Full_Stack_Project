@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 
 const crypto = require('crypto');
+var bcrypt = require('bcryptjs');
 const saltRounds = 10000;
 const keylength = 512;
 const alg = 'sha512';
@@ -26,45 +27,59 @@ exports.registerUser = (req, res) => {
         .then(data => {
             if (data) {
                 // table has user so end the request
-                return res.status(200).send({ message: "Username already exists. Try Logging in" })
+                return res.send({ statusCode: 200, result: "Username already exists. Try Logging in" })
             }
             else {
 
                 //register user
-                let salt = crypto.randomBytes(16).toString('hex');
-                let hash = crypto.pbkdf2Sync(req.body.password, salt, saltRounds, keylength, alg).toString('hex');
-                var userObj = {
-                    "username": req.body.username,
-                    "password": hash,
-                    "salt": salt,
-                    "email": req.body.email,
-                    "emailverified": false,
-                    "usertype": "user",
-                    "signupmethod": "registration"
-                };
-                const user = new User(userObj);
-                user.save()
-                    .then(data => {
-                        var objToken = {
-                            "email": userObj.email,
-                            "id": data["_id"],
-                            "name": userObj.username,
-                            "emailverified": data["emailverified"],
-                            "userType": data["usertype"]
+                //let salt = crypto.randomBytes(16).toString('hex');
+                bcrypt.genSalt(10, function (err, salt) {
+                    if (err) {
+                        return res.send({ statusCode: 500, result: "something went wrong!" })
+                    }
+                    bcrypt.hash(req.body.password, salt, function (err, hash) {
+                        if (err) {
+                            return res.send({ statusCode: 500, result: "something went wrong!" })
                         }
-                        let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
-                        res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });
-                    })
-                    .catch(err => {
-                        res.status(500).send({
-                            message: err.message || errMsg
-                        })
+                        var userObj = {
+                            "username": req.body.username,
+                            "password": hash,
+                            "salt": salt,
+                            "email": req.body.email,
+                            "emailverified": false,
+                            "usertype": "user",
+                            "signupmethod": "registration"
+                        };
+                        const user = new User(userObj);
+                        user.save()
+                            .then(data => {
+                                var objToken = {
+                                    "email": userObj.email,
+                                    "id": data["_id"],
+                                    "name": userObj.username,
+                                    "emailverified": data["emailverified"],
+                                    "userType": data["usertype"]
+                                }
+                                let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
+                                res.send({ statusCode: 200, result: objToken, "WWW-Authenticate": token });
+                            })
+                            .catch(err => {
+                                res.send({
+                                    statusCode: 500,
+                                    result: err.message || errMsg
+                                })
+                            });
                     });
+                });
+                //let hash = crypto.pbkdf2Sync(req.body.password, salt, saltRounds, keylength, alg).toString('hex');
+
+
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500,
+                result: err.message || errMsg
             })
         });
 
@@ -74,27 +89,32 @@ exports.validateLogin = (req, res) => {
     User.findOne({ email: req.body.email })
         .then(data => {
             // console.log(data)
-            if (!data) return res.status(400).send({ message: "Invalid Username / Password" })
-            if (!data["active"]) return res.send({ statusCode: 400, message: "Contact Admin to re-activate your account" })
+            if (!data) return res.send({ statusCode: 400, result: "Invalid Username / Password" })
+            if (!data["active"]) return res.send({ statusCode: 400, result: "Contact Admin to re-activate your account" })
 
-            const hash = crypto.pbkdf2Sync(req.body.password, data.salt, saltRounds, keylength, alg).toString('hex');
-            if (hash == data.password) {
-                // user found
-                var objToken = {
-                    "email": data.email,
-                    "id": data["_id"],
-                    "name": data.username,
-                    "emailverified": data["emailverified"],
-                    "userType": data["usertype"]
+            bcrypt.compare(req.body.password, data.password, function (err, resp) {
+                if (err) {
+                    return res.send({ statusCode: 400, result: "Invalid Username / Password" })
+                } 
+                if (resp) {
+                    var objToken = {
+                        "email": data.email,
+                        "id": data["_id"],
+                        "name": data.username,
+                        "emailverified": data["emailverified"],
+                        "userType": data["usertype"]
+                    }
+                    let token = jwt.sign(objToken, req.secret);
+                    res.send({ statusCode: 200, result: objToken, "WWW-Authenticate": token });
                 }
-                let token = jwt.sign(objToken, req.secret);
-                res.status(200).send({ "statusCode": 200, "result": objToken, "WWW-Authenticate": token });
-            }
-            else return res.status(400).send({ message: "Invalid Username / Password" })
+                else {
+                    return res.send({ statusCode: 400, result: "Invalid Username / Password" })
+                }
+            });
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };

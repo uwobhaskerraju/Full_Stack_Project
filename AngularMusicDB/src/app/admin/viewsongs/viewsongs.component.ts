@@ -3,6 +3,8 @@ import { HttpService } from 'src/app/http.service';
 import { environment } from 'src/environments/environment.prod';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 
+declare var M:any
+
 @Component({
   selector: 'app-viewsongs',
   templateUrl: './viewsongs.component.html',
@@ -24,7 +26,7 @@ export class ViewsongsComponent implements OnInit {
         console.log(data["result"])
       }
       else {
-        //unable to fetch users
+        //unable to fetch songs
       }
     });
   }
@@ -53,10 +55,13 @@ export class ViewsongsComponent implements OnInit {
         this.router.navigate(['edit', songID], { relativeTo: this.route, state: navigationExtras })
         break;
       case 2:
-        this.router.navigate(['view',songID], {relativeTo: this.route,state: navigationExtras })
+        this.router.navigate(['view', songID], { relativeTo: this.route, state: navigationExtras })
+        break;
+      case 3:
+        this.router.navigate(['playlist', songID],{ relativeTo: this.route })
         break;
       default:
-        console.log("default")
+          M.toast({ html: 'Something went wrong!', classes: 'rounded' })
         break;
 
     }

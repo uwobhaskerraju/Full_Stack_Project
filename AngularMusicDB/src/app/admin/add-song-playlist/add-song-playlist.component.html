@@ -1,0 +1,14 @@
+<blockquote>
+    <h4>Select the playlist to which you want to add the song</h4>
+</blockquote>
+
+<ul class="collection" *ngIf="allPlaylists">
+    <li class="collection-item avatar" *ngFor="let playlist of allPlaylists">
+        <img src="{{imagePath}}icons/1.png" alt="" class="circle">
+        <p>{{playlist.title}} <br>
+            {{playlist.description}}
+        </p>
+        <a href="javascript:void(0)"  (click)="addSongPlaylistAdmin($event)" class="secondary-content"><i id="{{playlist._id}}" class="material-icons">add</i></a>
+    </li>
+
+</ul>

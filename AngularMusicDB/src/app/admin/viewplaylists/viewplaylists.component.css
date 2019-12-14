@@ -1,0 +1,17 @@
+blockquote {
+    border-left: 5px solid #03a9f4 !important;
+}
+
+.collection .collection-item {
+    background-color: transparent !important;
+}
+
+.input-field > label {
+    color: #ffffff !important;
+}
+
+textarea.materialize-textarea {
+
+    border-bottom: 1px solid #ffffff !important ;
+
+}

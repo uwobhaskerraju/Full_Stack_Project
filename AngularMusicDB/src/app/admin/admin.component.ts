@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { environment } from '../../environments/environment.prod'
 
 declare var M: any;
@@ -57,19 +57,19 @@ export class AdminComponent implements OnInit {
     //     }
     //   });
   }//end of ngInit()
-  addPlaylist() {
-    this._http.addPlaylist(this.playlist, this.state["id"])
-      .subscribe(data => {
-        if (data["statusCode"] == 200) {
-          // say good
-          //clear the form
-        }
-        else {
-          // throw a toast
-        }
-      });
+  // addPlaylist() {
+  //   this._http.addPlaylist(this.playlist, this.state["id"])
+  //     .subscribe(data => {
+  //       if (data["statusCode"] == 200) {
+  //         // say good
+  //         //clear the form
+  //       }
+  //       else {
+  //         // throw a toast
+  //       }
+  //     });
 
-  }
+  // }
   getSongDetails(songIds: any, allSongs: any) {
     // we are iterating through the playlist array to get each songID,
     //later we are using main allSongs to get details from it and add into playlist  
@@ -155,10 +155,15 @@ export class AdminComponent implements OnInit {
         this.router.navigate(['song/add'], { relativeTo: this.route });
         break;
       case 4:
-        this.router.navigate(['view'], { relativeTo: this.route });
+        this.router.navigate(['playlist/view'], { relativeTo: this.route });
         break;
       case 5:
-        this.router.navigate(['view'], { relativeTo: this.route });
+          const navigationExtras: NavigationExtras = {
+            state: {
+              id: this.state["id"]
+            }
+          };
+        this.router.navigate(['playlist/create'], { relativeTo: this.route,state:navigationExtras });
         break;
     }
   }
