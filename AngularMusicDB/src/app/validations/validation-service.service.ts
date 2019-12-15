@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as EmailValidator from 'email-validator';
 
+declare var M:any
+
 @Injectable({
   providedIn: 'root'
 })
@@ -12,57 +14,95 @@ export class ValidationServiceService {
   validateEmail(uEmail: any) {
     let errMsg = ''
     if (!EmailValidator.validate(uEmail)) {
-      errMsg = 'Invalid Email'
+      errMsg = 'Invalid Email||'
     }
     return errMsg;
   }
   validateYear(year: any) {
     let msg = ''
     if (Number(year)) {
-      if (!(Number(year) > 0 && Number(year) < 2020)) {
-        msg = 's'
+      if ((Number(year) < 0 || Number(year) > 2020)) {
+        msg = 'Year should be less than 2020||'
       }
 
     }
     else {
-      msg = 'year should be number'
+      msg = 'year should be number||'
     }
     return msg;
   }
   validateDuration(duration: any) {
     let msg = ''
-    if (Number(duration)) {
-      if (!(Number(duration) > 0 && (Number(duration) < 7))) {
-        msg = 's'
+    if (parseFloat(duration)) {
+      if ((parseFloat(duration) < 1 || (parseFloat(duration) > 7))) {
+        msg = 'Duration should be less than 7min||'
       }
-
     }
     else {
-      msg = 'duration should be number'
+      msg = 'duration should be mm.ss format||'
     }
     return msg;
   }
 
+  validateTitle(title:String){
+    let msg = ''
+    if(Boolean(title)){
+      if (String(title).length < 1 || String(title).length > 15) {
+        msg = msg.concat("title should be less than 15||")
+      }
+    }
+    else{
+      msg='title shouldnt be empty||'
+    }
+    return msg
+  }
+  validateDesc(desc:String)
+  {
+    let msg = ''
+    if(Boolean(desc)){
+      if (String(desc).length < 1 || String(desc).length > 120) {
+        msg = msg.concat("Description should be less than 120||")
+      }
+    }
+    else{
+      msg='Description shouldnt be empty||'
+    }
+    return msg
+  }
+  generateToast(errMsg:String){
+    errMsg.split('||').forEach(
+      d => {
+        if (Boolean(d)) {
+          M.toast({ html: d, classes: 'rounded' })
+        }
+
+      }
+    );
+  }
+
   validatereview(review: any) {
     let msg = ''
-    if (Boolean(review) && String(review).length < 121) {
-
+    if (Boolean(review)) {
+      if(String(review).length > 120){
+        msg = 'review should be 120 characters||'
+      }
     }
     else {
-      msg = 'review should have value'
+      msg = 'review shouldnt be empty||'
     }
     return msg;
   }
   validaterating(rate) {
     let msg = ''
+    //console.log(typeof rate)
     if (Number(rate)) {
-      if (!(Number(rate) > 0)) {
-        msg = 's'
+      //should be between 0 and 5
+      if (Number(rate) > 5 || Number(rate) <= 0) {
+        msg = 'Rating should be between 1 and 5||'
       }
-
     }
     else {
-      msg = 'rating should be number'
+      msg = 'rating should be number||'
     }
     return msg;
   }

@@ -28,26 +28,35 @@ export class DashboardhomeComponent implements OnInit, AfterViewInit {
   }
 
   showDetails(value) {
-    let songID = value.srcElement.id.split('_')[0]
-    //console.log(songID)
-    let songData;
-    //console.log(this.orgSongs.length)
-    for (var i = 0; i < 100; i++) {
-      if (this.orgSongs[i]["_id"] == songID) {
-        songData = this.orgSongs[i]
+    switch (Number(value.srcElement.id.split('_')[1])) {
+      case 1:
+        let songID = value.srcElement.id.split('_')[0]
+        //console.log(songID)
+        let songData;
+        //console.log(this.orgSongs.length)
+        for (var i = 0; i < 100; i++) {
+          if (this.orgSongs[i]["_id"] == songID) {
+            songData = this.orgSongs[i]
+            break;
+          }
+        }
+        // console.log(this.orgSongs)
+        //console.log(songData)
+        const navigationExtras: NavigationExtras = {
+          state: {
+            allSongs: songData
+          }
+        };
+        //console.log(navigationExtras)
+        this.router.navigate(['song', songID], { relativeTo: this.route, state: navigationExtras })
         break;
-      }
+      case 2:
+        let songId = value.srcElement.id.split('_')[0]
+        //console.log("playlist")
+        this.router.navigate(['song/playlist/', songId], { relativeTo: this.route })
+        break;
     }
-    // console.log(this.orgSongs)
-    //console.log(songData)
-    const navigationExtras: NavigationExtras = {
-      state: {
-        allSongs: songData
-      }
-    };
-    console.log(navigationExtras)
 
-    this.router.navigate(['song', songID], { relativeTo: this.route, state: navigationExtras })
   }
 
   ngAfterViewInit() {

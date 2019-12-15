@@ -11,7 +11,7 @@ export class HttpService {
 
   // open APIs
   getTopTenSongs() {
-    let URL = 'http://localhost:8080/api/open/songs/ten'
+    let URL = environment.apiBaseURL + 'open/songs/ten'
     return this.http.get(URL);
   }
 
@@ -20,6 +20,13 @@ export class HttpService {
     let headers = this.getBasicHeaders()
     return this.http.get(url, headers);
   }
+
+  getSearchedSongs(query: String) {
+    let url = environment.apiBaseURL + '/open/search/' + query;
+    let headers = this.getBasicHeaders()
+    return this.http.get(url, headers);
+  }
+
   // end of open APIs
   ValidateLogin(email: any, pass: any) {
     console.log("inside validatelogin")
@@ -247,7 +254,7 @@ export class HttpService {
       , body: JsnData
     }
     console.log(httpOptions)
-    return this.http.put(url,JsnData,header);
+    return this.http.put(url, JsnData, header);
   }
 
   removeSongPlaylist(songid, playlistid) {
@@ -353,9 +360,7 @@ export class HttpService {
 
   // end of admin APIs
 
-
-  // start of user API
-
+  // start of user APIs
   getAllsongs() {
     let url = environment.apiBaseURL + 'secure/song'
     let header = this.getHeader()
@@ -456,5 +461,12 @@ export class HttpService {
 
     return this.http.post(url, JsnData, header)
     // end of user API
+  }
+
+  getUserPlaylists(user:string){
+    let url=environment.apiBaseURL+'secure/playlist/'+user
+    console.log(url)
+    let header=this.getHeader();
+    return this.http.get(url,header)
   }
 }

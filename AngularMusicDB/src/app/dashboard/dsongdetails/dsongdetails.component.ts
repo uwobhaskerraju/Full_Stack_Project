@@ -3,6 +3,9 @@ import { HttpService } from 'src/app/http.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment.prod';
+import { ValidationServiceService } from 'src/app/validations/validation-service.service';
+
+declare var M: any
 
 @Component({
   selector: 'app-dsongdetails',
@@ -18,7 +21,7 @@ export class DsongdetailsComponent implements OnInit {
   public uSong: any = {}; // used for getting ratings and review of a song
 
 
-  constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute) {
+  constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute, private _validate: ValidationServiceService) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation.extras.state.state as
       {
@@ -26,8 +29,6 @@ export class DsongdetailsComponent implements OnInit {
       };
 
     this.songDetails.push(state.allSongs)
-    console.log("first state")
-    console.log(this.songDetails)
 
     //get logged in details like id and name
     this.uSong.id = localStorage.getItem('id')
@@ -38,16 +39,18 @@ export class DsongdetailsComponent implements OnInit {
     // localStorage.removeItem('name')
     // localStorage.removeItem('email')
 
-    console.log("uSong")
-    console.log(this.uSong)
   }
 
   ngOnInit() {
+    M.AutoInit();
+    M.updateTextFields();
+    var textNeedCount = document.querySelectorAll('input');
+    var textaNeedCount = document.querySelectorAll('textarea');
+    M.CharacterCounter.init(textNeedCount);
+    M.CharacterCounter.init(textaNeedCount);
+
     this.imagePath = environment.imagePath;
     this.routeSub = this.route.params.subscribe(params => {
-      //console.log(params) //log the entire params object
-      // console.log(params['id']) //log the value of id
-      //console.log(this.songDetails)
       this.songID = params['id']
     });
 
@@ -70,39 +73,51 @@ export class DsongdetailsComponent implements OnInit {
     this.routeSub.unsubscribe();
   }
   submitRateReview(value) {
-    
-    console.log(this.uSong)
-    console.log(value)
-    this._http.submitRating(this.uSong, value)
-      .subscribe(data => {
-        if (data["statusCode"] == 200) {
-          // toast saying yes
-          console.log("inserted rating")
-          // trigger review api
-          this._http.submitReview(this.uSong, value)
-          .subscribe(data=>{
-            if(data["statusCode"]==200)
-            {
-              // toast saying yes
-              console.log("inserted review")
-            }
-            else{
-              // delete rating
-              this._http.deleteRating(data["result"]).subscribe(
-                d=>{
-                  console.log("deleted rating as insert rating failed")
-                }
-              );
-            }
-          });
-        }
-        else {
-          // toast saying falied
-          console.log("insert rating failed")
-        }
-      });
+    let errMsg = ''
+    //validate rating and review
+    errMsg = errMsg.concat(this._validate.validaterating(this.uSong.rate))
+    errMsg = errMsg.concat(this._validate.validatereview(this.uSong.review))
 
-      this.ngOnInit();
+    if (!Boolean(errMsg)) {
+      //console.log("isnide ")
+      this._http.submitRating(this.uSong, value)
+        .subscribe(data => {
+          if (data["statusCode"] == 200) {
+            // toast saying yes
+            console.log("inserted rating")
+            // trigger review api
+            this._http.submitReview(this.uSong, value)
+              .subscribe(data => {
+                if (data["statusCode"] == 200) {
+                  // toast saying yes
+                  console.log("inserted review")
+                  M.toast({ html: "Succesfully added rating", classes: 'rounded' })
+                  this.ngOnInit();
+                }
+                else {
+                  // delete rating
+                  this._http.deleteRating(data["result"]).subscribe(
+                    d => {
+                      console.log("deleted rating as insert rating failed")
+                      M.toast({ html: "Operation failed.Try again!", classes: 'rounded' })
+                    }
+                  );
+                }
+              });
+          }
+          else {
+            // toast saying falied
+            M.toast({ html: "Operation failed.Try again!", classes: 'rounded' })
+          }
+        });
+    }
+    else {
+      this._validate.generateToast(errMsg);
+
+    }
+
+
+
   }
 
   generateRandNum() {

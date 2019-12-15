@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewChecked } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 declare var M: any;
 
 import { HttpService } from '../http.service'
@@ -11,12 +11,9 @@ import { ValidationServiceService } from '../validations/validation-service.serv
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit, AfterViewChecked {
+export class LoginComponent implements OnInit {
   temp:boolean
-  ngAfterViewChecked(): void {
-    
-  }
-
+ 
   constructor(private _http: HttpService, private router: Router, private _valService: ValidationServiceService) { }
   imagePath: String
   ngOnInit() {
@@ -25,15 +22,6 @@ export class LoginComponent implements OnInit, AfterViewChecked {
     M.updateTextFields();
     var textNeedCount = document.querySelectorAll('input');
     M.CharacterCounter.init(textNeedCount);
-    // if(!this.temp){
-    //   for (var i = 0; document.getElementsByTagName('label').length; i++) {
-    //     if (document.getElementsByTagName('label')) {
-    //       document.getElementsByTagName('label').item(i).classList.add('active');
-    //       this.temp=true
-    //     }
-  
-    //   }
-    // }
   }
 
   ValidateLogin(email: String, pass: String) {

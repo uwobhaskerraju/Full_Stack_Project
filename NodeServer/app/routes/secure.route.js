@@ -13,7 +13,7 @@ module.exports = (app) => {
     app.post('/secure/rate',checkrequest.CheckRole,checkrequest.CheckToken,secured.ratesong);
 
     // get all playlists
-    app.get('/secure/playlist',checkrequest.CheckRole,checkrequest.CheckToken,secured.getAllPlaylists);
+    app.get('/secure/playlist/:userID',checkrequest.CheckRole,checkrequest.CheckToken,secured.getAllPlaylists);
 
     // Create a playlist
     app.post('/secure/playlist',checkrequest.CheckRole,checkrequest.CheckToken, secured.createPList);

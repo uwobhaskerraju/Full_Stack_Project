@@ -21,6 +21,7 @@ import { AddsongsComponent } from './admin/addsongs/addsongs.component'
 import { ViewplaylistsAdminComponent } from './admin/viewplaylists/viewplaylists.component'
 import { CreateplaylistAdminComponent } from './admin/createplaylist/createplaylist.component'
 import { AddSongPlaylistComponent } from './admin/add-song-playlist/add-song-playlist.component'
+import { AddsongplayuserComponent } from './dashboard/addsongplayuser/addsongplayuser.component'
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
   {
     path: 'dashboard', component: DashboardComponent, children: [
       { path: '', component: DashboardhomeComponent },
+      { path: 'song/playlist/:id', component: AddsongplayuserComponent },
       { path: 'song/:id', component: DsongdetailsComponent },
       { path: 'add', component: AddsongComponent },
       { path: 'playlist', component: CreateplaylistComponent },

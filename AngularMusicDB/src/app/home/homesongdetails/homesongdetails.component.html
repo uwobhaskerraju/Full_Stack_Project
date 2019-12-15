@@ -60,7 +60,7 @@
             <ul class="collection" *ngIf="songReviews">
 
                 <li class="collection-item avatar" *ngFor="let review of songReviews">
-                    <img src="{{imagePath}}icons/{{generateRandNum()}}.png" alt="" class="circle">
+                    <img src="{{imagePath}}icons/3.png" alt="" class="circle">
                     <div class="right" *ngFor="let dummy of ' '.repeat(review.rating).split(''), let x = index">
                         <i class="material-icons">grade</i>
                     </div>

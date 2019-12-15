@@ -62,9 +62,7 @@ export class HomesongdetailsComponent implements OnInit {
     this.routeSub.unsubscribe();
   }
 
-  generateRandNum() {
-    return Math.floor(Math.random() * environment.iconsLen) + 1;
-  }
+
   goBack() {
     this.songDetails = null
     this.songReviews = null

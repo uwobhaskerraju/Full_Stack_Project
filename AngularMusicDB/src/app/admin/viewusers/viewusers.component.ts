@@ -15,8 +15,6 @@ export class ViewusersComponent implements OnInit {
     // get all users API
     this._http.getallUsers().subscribe(data => {
       if (data["statusCode"] = 200) {
-
-        this.allUsers = data["result"]
         data["result"].forEach(s => {
           if (s.usertype == "admin") {
             s.admin = true
@@ -25,6 +23,7 @@ export class ViewusersComponent implements OnInit {
             s.admin = false
           }
         });
+        this.allUsers = data["result"]
         console.log(data["result"])
       }
       else {

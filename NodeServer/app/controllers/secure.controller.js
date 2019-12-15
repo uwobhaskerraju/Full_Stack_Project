@@ -3,6 +3,7 @@ const Reviews = require('../models/review.model.js');
 const Ratings = require('../models/ratings.model.js');
 const Playlist = require('../models/playlist.model.js');
 const User = require('../models/user.model.js');
+const mongoose = require('mongoose');
 
 const errMsg = "something went wrong! try again"
 
@@ -89,14 +90,17 @@ exports.reviewSong = (req, res) => {
 };
 
 exports.getAllPlaylists = (req, res) => {
-    Playlist.find({hidden:false})
+    var userID = mongoose.Types.ObjectId(req.params.query)
+    console.log(userID)
+    Playlist.find({ hidden: false, ownerID: userID })
         .then(data => res.send({
             statusCode: 200,
             result: data
         }))
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500,
+                result: err.message || errMsg
             })
         });
 };
@@ -104,7 +108,7 @@ exports.getAllPlaylists = (req, res) => {
 exports.createPList = (req, res) => {
 
     const inserts = generateKeyValueFromBody(req.body)
-
+    console.log(inserts)
     //console.log(inserts)
     Playlist.create(inserts)
         .then(data => {
@@ -113,12 +117,12 @@ exports.createPList = (req, res) => {
             }
             else {
                 // didnt insert 
-                res.send({ statusCode: 200, result: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
         })
         .catch(err => {
             res.send({
-                statusCode: 200, result: err.message || errMsg
+                statusCode: 500, result: err.message || errMsg
             })
         });
     // res.send(200)
@@ -259,10 +263,11 @@ exports.getAllSongs = (req, res) => {
                 as: "ratings_data"
             }
         },
-        { $unwind: "$ratings_data" },
+        { $unwind: "$ratings_data" }
+        ,
         {
             $project: {
-                rating: 1,
+                rating: { $round: ["$rating", 0] },
                 _id: 1,
                 genre: "$ratings_data.Genre",
                 hidden: "$ratings_data.Hidden",
@@ -272,6 +277,17 @@ exports.getAllSongs = (req, res) => {
                 duration: "$ratings_data.Duration",
                 year: "$ratings_data.Year",
                 picture: "$ratings_data.Picture"
+            }
+        },
+        {
+            $sort: {
+                rating: -1,
+                name: 1
+            }
+        },
+        {
+            $match: {
+                hidden: false
             }
         }
     ])
@@ -341,7 +357,7 @@ exports.deleteSong = (req, res) => {
 
 };
 
-exports.test=(req,res)=>{
+exports.test = (req, res) => {
     console.log(req.body.email)
     res.send("ss")
 };

@@ -7,42 +7,73 @@
                 <span class="card-title"> {{song.name}}</span>
             </div>
             <div class="card-content">
-                <p> Name : {{song.name}}
-                    Genre : {{song.genre}}<br>
-                    Artist : {{song.artist}} <br>
-                    Album : {{song.album}} <br>
-                    Duration: {{song.duration}} <br>
-                    Year : {{song.year}} <br>
-                    Rating : {{song.rating}} / 5 <br>
-                </p>
+                <table class="centered responsive-table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Name : {{song.name}}
+                            </td>
+                            <td>
+                                Genre : {{song.genre}}
+                            </td>
+                            <td>
+                                Artist: {{song.artist}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Duration: {{song.duration}}
+                            </td>
+                            <td>
+                                Year : {{song.year}}
+                            </td>
+                            <td>
+                                <div class="row">
+                                    <div class="col s6">
+                                        Rating
+                                    </div>
+                                    <div class="col s6">
+                                        <div *ngFor="let dummy of ' '.repeat(song.rating).split(''), let x = index">
+                                            <i class="left material-icons">grade</i>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
 
         </div>
-        <div class="row">
-
+        <div class="divider"></div>
+        <div class="row center-align">
+            <h4>Rate song:</h4>
             <div class="row">
-                <div class="input-field col s6">
+                <div class="input-field col s12">
                     <input id="Uratesong" type="number" data-length="5" [(ngModel)]="uSong.rate">
-                    <label for="Uratesong">Rate</label>
+                    <label for="Uratesong" class="active">Rate</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
                     <textarea id="UreviewSong" class="materialize-textarea" data-length="120"
                         [(ngModel)]="uSong.review"></textarea>
-                    <label for="UreviewSong">Review</label>
+                    <label for="UreviewSong" class="active">Review</label>
                 </div>
                 <a (click)="submitRateReview(song._id)" class="btn-floating btn-large waves-effect waves-light red"><i
-                    class="material-icons">add</i></a>
+                        class="material-icons">add</i></a>
             </div>
-           
+
         </div>
+        <div class="divider"></div>
+        <h4 class="center-align">Reviews</h4>
         <div class="row">
             <ul class="collection" *ngIf="songReviews">
 
                 <li class="collection-item avatar" *ngFor="let review of songReviews">
-                    <img src="{{imagePath}}icons/{{generateRandNum()}}.png" alt="" class="circle">
+                    <img src="{{imagePath}}icons/3.png" alt="" class="circle">
                     <div class="right" *ngFor="let dummy of ' '.repeat(review.rating).split(''), let x = index">
                         <i class="material-icons">grade</i>
                     </div>

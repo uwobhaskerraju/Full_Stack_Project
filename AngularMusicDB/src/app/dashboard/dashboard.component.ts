@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
     console.log(index)
     switch (index) {
       case 1:
-        this.router.navigate(['/'], { relativeTo: this.route });
+        this.router.navigate(['/dashboard']);
         break;
       case 2:
         this.router.navigate(['add'], { relativeTo: this.route });

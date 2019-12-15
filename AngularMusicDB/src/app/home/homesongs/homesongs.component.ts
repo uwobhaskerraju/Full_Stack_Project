@@ -44,10 +44,24 @@ export class HomesongsComponent implements OnInit {
       }
     };
 
-    this.router.navigate(['/home',songID],navigationExtras);
+    this.router.navigate(['/home', songID], navigationExtras);
 
   }
 
 
+  onSearchChange(value) {
+    //console.log(value)
+    if (value) {
+      this._http.getSearchedSongs(value).subscribe(data => {
+        if (data["statusCode"] == 200) {
+          this.orgSongs = data["result"]
+          console.log(this.orgSongs)
+        }
+      });
+    }
+    else {
+      this.ngOnInit();
+    }
 
+  }
 }

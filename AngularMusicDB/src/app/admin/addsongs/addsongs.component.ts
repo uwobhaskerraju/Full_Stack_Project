@@ -27,6 +27,7 @@ export class AddsongsComponent implements OnInit {
       Boolean(this.song.Genre)) {
       errMsg = errMsg.concat('error')
     }
+    console.log(errMsg)
     if (!Boolean(errMsg)) {
       this._http.addSong(this.song).subscribe(data => {
         if (data["statusCode"] == 200) {
