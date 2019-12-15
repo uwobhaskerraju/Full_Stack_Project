@@ -10,6 +10,6 @@ export class AppComponent implements OnInit{
 
   ngOnInit(){
     M.AutoInit();
-    localStorage.setItem('userRole','guest');
+    //localStorage.setItem('userRole','guest');
   }
 }

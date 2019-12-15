@@ -1,21 +1,41 @@
+<br>
+<br>
+<nav>
+    <div class="nav-wrapper">
+        <form>
+            <div class="input-field">
+                <input placeholder="search here" (input)="onSearchChange($event.target.value)" type="search" required>
+                <label class="label-icon" for="search"><i class="material-icons">search</i></label>
+                <i class="material-icons">close</i>
+            </div>
+        </form>
+    </div>
+</nav>
+
 <blockquote>
-   <h4> You are watching the best songs of decade</h4>
+    <h4> You are watching the best songs of decade</h4>
 </blockquote>
 
 <div class="row" *ngIf="orgSongs">
-        <div class="col s3" *ngFor="let song of orgSongs">
-            <div class="card small">
-                <div class="card-image">
-                    <img src="../assets/Images/{{song.picture}}">
-                    <!-- <span class="card-title">{{song.Name}}</span> -->
-                </div>
-                <div class="card-content">
-                    <p>Name: {{song.name}}</p>
-                </div>
-                <div class="card-action">
-                    <a href="javascript:void(0)" class="blue-text" id="{{song._id}}_1" (click)="showDetails($event)">Details</a>
-                    <a href="javascript:void(0)" class="blue-text" id="{{song._id}}_2" (click)="showDetails($event)">Add to Playlist</a>
-                </div>
+    <div class="col s3" *ngFor="let song of orgSongs">
+        <div class="card small">
+            <div class="card-image">
+                <img src="../assets/Images/{{song.picture}}">
+                <!-- <span class="card-title">{{song.Name}}</span> -->
+            </div>
+            <div class="card-content">
+                <p>Name: {{song.name}}</p>
+            </div>
+            <div class="card-action">
+                <a href="javascript:void(0)" class="blue-text" id="{{song._id}}_1"
+                    (click)="showDetails($event)">Details</a>
+                <a href="javascript:void(0)" class="blue-text" id="{{song._id}}_2" (click)="showDetails($event)">Add to
+                    Playlist</a>
             </div>
         </div>
     </div>
+</div>
+
+<div *ngIf="this.orgSongs?.length==0">
+    <h3>Can't find your song? <a href="javascript:void(0)" routerLink="/dashboard/add">Create one</a></h3>
+</div>

@@ -19,6 +19,9 @@
                             <td>
                                 Artist: {{song.artist}}
                             </td>
+                            <td>
+                                Album: {{song.album}}
+                            </td>
                         </tr>
                         <tr>
                             <td>
@@ -34,7 +37,7 @@
                                     </div>
                                     <div class="col s6">
                                         <div *ngFor="let dummy of ' '.repeat(song.rating).split(''), let x = index">
-                                            <i class="left material-icons">grade</i>
+                                            <i class="right material-icons">grade</i>
                                         </div>
                                     </div>
                                 </div>

@@ -66,7 +66,7 @@
                                 <div class="input-field">
                                     <i class="material-icons prefix">person</i>
                                     <input name="nameSignUp" type="text" class="validate" data-length="15"
-                                        [(ngModel)]="nameSignUp">
+                                        [(ngModel)]="signUp.name">
                                     <label for="nameSignUp">User Name</label>
                                     <!-- <span class="helper-text" data-error="" data-success="Perfect"></span> -->
                                 </div>
@@ -75,7 +75,7 @@
                                 <div class="input-field">
                                     <i class="material-icons prefix">enhanced_encryption</i>
                                     <input name="passSignUp" type="password" class="validate" data-length="10"
-                                        [(ngModel)]="passSignUp">
+                                        [(ngModel)]="signUp.pass">
                                     <label for="passSignUp">Password</label>
                                     <!-- <span class="helper-text" data-error="" data-success="Perfect"></span> -->
                                 </div>
@@ -83,13 +83,13 @@
                             <div class="row">
                                 <div class="input-field">
                                     <i class="material-icons prefix">email</i>
-                                    <input name="emailSignUp" type="email" class="validate" [(ngModel)]="emailSignUp">
+                                    <input name="emailSignUp" type="email" class="validate" [(ngModel)]="signUp.email">
                                     <label for="emailSignUp">Email</label>
                                     <!-- <span class="helper-text" data-error="Invalid Email" data-success="Perfect"></span> -->
                                 </div>
                             </div>
                             <div class="row center-align ">
-                                <a (click)="registerUser(nameSignUp,passSignUp,emailSignUp)"
+                                <a (click)="registerUser()"
                                     class="btn-floating btn-large waves-effect waves-light red tooltipped"
                                     data-position="bottom" data-tooltip="Sign Up"><i
                                         class="material-icons">play_arrow</i></a>
@@ -123,7 +123,7 @@
                                 <div class="row">
                                     <div class="input-field">
                                         <i class="material-icons prefix">email</i>
-                                        <input name="email" #emailLogin type="email" id="signinEmail" class="validate">
+                                        <input name="email" #emailLogin type="email" class="validate">
                                         <label for="email" class="active">Email</label>
                                         <span class="helper-text" data-error="Invalid Email"
                                             data-success="Perfect"></span>
@@ -132,7 +132,7 @@
                                 <div class="row">
                                     <div class="input-field">
                                         <i class="material-icons prefix">enhanced_encryption</i>
-                                        <input name="password" #passLogin id="signinPass" type="password"
+                                        <input name="password" #passLogin type="password"
                                             class="validate" data-length="10">
                                         <label for="password" class="active">Password</label>
                                         <span class="helper-text" data-error="Invalid Email/Password"

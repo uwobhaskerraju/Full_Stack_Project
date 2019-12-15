@@ -372,6 +372,74 @@ exports.deleteSong = (req, res) => {
 
 };
 
+exports.searchSongs=(req,res)=>{
+    var q = req.params.query
+    var threshold = 0.25// for filtering
+    console.log(q)
+    //Songs.find( { Name: { $regex: q } } )
+    Ratings.aggregate([
+        {
+            $group:
+            {
+                _id: "$songID",
+                rating: { $avg: "$ratings" }
+            }
+        },
+        {
+            $lookup: {
+                from: "Songs",
+                localField: "_id",
+                foreignField: "_id",
+                as: "ratings_data"
+            }
+        },
+        { $unwind: "$ratings_data" },
+        // {
+        //     rating: { $round: ["$rating", 0] }
+        // },
+        {
+            $project: {
+                rating: { $round: ["$rating", 0] },
+                _id: 1,
+                genre: "$ratings_data.Genre",
+                hidden: "$ratings_data.Hidden",
+                name: "$ratings_data.Name",
+                artist: "$ratings_data.Artist",
+                album: "$ratings_data.Album",
+                duration: "$ratings_data.Duration",
+                year: "$ratings_data.Year",
+                picture: "$ratings_data.Picture"
+            }
+        },
+        {
+            $sort: {
+                rating: -1,
+                name: 1
+            }
+        }
+    ])
+        .then(data => {
+            var fnlJson = []
+            data.forEach(d => {
+                Object.keys(d).forEach(function (key) {
+                    // console.table('Key : ' + key + ', Value : ' + d[key])
+                    if (dice(d[key], q) >= threshold) {
+                        fnlJson.push(d)
+                    }
+                })
+                //return false
+                //console.log("next loop")
+            })
+            fnlJson = [...new Set(fnlJson)];
+            res.send({ statusCode: 200, result: fnlJson })
+        })
+        .catch(err => {
+            res.send({ statusCode: 500, result: err.message || errMsg
+            })
+        });
+};
+
+
 exports.test = (req, res) => {
    var a=req.body.email
     res.send(a)

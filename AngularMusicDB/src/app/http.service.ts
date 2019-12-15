@@ -496,7 +496,7 @@ export class HttpService {
 
   removeSongUserPlaylist(songid, playlistid, userID) {
     let url = environment.apiBaseURL + 'secure/playlist/song'
-    let header = this.getHeader()
+    //let header = this.getHeader()
     var JsnData = JSON.stringify({
       playListID: playlistid,
       songID: songid,
@@ -531,5 +531,11 @@ export class HttpService {
     let url = environment.apiBaseURL + 'secure/getPlaylists'
     let header = this.getHeader()
     return this.http.get(url, header)
+  }
+
+  getUserSearchedSongs(query: String) {
+    let url = environment.apiBaseURL + '/secure/search/' + query;
+    let headers = this.getHeader()
+    return this.http.get(url, headers);
   }
 }

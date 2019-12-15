@@ -12,7 +12,7 @@ declare var M: any;
 })
 export class DashboardComponent implements OnInit {
 
-  state: Object; // this is for dashboard display purpose
+  state: {}; // this is for dashboard display purpose
   name: String
   imagePath: String;
 

@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private _http: HttpService, private router: Router, private _valService: ValidationServiceService) { }
   imagePath: String
+  public signUp: any = {};
   ngOnInit() {
     this.imagePath = environment.imagePath
     M.AutoInit();
@@ -84,13 +85,16 @@ export class LoginComponent implements OnInit {
 
   }
 
-  registerUser(name, pass, email) {
+  registerUser() {
+    let email=this.signUp["email"]
+    let pass=this.signUp["pass"]
+    let name=this.signUp["name"]
     let errMsg = ''
 
     errMsg = errMsg.concat(this._valService.validateEmail(String(email).trim()))
     errMsg = errMsg.concat(this._valService.validatePassword(String(pass).trim()))
     errMsg = errMsg.concat(this._valService.validateUserName(String(name).trim()))
- 
+
     if (!Boolean(errMsg)) {
       this._http.registerUser(name, pass, email)
         .subscribe(data => {

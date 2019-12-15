@@ -40,8 +40,8 @@ var router = express.Router();
 router.use(function (req, res, next) {
     // do logging
     console.log("This route was requested: " + req.url);
-    sanitizeRequest(req); // make sure we go to the next routes and don't stop here
-    next()
+    sanitizeRequest(req); 
+    next()// make sure we go to the next routes and don't stop here
 });
 
 function sanitizeRequest(req) {

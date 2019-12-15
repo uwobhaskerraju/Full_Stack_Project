@@ -8,7 +8,7 @@ import { NavigationExtras, Router } from '@angular/router';
   styleUrls: ['./homesongs.component.css']
 })
 export class HomesongsComponent implements OnInit {
-  orgSongs: Object;
+  orgSongs: any[];
   constructor(private _http: HttpService, private router: Router) { }
 
   ngOnInit() {
