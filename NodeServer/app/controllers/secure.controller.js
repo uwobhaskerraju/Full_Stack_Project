@@ -373,6 +373,6 @@ exports.deleteSong = (req, res) => {
 };
 
 exports.test = (req, res) => {
-    console.log(req.body.email)
-    res.send("ss")
+   var a=req.body.email
+    res.send(a)
 };

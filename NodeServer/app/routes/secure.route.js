@@ -46,5 +46,5 @@ module.exports = (app) => {
     // get all playlist that are not private
     app.get('/secure/getPlaylists',checkrequest.CheckRole,checkrequest.CheckToken,secured.allPlaylists)
 
-    app.post('/secure/test',checkrequest.CheckRegistration,secured.test);
+    app.post('/secure/test',secured.test);
 }

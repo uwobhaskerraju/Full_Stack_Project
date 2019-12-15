@@ -301,6 +301,7 @@ export class HttpService {
       }),
       body: JsnData
     }
+    console.log(httpOptions)
     return this.http.delete(url, httpOptions)
   }
   adminDeleteSong(songID) {
@@ -326,13 +327,13 @@ export class HttpService {
     let header = this.getHeader()
     var JsnData = JSON.stringify({
       songID: song[0]._id,
-      Name: song[0].Name,
-      Artist: song[0].Artist,
-      Album: song[0].Album,
-      Duration: song[0].Duration,
-      Year: song[0].Year,
-      Genre: song[0].Genre,
-      Hidden: song[0].Hidden
+      Name: song[0].name,
+      Artist: song[0].artist,
+      Album: song[0].album,
+      Duration: song[0].duration,
+      Year: song[0].year,
+      Genre: song[0].genre,
+      Hidden: song[0].hidden
     })
     //console.log(JsnData)
     return this.http.put(url, JsnData, header);

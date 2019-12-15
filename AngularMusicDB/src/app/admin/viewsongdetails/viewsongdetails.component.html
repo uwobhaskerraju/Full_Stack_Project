@@ -4,45 +4,48 @@
         <div class="card large">
             <div class="card-image">
                 <img src="{{imagePath}}{{song.picture.split('.')[0]}}_cover.jpg">
-                <span class="card-title"> {{song.Name}}</span>
+                <span class="card-title"> {{song.name}}</span>
             </div>
             <div class="card-content">
-                    <table class="centered responsive-table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        Name : {{song.name}}
-                                    </td>
-                                    <td>
-                                        Genre : {{song.genre}}
-                                    </td>
-                                    <td>
-                                        Artist: {{song.artist}}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Duration: {{song.duration}} mins
-                                    </td>
-                                    <td>
-                                        Year : {{song.year}}
-                                    </td>
-                                    <td>
-                                        <div class="row">
-                                            <div class="col s6">
-                                                Rating
-                                            </div>
-                                            <div class="col s6">
-                                                <div *ngFor="let dummy of ' '.repeat(song.rating).split(''), let x = index">
-                                                    <i class="left material-icons">grade</i>
-                                                </div>
-                                            </div>
+                <table class="centered responsive-table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Name : {{song.name}}
+                            </td>
+                            <td>
+                                Genre : {{song.genre}}
+                            </td>
+                            <td>
+                                Artist: {{song.artist}}
+                            </td>
+                            <td>
+                                Album: {{song.album}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Duration: {{song.duration}} mins
+                            </td>
+                            <td>
+                                Year : {{song.year}}
+                            </td>
+                            <td>
+                                <div class="row">
+                                    <div class="col s6">
+                                        Rating
+                                    </div>
+                                    <div class="col s6">
+                                        <div *ngFor="let dummy of ' '.repeat(song.rating).split(''), let x = index">
+                                            <i class="left material-icons">grade</i>
                                         </div>
-        
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </div>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
         </div>

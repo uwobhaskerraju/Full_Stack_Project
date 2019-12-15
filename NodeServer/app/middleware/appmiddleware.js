@@ -105,6 +105,17 @@ function userRegistrationCheck(req, res, next) {
     }
 }
 
+function sanitizeRequest(req,res,next){
+    var body = req.body
+    const entries = Object.keys(body)
+    const inserts = {}
+    for (let i = 0; i < entries.length; i++) {
+
+        req.body[entries[i]] = req.sanitize(Object.values(body)[i])
+    }
+    next();
+}
+
 function checkRole(req, res, next) {
     //console.log("inside checkRole")
     var bearerHeader = req.headers["authorization"]
@@ -183,5 +194,6 @@ module.exports = {
     CheckRegistration: userRegistrationCheck,
     CheckToken: checkToken,
     CheckLogin: userLoginCheck,
-    CheckRole: checkRole
+    CheckRole: checkRole,
+    Sanitize:sanitizeRequest
 };

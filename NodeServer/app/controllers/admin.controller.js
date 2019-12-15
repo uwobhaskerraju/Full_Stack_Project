@@ -116,11 +116,14 @@ exports.hideSong = (req, res) => {
 };
 
 exports.updateSong = (req, res) => {
+    console.log(req.body)
     const inserts = generateKeyValueFromBody(req.body)
     var songid = inserts.songID
     delete inserts.songID
+    console.log(inserts)
     Songs.updateOne({ _id: songid }, { $set: inserts })
         .then(data => {
+            console.log(data)
             if (Boolean(data["nModified"])) {
                 res.send({ statusCode: 200, result: "true" })
             }
@@ -138,7 +141,7 @@ exports.updateSong = (req, res) => {
 
 exports.deleteReview = (req, res) => {
     var reviewID = req.body.reviewid
-
+    console.log(reviewID)
     Reviews.deleteOne({ _id: reviewID })
         .then(data => {
             //console.log(data["nModified"])
@@ -376,7 +379,8 @@ exports.getAllUsers = (req, res) => {
             })
         })
         .catch(err => {
-            res.send({statusCode:500,
+            res.send({
+                statusCode: 500,
                 message: err.message || errMsg
             })
         });

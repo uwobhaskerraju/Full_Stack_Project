@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment.prod';
 import { HttpService } from 'src/app/http.service';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { ValidationServiceService } from 'src/app/validations/validation-service.service';
 
 declare var M: any
 
@@ -15,7 +16,7 @@ export class ViewplaylistsAdminComponent implements OnInit {
   allPlaylists: any
   allSongs: any
 
-  constructor(private _http: HttpService) {
+  constructor(private _http: HttpService, private _validate: ValidationServiceService) {
 
   }
 
@@ -31,7 +32,7 @@ export class ViewplaylistsAdminComponent implements OnInit {
       }
       else {
         //unable to fetch songs
-        M.toast({ html: 'Unable to fetch songs. Try Later!', classes: 'rounded' })
+        M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
       }
     });
     //fetch all playlists from API
@@ -42,15 +43,13 @@ export class ViewplaylistsAdminComponent implements OnInit {
             let songIds = null
             songIds = this.getSongDetails(data["result"], this.allSongs);
             this.allPlaylists = songIds;
-            // this.allPlaylists = data["result"]
-            // console.log("admin view playlist")
-            // console.log(this.allPlaylists)
+
           }
           else {
-            M.toast({ html: 'Unable to fetch playlists. Try Later!', classes: 'rounded' })
+            M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
           }
         } catch (error) {
-          M.toast({ html: 'Unable to fetch playlists. Try Later!', classes: 'rounded' })
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
         }
 
 
@@ -68,12 +67,13 @@ export class ViewplaylistsAdminComponent implements OnInit {
           .subscribe(data => {
             if (data["statusCode"] == 200) {
               // toast a message
-              M.toast({ html: 'Playlist deleted', classes: 'rounded' })
-              document.getElementById(playlistID + "_card").style.display = 'none'
+              M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
+              this.ngOnInit()
+              // document.getElementById(playlistID + "_card").style.display = 'none'
             }
             else {
               // toast fail message
-              M.toast({ html: 'Unable to delete playlist.', classes: 'rounded' })
+              M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
             }
           });
         break;
@@ -85,16 +85,25 @@ export class ViewplaylistsAdminComponent implements OnInit {
   }
 
   saveDetails(title, desc, playlistID) {
-    this._http.editPlaylistAdmin(playlistID, title, desc).subscribe(d => {
-      if (d["statusCode"] == 200) {
-        M.toast({ html: 'Playlist updated.', classes: 'rounded' })
-        document.getElementById(playlistID + "_edit").style.display = 'none'
-        this.ngOnInit();
-      }
-      else{
-        M.toast({ html: 'Playlist updated failed.', classes: 'rounded' })
-      }
-    })
+    let errMsg = ''
+    //validate title and descr
+    errMsg = errMsg.concat(this._validate.validateDesc(desc))
+    errMsg = errMsg.concat(this._validate.validateTitle(title))
+    if (!Boolean(errMsg)) {
+      this._http.editPlaylistAdmin(playlistID, title, desc).subscribe(d => {
+        if (d["statusCode"] == 200) {
+          M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
+          document.getElementById(playlistID + "_edit").style.display = 'none'
+          this.ngOnInit();
+        }
+        else {
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+        }
+      })
+    }
+    else {
+      this._validate.generateToast(errMsg)
+    }
   }
 
 
@@ -106,13 +115,14 @@ export class ViewplaylistsAdminComponent implements OnInit {
       subscribe(data => {
         if (data["statusCode"] == 200) {
           // toast a message`
-          M.toast({ html: 'song deleted from playlist.', classes: 'rounded' })
-          document.getElementById(songID + "_" + playListID + "_li").classList.add("scale-out")
-          document.getElementById(songID + "_" + playListID + "_li").style.display = 'none'
+          M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
+          this.ngOnInit()
+          // document.getElementById(songID + "_" + playListID + "_li").classList.add("scale-out")
+          //document.getElementById(songID + "_" + playListID + "_li").style.display = 'none'
         }
         else {
           // toast fail message
-          M.toast({ html: 'unable to delete. try again!', classes: 'rounded' })
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
         }
       });
   }
@@ -122,10 +132,10 @@ export class ViewplaylistsAdminComponent implements OnInit {
 
     this._http.hidePlaylist(value.srcElement.id, value.srcElement.checked).subscribe(d => {
       if (d["statusCode"] == 200) {
-        M.toast({ html: 'Playlist hidden.', classes: 'rounded' })
+        M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
       }
       else {
-        M.toast({ html: 'Unable to hide playlist. Try Later!', classes: 'rounded' })
+        M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
       }
     })
   }
@@ -139,9 +149,9 @@ export class ViewplaylistsAdminComponent implements OnInit {
       value["songID"].forEach(function (value1, index1) {
         if (allSongs.find(x => x["_id"] == value1.toLowerCase())) {
           value["songID"][index1] = value["songID"][index1]
-            + "()" + allSongs.find(x => x["_id"] == value1.toLowerCase())["Name"]
-            + "()" + allSongs.find(x => x["_id"] == value1.toLowerCase())["Album"]
-            + "()" + allSongs.find(x => x["_id"] == value1.toLowerCase())["Picture"]
+            + "()" + allSongs.find(x => x["_id"] == value1.toLowerCase())["name"]
+            + "()" + allSongs.find(x => x["_id"] == value1.toLowerCase())["album"]
+            + "()" + allSongs.find(x => x["_id"] == value1.toLowerCase())["picture"]
 
         }
       })

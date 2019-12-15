@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 const dbConfig = require('./config/database.config.js');
 const mongoose = require('mongoose');
 
-var port=process.env.PORT || 8080
+var port = process.env.PORT || 8080
 
 // Connecting to the database
 mongoose.connect(dbConfig.url, {
@@ -37,16 +37,26 @@ mongoose.set('useCreateIndex', true);
 var router = express.Router();
 
 // middleware to use for all requests
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
     // do logging
-    console.log("This route was requested: "+req.url);
-    next(); // make sure we go to the next routes and don't stop here
+    console.log("This route was requested: " + req.url);
+    sanitizeRequest(req); // make sure we go to the next routes and don't stop here
+    next()
 });
+
+function sanitizeRequest(req) {
+    var body = req.body
+    const entries = Object.keys(body)
+    const inserts = {}
+    for (let i = 0; i < entries.length; i++) {
+        req.body[entries[i]] = req.sanitize(Object.values(body)[i])
+    }
+}
 
 // define a default route
 router.get('/', (req, res) => {
     //console.log('default works')
-    res.send({success:"true"})
+    res.send({ success: "true" })
 });
 
 // all our APIs will have default name '/api' in route
@@ -60,5 +70,5 @@ require('./app/routes/user.route.js')(router);
 // listen for requests
 
 app.listen(port, () => {
-    console.log("Server is listening on port "+port);
+    console.log("Server is listening on port " + port);
 });

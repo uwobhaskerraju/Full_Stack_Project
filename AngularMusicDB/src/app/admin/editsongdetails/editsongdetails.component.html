@@ -27,7 +27,8 @@
                                 Artist: {{songDetails[0].artist}}
                             </td>
                             <td>
-                                <div class="right" *ngFor="let dummy of ' '.repeat(songDetails[0].rating).split(''), let x = index">
+                                <div class="right"
+                                    *ngFor="let dummy of ' '.repeat(songDetails[0].rating).split(''), let x = index">
                                     <i class="material-icons">grade</i>
                                 </div>
                             </td>
@@ -50,37 +51,37 @@
         <div class="row">
             <div class="input-field col s6">
                 <i class="material-icons prefix">library_music</i>
-                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].name">
-                <label for="icon_prefix">Song Name</label>
+                <input id="name" type="text" class="validate" [(ngModel)]="songDetails[0].name">
+                <label for="name" class="active">Song Name</label>
             </div>
             <div class="input-field col s6">
                 <i class="material-icons prefix">mode_edit</i>
-                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].genre">
-                <label for="icon_telephone">Genre</label>
+                <input id="genre" type="tel" class="validate" [(ngModel)]="songDetails[0].genre">
+                <label for="genre" class="active">Genre</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s6">
                 <i class="material-icons prefix">person_pin</i>
-                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].artist">
-                <label for="icon_prefix">Artist(s)</label>
+                <input id="artist" type="text" class="validate" [(ngModel)]="songDetails[0].artist">
+                <label for="artist" class="active">Artist(s)</label>
             </div>
             <div class="input-field col s6">
                 <i class="material-icons prefix">photo_album</i>
-                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].album">
-                <label for="icon_telephone">Album</label>
+                <input id="album" type="tel" class="validate" [(ngModel)]="songDetails[0].album">
+                <label for="album" class="active">Album</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s6">
                 <i class="material-icons prefix">access_time</i>
-                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].duration">
-                <label for="icon_prefix">Duration(minutes)</label>
+                <input id="duration" type="text" class="validate" [(ngModel)]="songDetails[0].duration">
+                <label for="duration" class="active">Duration(minutes)</label>
             </div>
             <div class="input-field col s6">
                 <i class="material-icons prefix">date_range</i>
-                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].year">
-                <label for="icon_telephone">Year</label>
+                <input id="year" type="tel" class="validate" [(ngModel)]="songDetails[0].year">
+                <label for="year" class="active">Year</label>
             </div>
         </div>
         <div class="row">
@@ -132,8 +133,8 @@
                 <p class="left">{{review.comment}}
                 </p>
                 <p class="right">
-                    <a href="javascript:void(0)" id="{{review._id}}" (click)="deleteReview($event)"><i
-                            class="material-icons">delete</i></a>
+                    <a href="javascript:void(0)" (click)="deleteReview($event)"><i
+                        id="{{review._id}}"  class="material-icons">delete</i></a>
                 </p>
             </div>
         </li>
