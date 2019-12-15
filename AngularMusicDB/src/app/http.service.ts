@@ -463,10 +463,73 @@ export class HttpService {
     // end of user API
   }
 
-  getUserPlaylists(user:string){
-    let url=environment.apiBaseURL+'secure/playlist/'+user
+  getUserPlaylists(user: string) {
+    let url = environment.apiBaseURL + 'secure/playlist/' + user
     console.log(url)
-    let header=this.getHeader();
-    return this.http.get(url,header)
+    let header = this.getHeader();
+    return this.http.get(url, header)
+  }
+
+  addSongPlaylistUser(playListID: any, songsID: any, userID: any) {
+    let url = environment.apiBaseURL + 'secure/playlist/song'
+    let header = this.getHeader()
+    var JsnData = JSON.stringify({
+      playListID: playListID,
+      songID: songsID,
+      ownerID: userID
+    })
+    return this.http.put(url, JsnData, header)
+  }
+
+
+  hideUserPlaylist(id: string, active: boolean, userID: any) {
+    let url = environment.apiBaseURL + 'secure/playlist/hide'
+    let header = {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      }
+    }
+    var JsnData = JSON.stringify({
+      playListID: id,
+      hidden: active,
+      ownerID: userID
+    })
+    return this.http.put(url, JsnData, header)
+  }
+
+  removeSongUserPlaylist(songid, playlistid, userID) {
+    let url = environment.apiBaseURL + 'secure/playlist/song'
+    let header = this.getHeader()
+    var JsnData = JSON.stringify({
+      playListID: playlistid,
+      songID: songid,
+      ownerID: userID
+    })
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
+      })
+      , body: JsnData
+    }
+
+    return this.http.delete(url, httpOptions);
+  }
+  editPlaylistUser(playlistid: string, title: string, description: string, user: String) {
+    let url = environment.apiBaseURL + 'secure/playlist'
+    let header = this.getHeader()
+    var JsnData = JSON.stringify({
+      playListID: playlistid,
+      title: title,
+      description: description,
+      ownerID: user
+    })
+    //console.log(JsnData)
+    return this.http.put(url, JsnData, header);
   }
 }

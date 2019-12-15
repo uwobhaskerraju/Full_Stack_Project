@@ -90,7 +90,7 @@ exports.reviewSong = (req, res) => {
 };
 
 exports.getAllPlaylists = (req, res) => {
-    var userID = mongoose.Types.ObjectId(req.params.query)
+    var userID = mongoose.Types.ObjectId(req.params.userID)
     console.log(userID)
     Playlist.find({ hidden: false, ownerID: userID })
         .then(data => res.send({
@@ -142,16 +142,15 @@ exports.editPlaylist = (req, res) => {
             //console.log(data["nModified"])
             if (Boolean(data["nModified"])) {
 
-                res.status(200).send({ message: "success" })
+                res.send({ statusCode: 200, result: "success" })
             }
             else {
-                res.status(200).send({ message: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
 
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({ statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -165,16 +164,16 @@ exports.addSongsPList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode: 200, result: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 300, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -188,16 +187,18 @@ exports.remSongsPList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.status(200).send({ message: "true" })
+                res.send({
+                    statusCode: 200, result: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({
+                    statusCode: 400, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -211,16 +212,16 @@ exports.hidePList = (req, res) => {
         //.then(data=>res.send(data))
         .then(data => {
             if (Boolean(data["nModified"])) {
-                res.status(200).send({ message: "true" })
+                res.send({ statusCode: 200, result: "true" })
             }
             else {
                 // didnt insert 
-                res.status(500).send({ message: "false" })
+                res.send({ statusCode: 400, result: "false" })
             }
         })
         .catch(err => {
-            res.status(500).send({
-                message: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
