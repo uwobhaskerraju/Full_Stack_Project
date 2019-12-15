@@ -3,6 +3,7 @@ import { HttpService } from 'src/app/http.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { environment } from 'src/environments/environment.prod';
+import { ValidationServiceService } from 'src/app/validations/validation-service.service';
 declare var M: any
 
 @Component({
@@ -13,13 +14,14 @@ declare var M: any
 export class AddsongplayuserComponent implements OnInit {
   allPlaylists: any
   userID: any
-  songID:any
+  songID: any
   private routeSub: Subscription;
-  imagePath:any
-  
-  constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute) {
-    this.userID = localStorage.getItem('id')
-    this.imagePath=environment.imagePath
+  imagePath: any
+
+  constructor(private _http: HttpService, private router: Router,
+    private route: ActivatedRoute, private _validate: ValidationServiceService) {
+    this.userID = this._validate.loggedInUser["id"]
+    this.imagePath = environment.imagePath
   }
 
   ngOnInit() {
@@ -36,10 +38,10 @@ export class AddsongplayuserComponent implements OnInit {
 
           }
           else {
-            M.toast({ html: 'Unable to fetch playlists. Try Later!', classes: 'rounded' })
+            M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
           }
         } catch (error) {
-          M.toast({ html: 'Unable to fetch playlists. Try Later!', classes: 'rounded' })
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
         }
       });
   }
@@ -50,17 +52,17 @@ export class AddsongplayuserComponent implements OnInit {
     this.routeSub.unsubscribe();
   }
   addSongPlaylist(value: any) {
-    var playListID=value.srcElement.id
-    this._http.addSongPlaylistUser(playListID,this.songID,this.userID)
-    .subscribe(d=>{
-      if(d["statusCode"]==200){
-        M.toast({ html: 'Added successfully!', classes: 'rounded' })
-        this.router.navigate(['/dashboard'])
-      }
-      else{
-        M.toast({ html: 'Unable to add to playlist. Try Later!', classes: 'rounded' })
-      }
-    });
+    var playListID = value.srcElement.id
+    this._http.addSongPlaylistUser(playListID, this.songID, this.userID)
+      .subscribe(d => {
+        if (d["statusCode"] == 200) {
+          M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
+          this.router.navigate(['/dashboard'])
+        }
+        else {
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+        }
+      });
   }
 
 }

@@ -11,19 +11,8 @@ declare var M: any;
   templateUrl: './editsongdetails.component.html',
   styleUrls: ['./editsongdetails.component.css']
 })
-export class EditsongdetailsComponent implements OnInit, AfterViewChecked {
-  ngAfterViewChecked(): void {
-    if (!this.temp) {
-      for (var i = 0; document.getElementsByTagName('label').length; i++) {
-        if (document.getElementsByTagName('label')) {
-          document.getElementsByTagName('label').item(i).classList.add('active');
-          this.temp = true
-        }
-
-      }
-    }
-
-  }
+export class EditsongdetailsComponent implements OnInit {
+  
   songDetails = [];
   imagePath: String;
   songID: String

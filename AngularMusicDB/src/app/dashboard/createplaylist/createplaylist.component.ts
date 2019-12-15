@@ -10,9 +10,13 @@ declare var M: any
 export class CreateplaylistComponent implements OnInit {
   public playlist: any = {};
   constructor(private _http: HttpService, private _validate: ValidationServiceService) {
-    this.playlist.id = localStorage.getItem('id')
-    this.playlist.name = localStorage.getItem('name')
-    this.playlist.email = localStorage.getItem('email')
+    // this.playlist.id = localStorage.getItem('id')
+    // this.playlist.name = localStorage.getItem('name')
+    // this.playlist.email = localStorage.getItem('email')
+    this.playlist.id = this._validate.loggedInUser["id"]
+    this.playlist.name = this._validate.loggedInUser["name"]
+    this.playlist.email = this._validate.loggedInUser["email"]
+    console.log(this.playlist)
   }
 
   ngOnInit() {
@@ -34,12 +38,12 @@ export class CreateplaylistComponent implements OnInit {
         data => {
           if (data["statusCode"] == 200) {
             // playlist created
-            M.toast({ html: 'Playlist added successfully', classes: 'rounded' })
+            M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
             this.ngOnInit();
           }
           else {
             // toast
-            M.toast({ html: 'something went wrong.Try Again!', classes: 'rounded' })
+            M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
             this.ngOnInit();
           }
         }

@@ -168,16 +168,9 @@ export class HttpService {
     return this.http.put(url, JsnData, header)
   }
 
-  getallUsers() {
-    let url = 'http://localhost:8080/api/admin/users'
-    let header = {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Authorization': 'Bearer ' + localStorage.getItem('ACCESS_TOKEN')
-      }
-    }
+  getallUsers(userID: any) {
+    let url = environment.apiBaseURL + 'admin/users/' + userID
+    let header = this.getHeader()
     return this.http.get(url, header)
   }
 
@@ -535,7 +528,7 @@ export class HttpService {
 
   getAllUserPlaylists() {
     let url = environment.apiBaseURL + 'secure/getPlaylists'
-    let header=this.getHeader()
-    return this.http.get(url,header)
+    let header = this.getHeader()
+    return this.http.get(url, header)
   }
 }

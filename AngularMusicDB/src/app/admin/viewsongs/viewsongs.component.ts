@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http.service';
 import { environment } from 'src/environments/environment.prod';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
+import { ValidationServiceService } from 'src/app/validations/validation-service.service';
 
 declare var M:any
 
@@ -13,7 +14,8 @@ declare var M:any
 export class ViewsongsComponent implements OnInit {
   allSongs: Object
   imagePath: String
-  constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute) {
+  constructor(private _http: HttpService, private router: Router,
+     private route: ActivatedRoute,private _validate:ValidationServiceService) {
     this.imagePath = environment.imagePath;
   }
 
@@ -23,10 +25,11 @@ export class ViewsongsComponent implements OnInit {
     this._http.getAllSongs().subscribe(data => {
       if (data["statusCode"] = 200) {
         this.allSongs = data["result"]
-        console.log(data["result"])
+        //console.log(data["result"])
       }
       else {
         //unable to fetch songs
+        M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
       }
     });
   }
@@ -61,7 +64,7 @@ export class ViewsongsComponent implements OnInit {
         this.router.navigate(['playlist', songID],{ relativeTo: this.route })
         break;
       default:
-          M.toast({ html: 'Something went wrong!', classes: 'rounded' })
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
         break;
 
     }

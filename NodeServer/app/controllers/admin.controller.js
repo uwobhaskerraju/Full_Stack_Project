@@ -296,7 +296,50 @@ exports.deactUser = (req, res) => {
 };
 
 exports.getAllSongs = (req, res) => {
-    Songs.find()
+    Ratings.aggregate([
+        {
+            $group:
+            {
+                _id: "$songID",
+                rating: { $avg: "$ratings" }
+            }
+        },
+        {
+            $lookup: {
+                from: "Songs",
+                localField: "_id",
+                foreignField: "_id",
+                as: "ratings_data"
+            }
+        },
+        { $unwind: "$ratings_data" }
+        ,
+        {
+            $project: {
+                rating: { $round: ["$rating", 0] },
+                _id: 1,
+                genre: "$ratings_data.Genre",
+                hidden: "$ratings_data.Hidden",
+                name: "$ratings_data.Name",
+                artist: "$ratings_data.Artist",
+                album: "$ratings_data.Album",
+                duration: "$ratings_data.Duration",
+                year: "$ratings_data.Year",
+                picture: "$ratings_data.Picture"
+            }
+        },
+        {
+            $sort: {
+                rating: -1,
+                name: 1
+            }
+        },
+        {
+            $match: {
+                hidden: false
+            }
+        }
+    ])
         .then(data => {
             res.send({
                 statusCode: 200,
@@ -323,7 +366,8 @@ exports.GetAllPlayLists = (req, res) => {
 };
 
 exports.getAllUsers = (req, res) => {
-    User.find({})
+    var userID = req.params.id
+    User.find({ _id: { $ne: userID } })
         .select("username usertype active email ")
         .then(data => {
             res.send({
@@ -332,7 +376,7 @@ exports.getAllUsers = (req, res) => {
             })
         })
         .catch(err => {
-            res.status(500).send({
+            res.send({statusCode:500,
                 message: err.message || errMsg
             })
         });

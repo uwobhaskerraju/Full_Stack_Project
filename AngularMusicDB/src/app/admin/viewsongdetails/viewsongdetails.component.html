@@ -3,7 +3,7 @@
     <div class="col s12" *ngFor="let song of songDetails">
         <div class="card large">
             <div class="card-image">
-                <img src="{{imagePath}}{{song.Picture.split('.')[0]}}_cover.jpg">
+                <img src="{{imagePath}}{{song.picture.split('.')[0]}}_cover.jpg">
                 <span class="card-title"> {{song.Name}}</span>
             </div>
             <div class="card-content">
@@ -11,21 +11,21 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        Name : {{song.Name}}
+                                        Name : {{song.name}}
                                     </td>
                                     <td>
-                                        Genre : {{song.Genre}}
+                                        Genre : {{song.genre}}
                                     </td>
                                     <td>
-                                        Artist: {{song.Artist}}
+                                        Artist: {{song.artist}}
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        Duration: {{song.Duration}}
+                                        Duration: {{song.duration}} mins
                                     </td>
                                     <td>
-                                        Year : {{song.Year}}
+                                        Year : {{song.year}}
                                     </td>
                                     <td>
                                         <div class="row">
@@ -33,7 +33,7 @@
                                                 Rating
                                             </div>
                                             <div class="col s6">
-                                                <div *ngFor="let dummy of ' '.repeat(song.Rating).split(''), let x = index">
+                                                <div *ngFor="let dummy of ' '.repeat(song.rating).split(''), let x = index">
                                                     <i class="left material-icons">grade</i>
                                                 </div>
                                             </div>
@@ -51,7 +51,7 @@
             <ul class="collection" *ngIf="songReviews">
 
                 <li class="collection-item avatar" *ngFor="let review of songReviews">
-                    <img src="{{imagePath}}icons/{{generateRandNum()}}.png" alt="" class="circle">
+                    <img src="{{imagePath}}icons/2.png" alt="" class="circle">
                     <div class="right" *ngFor="let dummy of ' '.repeat(review.rating).split(''), let x = index">
                         <i class="material-icons">grade</i>
                     </div>

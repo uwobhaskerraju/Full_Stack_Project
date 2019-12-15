@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpService } from '../http.service';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { environment } from '../../environments/environment.prod'
+import { ValidationServiceService } from '../validations/validation-service.service';
 
 declare var M: any;
 
@@ -18,7 +19,8 @@ export class AdminComponent implements OnInit {
   public playlist: any = {};
   imagePath: String;
 
-  constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute) {
+  constructor(private _http: HttpService, private router: Router,
+     private route: ActivatedRoute,private _validate:ValidationServiceService) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation.extras.state as
       {
@@ -29,47 +31,17 @@ export class AdminComponent implements OnInit {
         emailverified: string
       };
     this.state = state;
-    console.log("in admin")
-    console.log(this.state)
+    this._validate.loggedInUser["id"]=this.state["id"]
+    this._validate.loggedInUser["name"]=this.state["name"]
+    this._validate.loggedInUser["email"]=this.state["email"]
   }
 
 
   ngOnInit() {
-    //localStorage.setItem('ACCESS_TOKEN', "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InNhaWJoYXNrZXJyYWp1QG91dGxvb2suY29tIiwiaWQiOiI1ZGU0YjJlNzIyYzg0NjEyYjgwMTAxMGIiLCJuYW1lIjoic2FpIiwiZW1haWx2ZXJpZmllZCI6ZmFsc2UsInVzZXJUeXBlIjoiYWRtaW4iLCJpYXQiOjE1NzU1NjYwOTV9.xhTiB3fAb4aCyPrWqtUIw4eEz2BFLL_dL5MQBTVjYHk")
     this.imagePath = environment.imagePath;
-
-
-    //get song name and album
-
-    // //get all playlists
-    // this._http.getAllPlaylists()
-    //   .subscribe(data => {
-    //     if (data["statusCode"] = 200) {
-    //       let songIds = null
-    //       songIds = this.getSongDetails(data["result"], this.allSongs);
-
-    //       this.allPlaylists = songIds;
-    //       // console.log("all playlist")
-    //       // console.log(this.allPlaylists)
-    //     }
-    //     else {
-    //       //unable to fetch playlists
-    //     }
-    //   });
-  }//end of ngInit()
-  // addPlaylist() {
-  //   this._http.addPlaylist(this.playlist, this.state["id"])
-  //     .subscribe(data => {
-  //       if (data["statusCode"] == 200) {
-  //         // say good
-  //         //clear the form
-  //       }
-  //       else {
-  //         // throw a toast
-  //       }
-  //     });
-
-  // }
+    
+  }
+  
   getSongDetails(songIds: any, allSongs: any) {
     // we are iterating through the playlist array to get each songID,
     //later we are using main allSongs to get details from it and add into playlist  

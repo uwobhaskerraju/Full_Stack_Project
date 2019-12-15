@@ -3,8 +3,8 @@
     <div class="col s12" *ngFor="let song of songDetails">
         <div class="card medium">
             <div class="card-image">
-                <img src="{{imagePath}}{{song.Picture.split('.')[0]}}_cover.jpg">
-                <span class="card-title"> {{songDetails[0].Name}}</span>
+                <img src="{{imagePath}}{{song.picture.split('.')[0]}}_cover.jpg">
+                <span class="card-title"> {{songDetails[0].name}}</span>
             </div>
             <div class="card-content">
                 <!-- Name : {{songDetails[0].Name}}<br>
@@ -15,66 +15,71 @@
               
                 Year : {{songDetails[0].Year}}<br> -->
                 <table class="centered responsive-table">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    Name : {{songDetails[0].Name}}
-                                </td>
-                                <td>
-                                    Genre : {{songDetails[0].Genre}}
-                                </td>
-                                <td>
-                                    Artist: {{songDetails[0].Artist}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Duration: {{songDetails[0].Duration}}
-                                </td>
-                                <td>
-                                    Year : {{songDetails[0].Year}}
-                                </td>
-                                <td>
-                           
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                Name : {{songDetails[0].name}}
+                            </td>
+                            <td>
+                                Genre : {{songDetails[0].genre}}
+                            </td>
+                            <td>
+                                Artist: {{songDetails[0].artist}}
+                            </td>
+                            <td>
+                                <div class="right" *ngFor="let dummy of ' '.repeat(songDetails[0].rating).split(''), let x = index">
+                                    <i class="material-icons">grade</i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Duration: {{songDetails[0].duration}} mins
+                            </td>
+                            <td>
+                                Year : {{songDetails[0].year}}
+                            </td>
+                            <td>
+                                Album : {{songDetails[0].album}}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s6">
                 <i class="material-icons prefix">library_music</i>
-                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].Name" >
+                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].name">
                 <label for="icon_prefix">Song Name</label>
             </div>
             <div class="input-field col s6">
                 <i class="material-icons prefix">mode_edit</i>
-                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].Genre">
+                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].genre">
                 <label for="icon_telephone">Genre</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s6">
                 <i class="material-icons prefix">person_pin</i>
-                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].Artist">
+                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].artist">
                 <label for="icon_prefix">Artist(s)</label>
             </div>
             <div class="input-field col s6">
                 <i class="material-icons prefix">photo_album</i>
-                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].Album">
+                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].album">
                 <label for="icon_telephone">Album</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s6">
                 <i class="material-icons prefix">access_time</i>
-                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].Duration">
+                <input id="icon_prefix" type="text" class="validate" [(ngModel)]="songDetails[0].duration">
                 <label for="icon_prefix">Duration(minutes)</label>
             </div>
             <div class="input-field col s6">
                 <i class="material-icons prefix">date_range</i>
-                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].Year">
+                <input id="icon_telephone" type="tel" class="validate" [(ngModel)]="songDetails[0].year">
                 <label for="icon_telephone">Year</label>
             </div>
         </div>
@@ -85,7 +90,7 @@
 
                     <label>
                         Off
-                        <input type="checkbox" id="1" [(ngModel)]="songDetails[0].Hidden" ng-true-value="true"
+                        <input type="checkbox" id="1" [(ngModel)]="songDetails[0].hidden" ng-true-value="true"
                             ng-false-value="false">
                         <span class="lever"></span>
                         On
@@ -93,14 +98,16 @@
                 </div>
             </div>
 
-            
+
         </div>
         <div class="row">
             <div class="col s6">
-                <a class="waves-effect waves-light btn" id="{{song._id}}" (click)="deleteSong($event)"><i class="material-icons left">delete</i>Delete Song</a>
+                <a class="waves-effect waves-light btn" id="{{song._id}}" (click)="deleteSong($event)"><i
+                        class="material-icons left">delete</i>Delete Song</a>
             </div>
             <div class="col s6">
-                <a class="waves-effect waves-light btn" id="{{song._id}}" (click)="updateSong($event)"><i class="material-icons left">delete</i>Update Song</a>
+                <a class="waves-effect waves-light btn" id="{{song._id}}" (click)="updateSong($event)"><i
+                        class="material-icons left">delete</i>Update Song</a>
             </div>
         </div>
 

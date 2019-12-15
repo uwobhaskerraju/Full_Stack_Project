@@ -17,6 +17,4 @@ var SongsSchema = mongoose.Schema({
     versionKey: false
 });
 
-SongsSchema.index({ "$**": "text" })
-
 module.exports = mongoose.model('Songs', SongsSchema, 'Songs');

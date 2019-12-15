@@ -8,6 +8,10 @@ declare var M: any
 })
 export class ValidationServiceService {
 
+  succOpMsg='Operation Succesfull'
+  OpFailedMsg='Operation Failed. Try Again!'
+  fieldsErr='fields shouldnt be empty and greater than 15 characters'
+  loggedInUser={}
   constructor() { }
 
 

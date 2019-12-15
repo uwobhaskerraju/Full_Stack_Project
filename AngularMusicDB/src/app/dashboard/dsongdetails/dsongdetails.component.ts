@@ -84,22 +84,22 @@ export class DsongdetailsComponent implements OnInit {
         .subscribe(data => {
           if (data["statusCode"] == 200) {
             // toast saying yes
-            console.log("inserted rating")
+           // console.log("inserted rating")
             // trigger review api
             this._http.submitReview(this.uSong, value)
               .subscribe(data => {
                 if (data["statusCode"] == 200) {
                   // toast saying yes
-                  console.log("inserted review")
-                  M.toast({ html: "Succesfully added rating", classes: 'rounded' })
+                  //console.log("inserted review")
+                  M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
                   this.ngOnInit();
                 }
                 else {
                   // delete rating
                   this._http.deleteRating(data["result"]).subscribe(
                     d => {
-                      console.log("deleted rating as insert rating failed")
-                      M.toast({ html: "Operation failed.Try again!", classes: 'rounded' })
+                     // console.log("deleted rating as insert rating failed")
+                      M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
                     }
                   );
                 }
@@ -107,11 +107,12 @@ export class DsongdetailsComponent implements OnInit {
           }
           else {
             // toast saying falied
-            M.toast({ html: "Operation failed.Try again!", classes: 'rounded' })
+            M.toast({ html:this._validate.OpFailedMsg, classes: 'rounded' })
           }
         });
     }
     else {
+      
       this._validate.generateToast(errMsg);
 
     }

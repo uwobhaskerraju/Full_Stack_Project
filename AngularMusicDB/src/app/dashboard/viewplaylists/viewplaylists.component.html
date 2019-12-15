@@ -48,16 +48,17 @@
 
                 <div class="row " style="display: none;" id="{{playlist._id}}_edit">
                     <div class="input-field col s6">
-                        <input #title type="text" class="validate white-text">
+                        <input #title type="text" class="validate white-text" [ngModel]="playlist.title">
                         <label for="first_name" class="active">Title</label>
                     </div>
                     <div class="input-field col s6 white-text">
-                        <input #description type="text" class="validate white-text">
+                        <input #description type="text" class="validate white-text" [ngModel]="playlist.description">
                         <label for="last_name" class="active">Description</label>
                     </div>
                     <div class="row center-align">
                         <a class="btn-floating btn-large waves-effect waves-light red"
-                            (click)="saveDetails(title.value,description.value,playlist._id)"><i class="material-icons">add</i></a>
+                            (click)="saveDetails(title.value,description.value,playlist._id)"><i
+                                class="material-icons">add</i></a>
                     </div>
 
                 </div>

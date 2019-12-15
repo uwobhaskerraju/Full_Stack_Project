@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { HttpService } from 'src/app/http.service';
 import { environment } from 'src/environments/environment.prod';
+import { ValidationServiceService } from 'src/app/validations/validation-service.service';
 
 declare var M: any;
 
@@ -15,9 +16,9 @@ export class ViewplaylistsComponent implements OnInit {
   allPlaylists: any
   allSongs: any
   userID: any
-  constructor(private _http: HttpService) {
+  constructor(private _http: HttpService, private _validate: ValidationServiceService) {
     this.imagepath = environment.imagePath;
-    this.userID = localStorage.getItem('id')
+    this.userID = this._validate.loggedInUser["id"]
   }
 
   ngOnInit() {
@@ -30,7 +31,7 @@ export class ViewplaylistsComponent implements OnInit {
       }
       else {
         //unable to fetch songs
-        M.toast({ html: 'Unable to fetch songs. Try Later!', classes: 'rounded' })
+        M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
       }
     });
     //get all playlists of this user
@@ -47,10 +48,10 @@ export class ViewplaylistsComponent implements OnInit {
             //console.log(this.allPlaylists)
           }
           else {
-            M.toast({ html: 'Unable to fetch playlists. Try Later!', classes: 'rounded' })
+            M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
           }
         } catch (error) {
-          M.toast({ html: 'Unable to fetch playlists. Try Later!', classes: 'rounded' })
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
         }
       });
 
@@ -60,8 +61,8 @@ export class ViewplaylistsComponent implements OnInit {
     // we are iterating through the playlist array to get each songID,
     //later we are using main allSongs to get details from it and add into playlist  
     songIds.forEach(function (value, index) {
-      console.log(value)
-      console.log("inside song details")
+      //console.log(value)
+      // console.log("inside song details")
       value["songID"].forEach(function (value1, index1) {
         if (allSongs.find(x => x["_id"] == value1.toLowerCase())) {
           value["songID"][index1] = value["songID"][index1]
@@ -77,17 +78,17 @@ export class ViewplaylistsComponent implements OnInit {
   }
 
   hidePlaylist(value: any) {
-    console.log(value.srcElement.checked)
-    console.log(value.srcElement.id)
+    //console.log(value.srcElement.checked)
+    //console.log(value.srcElement.id)
 
     this._http.hideUserPlaylist(value.srcElement.id, value.srcElement.checked, this.userID).subscribe(d => {
       console.log(d)
       if (d["statusCode"] == 200) {
-        M.toast({ html: 'Playlist hidden.', classes: 'rounded' })
+        M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
         this.ngOnInit()
       }
       else {
-        M.toast({ html: 'Unable to hide playlist. Try Later!', classes: 'rounded' })
+        M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
       }
     })
   }
@@ -100,12 +101,12 @@ export class ViewplaylistsComponent implements OnInit {
       subscribe(data => {
         if (data["statusCode"] == 200) {
           // toast a message`
-          M.toast({ html: 'song deleted from playlist.', classes: 'rounded' })
+          M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
           this.ngOnInit()
         }
         else {
           // toast fail message
-          M.toast({ html: 'unable to delete. try again!', classes: 'rounded' })
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
           this.ngOnInit()
         }
       });
@@ -118,15 +119,25 @@ export class ViewplaylistsComponent implements OnInit {
   }
 
   saveDetails(title, desc, playlistID) {
-    this._http.editPlaylistUser(playlistID, title, desc,this.userID).subscribe(d => {
-      if (d["statusCode"] == 200) {
-        M.toast({ html: 'Playlist updated.', classes: 'rounded' })
-        document.getElementById(playlistID + "_edit").style.display = 'none'
-        this.ngOnInit();
-      }
-      else {
-        M.toast({ html: 'Playlist updated failed.', classes: 'rounded' })
-      }
-    })
+    let errMsg = ''
+    //validate title and descr
+    errMsg = errMsg.concat(this._validate.validateDesc(desc))
+    errMsg = errMsg.concat(this._validate.validateTitle(title))
+    if (!Boolean(errMsg)) {
+      this._http.editPlaylistUser(playlistID, title, desc, this.userID).subscribe(d => {
+        if (d["statusCode"] == 200) {
+          M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
+          document.getElementById(playlistID + "_edit").style.display = 'none'
+          this.ngOnInit();
+        }
+        else {
+          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+        }
+      })
+    }
+    else {
+      this._validate.generateToast(errMsg);
+    }
+
   }
 }

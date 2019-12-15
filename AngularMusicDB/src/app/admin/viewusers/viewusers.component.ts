@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpService } from 'src/app/http.service';
 import { Router } from '@angular/router';
+import { ValidationServiceService } from 'src/app/validations/validation-service.service';
 
 @Component({
   selector: 'app-viewusers',
@@ -9,11 +10,12 @@ import { Router } from '@angular/router';
 })
 export class ViewusersComponent implements OnInit {
   allUsers: Object
-  constructor(private _http: HttpService, private router: Router) { }
+  constructor(private _http: HttpService, private router: Router,private _validate:ValidationServiceService) { }
 
   ngOnInit() {
     // get all users API
-    this._http.getallUsers().subscribe(data => {
+    this._http.getallUsers(this._validate.loggedInUser["id"]).subscribe(data => {
+      console.log(data)
       if (data["statusCode"] = 200) {
         data["result"].forEach(s => {
           if (s.usertype == "admin") {
@@ -24,7 +26,7 @@ export class ViewusersComponent implements OnInit {
           }
         });
         this.allUsers = data["result"]
-        console.log(data["result"])
+       // console.log(data["result"])
       }
       else {
         //unable to fetch users
