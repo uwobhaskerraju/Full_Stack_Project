@@ -59,6 +59,9 @@ export class DashboardComponent implements OnInit {
       case 4:
         this.router.navigate(['view'], { relativeTo: this.route });
         break;
+      case 5:
+        this.router.navigate(['playlist/all'], { relativeTo: this.route });
+        break;
     }
   }
 }

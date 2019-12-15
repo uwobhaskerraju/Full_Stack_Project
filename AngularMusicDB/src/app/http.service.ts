@@ -532,4 +532,10 @@ export class HttpService {
     //console.log(JsnData)
     return this.http.put(url, JsnData, header);
   }
+
+  getAllUserPlaylists() {
+    let url = environment.apiBaseURL + 'secure/getPlaylists'
+    let header=this.getHeader()
+    return this.http.get(url,header)
+  }
 }

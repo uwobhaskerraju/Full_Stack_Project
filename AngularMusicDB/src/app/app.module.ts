@@ -28,7 +28,8 @@ import { AddsongsComponent } from './admin/addsongs/addsongs.component';
 import { ViewplaylistsAdminComponent } from './admin/viewplaylists/viewplaylists.component'
 import {CreateplaylistAdminComponent} from './admin/createplaylist/createplaylist.component';
 import { AddSongPlaylistComponent } from './admin/add-song-playlist/add-song-playlist.component';
-import { AddsongplayuserComponent } from './dashboard/addsongplayuser/addsongplayuser.component'
+import { AddsongplayuserComponent } from './dashboard/addsongplayuser/addsongplayuser.component';
+import { UserallplaylistsComponent } from './dashboard/userallplaylists/userallplaylists.component'
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { AddsongplayuserComponent } from './dashboard/addsongplayuser/addsongpla
     ViewplaylistsAdminComponent,
     CreateplaylistAdminComponent,
     AddSongPlaylistComponent,
-    AddsongplayuserComponent
+    AddsongplayuserComponent,
+    UserallplaylistsComponent
   ],
   imports: [
     BrowserModule,

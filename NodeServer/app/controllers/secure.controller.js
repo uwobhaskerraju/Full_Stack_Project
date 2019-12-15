@@ -92,7 +92,7 @@ exports.reviewSong = (req, res) => {
 exports.getAllPlaylists = (req, res) => {
     var userID = mongoose.Types.ObjectId(req.params.userID)
     console.log(userID)
-    Playlist.find({ hidden: false, ownerID: userID })
+    Playlist.find({ ownerID: userID })
         .then(data => res.send({
             statusCode: 200,
             result: data
@@ -150,9 +150,21 @@ exports.editPlaylist = (req, res) => {
 
         })
         .catch(err => {
-            res.send({ statusCode: 500, result: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
+};
+
+exports.allPlaylists = (req, res) => {
+    console.log("here")
+    Playlist.find({ hidden: false })
+        .then(data => {
+            res.send({ statusCode: 200, result: data })
+        })
+        .catch(err => {
+            res.send({ statusCode: 500, result: err })
+        })
 };
 
 exports.addSongsPList = (req, res) => {
@@ -188,12 +200,14 @@ exports.remSongsPList = (req, res) => {
         .then(data => {
             if (Boolean(data["nModified"])) {
                 res.send({
-                    statusCode: 200, result: "true" })
+                    statusCode: 200, result: "true"
+                })
             }
             else {
                 // didnt insert 
                 res.send({
-                    statusCode: 400, result: "false" })
+                    statusCode: 400, result: "false"
+                })
             }
         })
         .catch(err => {

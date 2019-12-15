@@ -1,0 +1,36 @@
+<blockquote>
+    <h3>All Public Playlists</h3>
+</blockquote>
+
+<div class="row" *ngIf="allPlaylists">
+    <div class="col s6" *ngFor="let playlist of allPlaylists">
+        <div class="card light-blue lighten-1">
+            <div class="card-content white-text">
+                <span class="left card-title">{{playlist.title}}</span>
+                <br><br>
+                <p>{{playlist.description}}
+                </p>
+                <br>
+                <div class="divider"></div>
+                <div class="section">
+                    <h6>List of songs</h6>
+                    <ul class="collection transparent" *ngIf="playlist.songID">
+                        <p>
+
+                            <li class="collection-item avatar scale-transition"
+                                id="{{playlistS.split('()')[0]}}_{{playlist._id}}_li"
+                                *ngFor="let playlistS of playlist.songID">
+                                <img src="{{imagepath}}{{playlistS.split('()')[3]}}" alt="" class="circle">
+                                <span class="title text-black">{{playlistS.split('()')[1]}}</span>
+                                <p class="text-black">{{playlistS.split('()')[2]}}<br></p>
+                            </li>
+
+
+                        </p>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
