@@ -106,7 +106,7 @@ function userRegistrationCheck(req, res, next) {
 }
 
 function checkRole(req, res, next) {
-    console.log("inside checkRole")
+    //console.log("inside checkRole")
     var bearerHeader = req.headers["authorization"]
     if (bearerHeader === undefined) {
         return res.send({ statusCode: 500, message: errMsg })
@@ -139,7 +139,7 @@ function checkRole(req, res, next) {
 
 function checkToken(req, res, next) {
     //console.log(req.headers)
-    console.log("inside checktoken")
+   // console.log("inside checktoken")
     var bearerHeader = req.headers["authorization"]
     if (bearerHeader === undefined) {
         return res.send({ statusCode: 500, message: errMsg })

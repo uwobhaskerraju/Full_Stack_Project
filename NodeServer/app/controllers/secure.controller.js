@@ -157,7 +157,7 @@ exports.editPlaylist = (req, res) => {
 };
 
 exports.allPlaylists = (req, res) => {
-    console.log("here")
+   // console.log("here")
     Playlist.find({ hidden: false })
         .then(data => {
             res.send({ statusCode: 200, result: data })

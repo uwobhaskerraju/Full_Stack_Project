@@ -29,16 +29,16 @@ export class HttpService {
 
   // end of open APIs
   ValidateLogin(email: any, pass: any) {
-    console.log("inside validatelogin")
+    //console.log("inside validatelogin")
     //let URL = 'http://' + window.location.host + '/insertNewItem'
     let URL = environment.apiBaseURL + 'user/login'
-    console.log(URL)
+    //console.log(URL)
 
     var JsnData = JSON.stringify({
       email: email,
       password: pass
     })
-    console.log(JsnData)
+    //console.log(JsnData)
     let header = {
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export class HttpService {
       }
 
     }
-    console.log(header)
+    //console.log(header)
     return this.http.post(URL, JsnData, header);
   }
 

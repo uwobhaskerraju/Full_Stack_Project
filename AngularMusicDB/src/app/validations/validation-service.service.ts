@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as EmailValidator from 'email-validator';
 
-declare var M:any
+declare var M: any
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +10,7 @@ export class ValidationServiceService {
 
   constructor() { }
 
-  //validation for Email
-  validateEmail(uEmail: any) {
-    let errMsg = ''
-    if (!EmailValidator.validate(uEmail)) {
-      errMsg = 'Invalid Email||'
-    }
-    return errMsg;
-  }
+
   validateYear(year: any) {
     let msg = ''
     if (Number(year)) {
@@ -44,32 +37,31 @@ export class ValidationServiceService {
     return msg;
   }
 
-  validateTitle(title:String){
+  validateTitle(title: String) {
     let msg = ''
-    if(Boolean(title)){
+    if (Boolean(title)) {
       if (String(title).length < 1 || String(title).length > 15) {
         msg = msg.concat("title should be less than 15||")
       }
     }
-    else{
-      msg='title shouldnt be empty||'
+    else {
+      msg = 'title shouldnt be empty||'
     }
     return msg
   }
-  validateDesc(desc:String)
-  {
+  validateDesc(desc: String) {
     let msg = ''
-    if(Boolean(desc)){
+    if (Boolean(desc)) {
       if (String(desc).length < 1 || String(desc).length > 120) {
         msg = msg.concat("Description should be less than 120||")
       }
     }
-    else{
-      msg='Description shouldnt be empty||'
+    else {
+      msg = 'Description shouldnt be empty||'
     }
     return msg
   }
-  generateToast(errMsg:String){
+  generateToast(errMsg: String) {
     errMsg.split('||').forEach(
       d => {
         if (Boolean(d)) {
@@ -83,7 +75,7 @@ export class ValidationServiceService {
   validatereview(review: any) {
     let msg = ''
     if (Boolean(review)) {
-      if(String(review).length > 120){
+      if (String(review).length > 120) {
         msg = 'review should be 120 characters||'
       }
     }
@@ -106,7 +98,22 @@ export class ValidationServiceService {
     }
     return msg;
   }
+  //validation for Email
+  validateEmail(uEmail: any) {
+    let errMsg = ''
+    if (Boolean(uEmail)) {
+      var re = /^([a-zA-Z])+([a-zA-Z0-9_.+-])+\@(([a-zA-Z])+\.+?(com|co|ca|in|org|net|edu|info|gov|vekomy))\.?(com|co|in|org|net|edu|info|gov)?$/
+      if (!re.test(uEmail)) {
+        errMsg = errMsg.concat('Invalid Email||')
+      }
+    }
+    else {
+      errMsg = errMsg.concat('Email cannot be empty||')
+    }
 
+    //console.log(errMsg)
+    return errMsg;
+  }
   validatePassword(uPass: any) {
     let errMsg = ''
     if (Boolean(uPass)) {
@@ -132,6 +139,9 @@ export class ValidationServiceService {
   validateUserName(uName) {
     let errMsg = ''
     if (Boolean(uName)) {
+      if (String(uName).length < 0 || String(uName).length > 15) {
+        errMsg = errMsg.concat('Username should be max of 15 characters||')
+      }
       //Expression can start or end only with a letter
       //Expression cannot contain consecutive spaces
       var letter = /^([a-zA-Z]+\s)*[a-zA-Z]+$/

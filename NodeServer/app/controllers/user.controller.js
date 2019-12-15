@@ -27,7 +27,7 @@ exports.registerUser = (req, res) => {
         .then(data => {
             if (data) {
                 // table has user so end the request
-                return res.send({ statusCode: 200, result: "Username already exists. Try Logging in" })
+                return res.send({ statusCode: 300, result: "Username already exists. Try Logging in" })
             }
             else {
 
@@ -95,7 +95,7 @@ exports.validateLogin = (req, res) => {
             bcrypt.compare(req.body.password, data.password, function (err, resp) {
                 if (err) {
                     return res.send({ statusCode: 400, result: "Invalid Username / Password" })
-                } 
+                }
                 if (resp) {
                     var objToken = {
                         "email": data.email,
@@ -104,7 +104,7 @@ exports.validateLogin = (req, res) => {
                         "emailverified": data["emailverified"],
                         "userType": data["usertype"]
                     }
-                    let token = jwt.sign(objToken, req.secret);
+                    let token = jwt.sign(objToken, req.secret, { expiresIn: tokenExpiry });
                     res.send({ statusCode: 200, result: objToken, "WWW-Authenticate": token });
                 }
                 else {

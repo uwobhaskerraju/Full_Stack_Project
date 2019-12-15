@@ -55,7 +55,8 @@ const routes: Routes = [
       { path: 'playlist/create', component: CreateplaylistAdminComponent },
       { path: 'song/playlist/:id', component: AddSongPlaylistComponent }
     ], canActivate: [AuthGuard]
-  }
+  },
+  { path: '**', redirectTo: '' }
 ];
 
 @NgModule({

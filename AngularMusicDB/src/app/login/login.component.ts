@@ -12,8 +12,8 @@ import { ValidationServiceService } from '../validations/validation-service.serv
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  temp:boolean
- 
+  temp: boolean
+
   constructor(private _http: HttpService, private router: Router, private _valService: ValidationServiceService) { }
   imagePath: String
   ngOnInit() {
@@ -27,14 +27,17 @@ export class LoginComponent implements OnInit {
   ValidateLogin(email: String, pass: String) {
     var errMsg = '';
     if (this._valService.validateEmail(email)) {
-      errMsg = errMsg.concat('email is not in proper format')
+      errMsg = errMsg.concat('email is not in proper format||')
     }
-   
+    if (!Boolean(pass)) {
+      errMsg = errMsg.concat('password cannot be empty||')
+    }
+
     if (!Boolean(errMsg)) {
-     
+
       this._http.ValidateLogin(email, pass)
         .subscribe(data => {
-          console.log(data)
+          //console.log(data)
           if (data["statusCode"] == 200) {
             const navigationExtras: NavigationExtras = {
               state: {
@@ -63,7 +66,7 @@ export class LoginComponent implements OnInit {
           }
           else {
             // throw a toast
-            M.toast({ html: 'Invalid Username/password', classes: 'rounded' })
+            M.toast({ html: data["result"], classes: 'rounded' })
             document.getElementById('signinPass').classList.add("invalid")
             document.getElementById('signinEmail').classList.add("invalid")
 
@@ -73,9 +76,10 @@ export class LoginComponent implements OnInit {
         });
     }
     else {
-      M.toast({ html: 'Something went wrong. Try Again!', classes: 'rounded' })
-      document.getElementById('signinPass').classList.add("invalid")
-      document.getElementById('signinEmail').classList.add("invalid")
+      this._valService.generateToast(errMsg)
+      //M.toast({ html: 'Something went wrong. Try Again!', classes: 'rounded' })
+      //document.getElementById('signinPass').classList.add("invalid")
+      // document.getElementById('signinEmail').classList.add("invalid")
     }
 
   }
@@ -83,12 +87,10 @@ export class LoginComponent implements OnInit {
   registerUser(name, pass, email) {
     let errMsg = ''
 
-    errMsg = errMsg.concat(this._valService.validateEmail(email))
-    errMsg = errMsg.concat(this._valService.validatePassword(pass))
-    errMsg = errMsg.concat(this._valService.validateUserName(name))
-    // console.log(name)
-    // console.log(pass)
-    // console.log(name)
+    errMsg = errMsg.concat(this._valService.validateEmail(String(email).trim()))
+    errMsg = errMsg.concat(this._valService.validatePassword(String(pass).trim()))
+    errMsg = errMsg.concat(this._valService.validateUserName(String(name).trim()))
+ 
     if (!Boolean(errMsg)) {
       this._http.registerUser(name, pass, email)
         .subscribe(data => {
@@ -114,15 +116,14 @@ export class LoginComponent implements OnInit {
           }
           else {
             // throw a toast
-            M.toast({ html: 'Something went wrong. Try Again!', classes: 'rounded' })
+            M.toast({ html: data["result"], classes: 'rounded' })
             //clear the form
             this.ngOnInit();
           }
         });
     }
     else {
-      M.toast({ html: 'Something went wrong. Try Again!', classes: 'rounded' })
-
+      this._valService.generateToast(errMsg)
     }
 
   }
