@@ -2,7 +2,8 @@ const jwt = require('jsonwebtoken');
 var validator = require("email-validator");
 require('dotenv').config()
 
-
+//References:
+// 1. https://www.youtube.com/watch?v=mbsmsi7l3r4 - how to setup jwt secret key
 
 const secret = process.env.JWT_KEY;
 if (typeof secret === 'undefined') {

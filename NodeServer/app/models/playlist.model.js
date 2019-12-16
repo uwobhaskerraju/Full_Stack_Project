@@ -5,7 +5,7 @@ var PlaylistSchema = mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     ownerID: { type: mongoose.Schema.ObjectId, required: true },
-    songID: { type: [mongoose.Schema.ObjectId], required: true },
+    songID: { type: [mongoose.Schema.ObjectId], default:[] },
     hidden: { type: Boolean, default: true }
 }, {
     versionKey: false

@@ -18,7 +18,7 @@ export class ValidationServiceService {
   validateYear(year: any) {
     let msg = ''
     if (Number(year)) {
-      if ((Number(year) < 0 || Number(year) > 2020)) {
+      if (Number(year) < 0 || Number(year) > 2020) {
         msg = 'Year should be less than 2020||'
       }
 
@@ -31,7 +31,7 @@ export class ValidationServiceService {
   validateDuration(duration: any) {
     let msg = ''
     if (parseFloat(duration)) {
-      if ((parseFloat(duration) < 1 || (parseFloat(duration) > 7))) {
+      if (parseFloat(duration) < 1 || parseFloat(duration) > 7) {
         msg = 'Duration should be less than 7min||'
       }
     }

@@ -10,9 +10,9 @@ declare var M: any
 export class AddsongComponent implements OnInit {
   public addSong: any = {};
   constructor(private _http: HttpService, private _validate: ValidationServiceService) {
-    this.addSong.id = localStorage.getItem('id')
-    this.addSong.name = localStorage.getItem('name')
-    this.addSong.email = localStorage.getItem('email')
+    this.addSong.id = this._validate.loggedInUser['id']
+    this.addSong.name = this._validate.loggedInUser['name']
+    this.addSong.email = this._validate.loggedInUser['email']
   }
   ngOnDestroy() {
     this.addSong = null
@@ -37,31 +37,38 @@ export class AddsongComponent implements OnInit {
     errMsg = errMsg.concat(this._validate.validaterating(this.addSong.rate))
     errMsg = errMsg.concat(this._validate.validatereview(this.addSong.review))
 
-    if (!Boolean(this.addSong.title) || !(String(this.addSong.title).length<15) ||
-      !Boolean(this.addSong.album) || !(String(this.addSong.album).length<15) ||
-      !Boolean(this.addSong.artist) || !(String(this.addSong.artist).length<15) ||
-      !Boolean(this.addSong.genre) || !(String(this.addSong.genre).length<15)) {
+    if (!Boolean(this.addSong.title) || !(String(this.addSong.title).length < 15) ||
+      !Boolean(this.addSong.album) || !(String(this.addSong.album).length < 15) ||
+      !Boolean(this.addSong.artist) || !(String(this.addSong.artist).length < 15) ||
+      !Boolean(this.addSong.genre) || !(String(this.addSong.genre).length < 15)) {
       errMsg = errMsg.concat(this._validate.fieldsErr)
     }
     if (!Boolean(errMsg)) {
       this._http.addSongToDB(this.addSong)
         .subscribe(data => {
+          console.log(data)
           if (data["statusCode"] == 200) {
             // successfully inserted songID
             //console.log("inserted song")
             // insert rating
+
             songID = data["result"]
+            console.log(this.addSong)
             this._http.submitRating(this.addSong, songID)
               .subscribe(data => {
+                console.log(data)
                 if (data["statusCode"] == 200) {
                   // toast saying yes
                   //console.log("inserted rating")
+
                   // trigger review api
                   this._http.submitReview(this.addSong, songID)
                     .subscribe(data => {
+                      console.log(data)
                       if (data["statusCode"] == 200) {
                         // toast saying yes
-                       // console.log("inserted review")
+
+                        // console.log("inserted review")
                         M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })
                         this.ngOnInit();
                       }
@@ -83,7 +90,7 @@ export class AddsongComponent implements OnInit {
                   this._http.deleteSong(songID)
                     .subscribe(d => {
                       console.log("succesfully deleted song as insert rating failed")
-                      M.toast({ html:  this._validate.OpFailedMsg, classes: 'rounded' })
+                      M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
                     });
                 }
               });

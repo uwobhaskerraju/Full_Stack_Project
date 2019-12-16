@@ -30,7 +30,9 @@ export class AuthGuard implements CanActivate {
         this.router.navigate(['/'])
         return false;
       }
-
+      // get decoded data from token
+      // verify whether email is verified or not
+      //also check role
       return true;
     }
     else {

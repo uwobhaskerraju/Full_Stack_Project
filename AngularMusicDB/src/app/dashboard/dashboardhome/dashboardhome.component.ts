@@ -30,7 +30,7 @@ export class DashboardhomeComponent implements OnInit, AfterViewInit {
   onSearchChange(value) {
     //console.log(value)
     if (value) {
-      this._http.getSearchedSongs(value).subscribe(data => {
+      this._http.getUserSearchedSongs(value).subscribe(data => {
         if (data["statusCode"] == 200) {
           this.orgSongs = data["result"]
           //console.log(this.orgSongs)

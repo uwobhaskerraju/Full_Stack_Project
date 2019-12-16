@@ -175,7 +175,7 @@ export class HttpService {
   }
 
   getAllSongs() {
-    let url = environment.apiBaseURL + 'admin/songs'
+    let url = environment.apiBaseURL + 'admin/songs/'
     let header = {
       headers: {
         'Content-Type': 'application/json',
@@ -333,9 +333,9 @@ export class HttpService {
       Duration: song[0].duration,
       Year: song[0].year,
       Genre: song[0].genre,
-      Hidden: song[0].hidden
+      Hidden: String(song[0].hidden)
     })
-    //console.log(JsnData)
+    console.log(JsnData)
     return this.http.put(url, JsnData, header);
 
   }
@@ -449,8 +449,7 @@ export class HttpService {
     var JsnData = JSON.stringify({
       title: playlist.title,
       description: playlist.description,
-      ownerID: playlist.id,
-      songID: []
+      ownerID: playlist.id
     })
 
     return this.http.post(url, JsnData, header)

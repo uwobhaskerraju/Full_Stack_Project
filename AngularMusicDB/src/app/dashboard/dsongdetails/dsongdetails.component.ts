@@ -21,7 +21,8 @@ export class DsongdetailsComponent implements OnInit {
   public uSong: any = {}; // used for getting ratings and review of a song
 
 
-  constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute, private _validate: ValidationServiceService) {
+  constructor(private _http: HttpService, private router: Router, private route: ActivatedRoute, 
+    private _validate: ValidationServiceService) {
     const navigation = this.router.getCurrentNavigation();
     const state = navigation.extras.state.state as
       {
@@ -31,9 +32,9 @@ export class DsongdetailsComponent implements OnInit {
     this.songDetails.push(state.allSongs)
 
     //get logged in details like id and name
-    this.uSong.id = localStorage.getItem('id')
-    this.uSong.name = localStorage.getItem('name')
-    this.uSong.email = localStorage.getItem('email')
+    this.uSong.id = this._validate.loggedInUser["id"]
+    this.uSong.name = this._validate.loggedInUser["name"]
+    this.uSong.email =this._validate.loggedInUser["email"]
     // this.uSong.id=localStorage.getItem('id')
     // localStorage.removeItem('id')
     // localStorage.removeItem('name')
@@ -82,12 +83,14 @@ export class DsongdetailsComponent implements OnInit {
       //console.log("isnide ")
       this._http.submitRating(this.uSong, value)
         .subscribe(data => {
+          console.log(data)
           if (data["statusCode"] == 200) {
             // toast saying yes
            // console.log("inserted rating")
             // trigger review api
             this._http.submitReview(this.uSong, value)
               .subscribe(data => {
+                console.log(data)
                 if (data["statusCode"] == 200) {
                   // toast saying yes
                   //console.log("inserted review")

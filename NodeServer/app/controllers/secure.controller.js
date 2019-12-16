@@ -4,7 +4,7 @@ const Ratings = require('../models/ratings.model.js');
 const Playlist = require('../models/playlist.model.js');
 const User = require('../models/user.model.js');
 const mongoose = require('mongoose');
-
+var dice = require('dice-coefficient')
 const errMsg = "something went wrong! try again"
 
 function generateKeyValueFromBody(body) {
@@ -45,6 +45,7 @@ exports.insertSong = (req, res) => {
 exports.ratesong = (req, res) => {
     // if it doesnt insert, send deleteSong API from angular
     const inserts = generateKeyValueFromBody(req.body)
+    console.log(inserts)
     var songID = inserts["songId"]
     Ratings.create(inserts)
         .then(data => {
@@ -157,7 +158,7 @@ exports.editPlaylist = (req, res) => {
 };
 
 exports.allPlaylists = (req, res) => {
-   // console.log("here")
+    // console.log("here")
     Playlist.find({ hidden: false })
         .then(data => {
             res.send({ statusCode: 200, result: data })
@@ -372,7 +373,7 @@ exports.deleteSong = (req, res) => {
 
 };
 
-exports.searchSongs=(req,res)=>{
+exports.searchSongs = (req, res) => {
     var q = req.params.query
     var threshold = 0.25// for filtering
     console.log(q)
@@ -424,23 +425,26 @@ exports.searchSongs=(req,res)=>{
                 Object.keys(d).forEach(function (key) {
                     // console.table('Key : ' + key + ', Value : ' + d[key])
                     if (dice(d[key], q) >= threshold) {
+                        //console.log(dice(d[key], q))
                         fnlJson.push(d)
                     }
                 })
                 //return false
                 //console.log("next loop")
             })
+
             fnlJson = [...new Set(fnlJson)];
             res.send({ statusCode: 200, result: fnlJson })
         })
         .catch(err => {
-            res.send({ statusCode: 500, result: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
 
 
 exports.test = (req, res) => {
-   var a=req.body.email
+    var a = req.body.email
     res.send(a)
 };

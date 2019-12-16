@@ -47,7 +47,7 @@ module.exports = (app) => {
     app.get('/secure/getPlaylists',checkrequest.CheckRole,checkrequest.CheckToken,secured.allPlaylists)
 
     // search songs
-    app.get('/secure/search',checkrequest.CheckRole,checkrequest.CheckToken,secured.searchSongs);
+    app.get('/secure/search/:query',checkrequest.CheckRole,checkrequest.CheckToken,secured.searchSongs);
 
     app.post('/secure/test',secured.test);
 }

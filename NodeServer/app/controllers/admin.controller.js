@@ -22,6 +22,7 @@ exports.insertSong = (req, res) => {
     Songs.create(inserts)
         .then(data => {
             if (Boolean(data["_id"])) {
+
                 res.send({ statusCode: 200, result: data["_id"] })
             }
             else {
@@ -336,13 +337,36 @@ exports.getAllSongs = (req, res) => {
                 rating: -1,
                 name: 1
             }
-        },
-        {
-            $match: {
-                hidden: false
-            }
         }
     ])
+    // Songs.aggregate([
+    //     {
+    //         $lookup: {
+    //             from: "Ratings",
+    //             localField: "_id",
+    //             foreignField: "songID",
+    //             as: "ratings_data"
+    //         }
+    //     },
+    //     { $unwind: "$ratings_data" }
+    //     ,
+    //     {
+    //         $project: {
+    //             rating: {
+    //                 $cond: { if: { $eq: [{ $round: ["$ratings_data.ratings", 0] }, 0] }, then: 1, else: { $round: ["$ratings_data.ratings", 0] } }
+    //             },
+    //             _id: 1,
+    //             genre: "$Genre",
+    //             hidden: "$Hidden",
+    //             name: "$Name",
+    //             artist: "$Artist",
+    //             album: "$Album",
+    //             duration: "$Duration",
+    //             year: "$Year",
+    //             picture: "$Picture"
+    //         }
+    //     },
+    // ])
         .then(data => {
             res.send({
                 statusCode: 200,

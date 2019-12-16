@@ -35,7 +35,9 @@ export class CreateplaylistComponent implements OnInit {
     errMsg = errMsg.concat(this._validate.validateTitle(this.playlist.title))
     if (!Boolean(errMsg)) {
       this._http.addPlayListUser(this.playlist).subscribe(
+        
         data => {
+          console.log(data)
           if (data["statusCode"] == 200) {
             // playlist created
             M.toast({ html: this._validate.succOpMsg, classes: 'rounded' })

@@ -13,7 +13,7 @@ declare var M: any;
 export class ViewplaylistsComponent implements OnInit {
 
   public imagepath: String
-  allPlaylists: any
+  allPlaylists: any[];
   allSongs: any
   userID: any
   constructor(private _http: HttpService, private _validate: ValidationServiceService) {
