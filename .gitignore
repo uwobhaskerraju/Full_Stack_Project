@@ -63,3 +63,6 @@ typings/
 .vscode/launch.json
 .gitignore
 package-lock.json
+log.txt
+.gitignore
+.gitignore

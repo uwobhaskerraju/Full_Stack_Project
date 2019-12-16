@@ -23,31 +23,31 @@ export class UserallplaylistsComponent implements OnInit {
     this._http.getAllsongs().subscribe(data => {
       if (data["statusCode"] = 200) {
         this.allSongs = data["result"]
-        //console.log(data["result"])
+        //get all playlist in DB which are not hidden
+        this._http.getAllUserPlaylists()
+          .subscribe(data => {
+            try {
+              if (data["statusCode"] == 200) {
+
+                let songIds = null
+                songIds = this.getSongDetails(data["result"], this.allSongs);
+                this.allPlaylists = songIds;
+
+              }
+              else {
+                M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+              }
+            } catch (error) {
+              M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+            }
+          });
       }
       else {
         //unable to fetch songs
         M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
       }
     });
-    //get all playlist in DB which are not hidden
-    this._http.getAllUserPlaylists()
-      .subscribe(data => {
-        try {
-          if (data["statusCode"] == 200) {
 
-            let songIds = null
-            songIds = this.getSongDetails(data["result"], this.allSongs);
-            this.allPlaylists = songIds;
-
-          }
-          else {
-            M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
-          }
-        } catch (error) {
-          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
-        }
-      });
   }
 
   getSongDetails(songIds: any, allSongs: any) {

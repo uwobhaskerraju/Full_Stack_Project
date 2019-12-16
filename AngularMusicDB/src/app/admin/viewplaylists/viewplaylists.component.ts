@@ -28,32 +28,32 @@ export class ViewplaylistsAdminComponent implements OnInit {
     this._http.getAllSongs().subscribe(data => {
       if (data["statusCode"] = 200) {
         this.allSongs = data["result"]
-        // console.log(data["result"])
+        //fetch all playlists from API
+        this._http.getAllPlaylists()
+          .subscribe(data => {
+            try {
+              if (data["statusCode"] == 200) {
+                let songIds = null
+                songIds = this.getSongDetails(data["result"], this.allSongs);
+                this.allPlaylists = songIds;
+
+              }
+              else {
+                M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+              }
+            } catch (error) {
+              M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+            }
+
+
+          });
       }
       else {
         //unable to fetch songs
         M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
       }
     });
-    //fetch all playlists from API
-    this._http.getAllPlaylists()
-      .subscribe(data => {
-        try {
-          if (data["statusCode"] == 200) {
-            let songIds = null
-            songIds = this.getSongDetails(data["result"], this.allSongs);
-            this.allPlaylists = songIds;
 
-          }
-          else {
-            M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
-          }
-        } catch (error) {
-          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
-        }
-
-
-      });
 
 
   }

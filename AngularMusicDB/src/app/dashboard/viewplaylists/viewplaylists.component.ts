@@ -27,33 +27,33 @@ export class ViewplaylistsComponent implements OnInit {
     this._http.getAllsongs().subscribe(data => {
       if (data["statusCode"] = 200) {
         this.allSongs = data["result"]
-        //console.log(data["result"])
+        //get all playlists of this user
+        this._http.getUserPlaylists(this.userID)
+          .subscribe(data => {
+            try {
+              if (data["statusCode"] == 200) {
+                // console.log("first playlist")
+                // console.log(data["result"])
+                let songIds = null
+                songIds = this.getSongDetails(data["result"], this.allSongs);
+                this.allPlaylists = songIds;
+                //this.allPlaylists = data["result"]
+                //console.log(this.allPlaylists)
+              }
+              else {
+                M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+              }
+            } catch (error) {
+              M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
+            }
+          });
       }
       else {
         //unable to fetch songs
         M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
       }
     });
-    //get all playlists of this user
-    this._http.getUserPlaylists(this.userID)
-      .subscribe(data => {
-        try {
-          if (data["statusCode"] == 200) {
-            // console.log("first playlist")
-            // console.log(data["result"])
-            let songIds = null
-            songIds = this.getSongDetails(data["result"], this.allSongs);
-            this.allPlaylists = songIds;
-            //this.allPlaylists = data["result"]
-            //console.log(this.allPlaylists)
-          }
-          else {
-            M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
-          }
-        } catch (error) {
-          M.toast({ html: this._validate.OpFailedMsg, classes: 'rounded' })
-        }
-      });
+
 
   }
 
