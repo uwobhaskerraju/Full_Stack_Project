@@ -61,6 +61,6 @@ export class ViewsongdetailsComponent implements OnInit {
     this.songDetails = null
     this.songReviews = null
     this.songID = null
-    this.router.navigate(['/admin']);
+    this.router.navigate(['/admin/song']);
   }
 }

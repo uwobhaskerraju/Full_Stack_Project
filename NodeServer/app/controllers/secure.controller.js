@@ -307,15 +307,47 @@ exports.getAllSongs = (req, res) => {
             }
         }
     ])
-        //.limit(10)
         .then(songs => {
-            if (songs != null) {
-                res.send({ statusCode: 200, result: songs })
-            }
-            else {
-                res.send({ statusCode: 300, result: songs })
-            }
 
+            // get all ids and search for not in songs
+            var idArr = []
+            songs.forEach(d => {
+                idArr.push(d["_id"])
+            })
+            Songs.aggregate([
+                {
+                    $match: {
+                        _id: { $nin: idArr }
+                    }
+                },
+                {
+                    $project: {
+                        rating: { $literal: 0 },
+                        _id: 1,
+                        genre: "$Genre",
+                        hidden: "$Hidden",
+                        name: "$Name",
+                        artist: "$Artist",
+                        album: "$Album",
+                        duration: "$Duration",
+                        year: "$Year",
+                        picture: "$Picture"
+                    }
+                },
+                {
+                    $match: {
+                        hidden: false
+                    }
+                }
+            ])
+                .then(d => {
+                    if (d != null) {
+                        res.send({ statusCode: 200, result: songs.concat(d) })
+                    }
+                    else {
+                        res.send({ statusCode: 300, result: songs })
+                    }
+                })
         })
         .catch(err => {
             res.send({
@@ -416,6 +448,11 @@ exports.searchSongs = (req, res) => {
             $sort: {
                 rating: -1,
                 name: 1
+            }
+        },
+        {
+            $match: {
+                hidden: false
             }
         }
     ])

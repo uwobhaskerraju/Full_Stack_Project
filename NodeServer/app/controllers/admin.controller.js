@@ -339,39 +339,73 @@ exports.getAllSongs = (req, res) => {
             }
         }
     ])
-    // Songs.aggregate([
-    //     {
-    //         $lookup: {
-    //             from: "Ratings",
-    //             localField: "_id",
-    //             foreignField: "songID",
-    //             as: "ratings_data"
-    //         }
-    //     },
-    //     { $unwind: "$ratings_data" }
-    //     ,
-    //     {
-    //         $project: {
-    //             rating: {
-    //                 $cond: { if: { $eq: [{ $round: ["$ratings_data.ratings", 0] }, 0] }, then: 1, else: { $round: ["$ratings_data.ratings", 0] } }
-    //             },
-    //             _id: 1,
-    //             genre: "$Genre",
-    //             hidden: "$Hidden",
-    //             name: "$Name",
-    //             artist: "$Artist",
-    //             album: "$Album",
-    //             duration: "$Duration",
-    //             year: "$Year",
-    //             picture: "$Picture"
-    //         }
-    //     },
-    // ])
+        // Songs.aggregate([
+        //     {
+        //         $lookup: {
+        //             from: "Ratings",
+        //             localField: "_id",
+        //             foreignField: "songID",
+        //             as: "ratings_data"
+        //         }
+        //     },
+        //     { $unwind: "$ratings_data" }
+        //     ,
+        //     {
+        //         $project: {
+        //             rating: {
+        //                 $cond: { if: { $eq: [{ $round: ["$ratings_data.ratings", 0] }, 0] }, then: 1, else: { $round: ["$ratings_data.ratings", 0] } }
+        //             },
+        //             _id: 1,
+        //             genre: "$Genre",
+        //             hidden: "$Hidden",
+        //             name: "$Name",
+        //             artist: "$Artist",
+        //             album: "$Album",
+        //             duration: "$Duration",
+        //             year: "$Year",
+        //             picture: "$Picture"
+        //         }
+        //     },
+        // ])
         .then(data => {
-            res.send({
-                statusCode: 200,
-                result: data
+            // get all ids and search for not in songs
+            var idArr = []
+            data.forEach(d => {
+                idArr.push(d["_id"])
             })
+            Songs.aggregate([
+                {
+                    $match: {
+                        _id: { $nin: idArr }
+                    }
+                },
+                {
+                    $project: {
+                        rating:{$literal: 0},
+                        _id: 1,
+                        genre: "$Genre",
+                        hidden: "$Hidden",
+                        name: "$Name",
+                        artist: "$Artist",
+                        album: "$Album",
+                        duration: "$Duration",
+                        year: "$Year",
+                        picture: "$Picture"
+                    }
+                }
+            ])
+                .then(d => {
+                    res.send({
+                        statusCode: 200,
+                        result: data.concat(d)
+                    })
+                })
+                .catch(err => {
+                    res.status(500).send({
+                        message: err.message || errMsg
+                    })
+                });
+
         })
         .catch(err => {
             res.status(500).send({
