@@ -283,7 +283,7 @@ exports.getAllSongs = (req, res) => {
         ,
         {
             $project: {
-                rating: { $round: ["$rating", 0] },
+                rating: { $floor:"$rating" },
                 _id: 1,
                 genre: "$ratings_data.Genre",
                 hidden: "$ratings_data.Hidden",
@@ -432,7 +432,7 @@ exports.searchSongs = (req, res) => {
         // },
         {
             $project: {
-                rating: { $round: ["$rating", 0] },
+                rating: { $floor:"$rating" },
                 _id: 1,
                 genre: "$ratings_data.Genre",
                 hidden: "$ratings_data.Hidden",
@@ -461,7 +461,7 @@ exports.searchSongs = (req, res) => {
             data.forEach(d => {
                 Object.keys(d).forEach(function (key) {
                     // console.table('Key : ' + key + ', Value : ' + d[key])
-                    if (dice(d[key], q) >= threshold) {
+                    if (dice(String(d[key]).toLowerCase(), String(q).toLowerCase()) >= threshold) {
                         //console.log(dice(d[key], q))
                         fnlJson.push(d)
                     }

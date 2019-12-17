@@ -30,7 +30,7 @@ exports.getTopTenSongs = (req, res) => {
         // },
         {
             $project: {
-                rating: { $round: ["$rating", 0] },
+                rating: { $floor: "$rating" },
                 _id: 1,
                 genre: "$ratings_data.Genre",
                 hidden: "$ratings_data.Hidden",
@@ -46,6 +46,11 @@ exports.getTopTenSongs = (req, res) => {
             $sort: {
                 rating: -1,
                 name: 1
+            }
+        },
+        {
+            $match:{
+                hidden:false
             }
         }
     ])
@@ -94,7 +99,7 @@ exports.search = (req, res) => {
         // },
         {
             $project: {
-                rating: { $round: ["$rating", 0] },
+                rating: { $floor: "$rating" },
                 _id: 1,
                 genre: "$ratings_data.Genre",
                 hidden: "$ratings_data.Hidden",
@@ -112,6 +117,13 @@ exports.search = (req, res) => {
                 name: 1
             }
         }
+        ,
+        {
+            $match:{
+                hidden:false
+            }
+        }
+        
     ])
         .limit(10)
         .then(data => {
@@ -119,7 +131,7 @@ exports.search = (req, res) => {
             data.forEach(d => {
                 Object.keys(d).forEach(function (key) {
                     // console.table('Key : ' + key + ', Value : ' + d[key])
-                    if (dice(d[key], q) >= threshold) {
+                    if (dice(String(d[key]).toLowerCase(), String(q).toLowerCase()) >= threshold) {
                         fnlJson.push(d)
                     }
                 })
@@ -130,7 +142,8 @@ exports.search = (req, res) => {
             res.send({ statusCode: 200, result: fnlJson })
         })
         .catch(err => {
-            res.send({ statusCode: 500, result: err.message || errMsg
+            res.send({
+                statusCode: 500, result: err.message || errMsg
             })
         });
 };
@@ -214,7 +227,7 @@ exports.getReview = (req, res) => {
                 comment: 1,
                 reviewBy: 1,
                 userId: 1,
-                rating: { $round: ["$ratings_data.ratings", 0] }
+                rating: { $floor: "$ratings_data.ratings" }
             }
         }
     ]).then(songs => {

@@ -68,8 +68,8 @@ export class LoginComponent implements OnInit {
           else {
             // throw a toast
             M.toast({ html: data["result"], classes: 'rounded' })
-            document.getElementById('signinPass').classList.add("invalid")
-            document.getElementById('signinEmail').classList.add("invalid")
+            //document.getElementById('signinPass').classList.add("invalid")
+           // document.getElementById('signinEmail').classList.add("invalid")
 
             //clear the form
           }

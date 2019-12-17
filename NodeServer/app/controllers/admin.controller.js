@@ -45,22 +45,23 @@ exports.delSong = (req, res) => {
     Songs.deleteOne({ _id: songId })
         //.then(dbModel => res.json(dbModel))
         .then(data => {
-            //console.log(data["nModified"])
+           // console.log(data)
             if (Boolean(data["deletedCount"])) {
 
                 //res.send({ statusCode: 200, result: songId })
                 //delete reviews
                 Reviews.deleteMany({ songId: songId })
                     .then(da => {
+                        //console.log(da)
                         if (Boolean(da["deletedCount"])) {
                             // delete ratings
                             Ratings.deleteMany({ songID: songId })
                                 .then(d => {
-                                    if (Boolean(da["deletedCount"])) {
+                                    if (Boolean(d["deletedCount"])) {
                                         res.send({ statusCode: 200, result: songId })
                                     }
                                     else {
-                                        res.send({ statusCode: 300, result: songId })
+                                        res.send({ statusCode: 200, result: songId })
                                     }
                                 })
                                 .catch(err => {
@@ -70,7 +71,8 @@ exports.delSong = (req, res) => {
                                 });
                         }
                         else {
-                            res.send({ statusCode: 300, result: songId })
+                            //console.log("s")
+                            res.send({ statusCode: 200, result: songId })
                         }
                     })
                     .catch(err => {
@@ -320,7 +322,7 @@ exports.getAllSongs = (req, res) => {
         ,
         {
             $project: {
-                rating: { $round: ["$rating", 0] },
+                rating: { $floor: "$rating" },
                 _id: 1,
                 genre: "$ratings_data.Genre",
                 hidden: "$ratings_data.Hidden",
@@ -381,7 +383,7 @@ exports.getAllSongs = (req, res) => {
                 },
                 {
                     $project: {
-                        rating:{$literal: 0},
+                        rating: { $literal: 0 },
                         _id: 1,
                         genre: "$Genre",
                         hidden: "$Hidden",
